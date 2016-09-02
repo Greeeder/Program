@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="EngineHeatTransfer" xmlns:ow="OpenWAM" attributeFormDefault="unqualified">
+    <xs:element name="Cylinders">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" name="Cylinder">
+                    <xs:complexType>
+						<!-- Deben proceder de la base de datos común para todos los modelos -->
+						<xs:attribute name="Bore" type="xs:double" use="required"/>
+						<xs:attribute name="Stroke" type="xs:double" use="required"/>
+						<xs:attribute name="Length_Connecting_Rod" type="xs:double" use="required"/>
+						<xs:attribute name="Heigth_Clearance_TDC" type="xs:double" use="required"/>
+						<xs:attribute name="Diameter_Piston_Bowl" type="xs:double" use="required"/>
+						<xs:attribute name="Diameter_Valve_Intake" type="xs:double" use="required"/>
+						<xs:attribute name="Diameter_Valve_Exhaust" type="xs:double" use="required"/>
+                        <xs:attribute name="Diameter_Injector" type="xs:double" use="required"/>	<!-- En vez del diámetro, Calmec usa un factor de multiplicación del diámetro del cilindro -->
+						<!-- Otros parámetros Calmec: valorar -->
+						
+						<!-- Configuración de la camisa del cilindro. Pueden eliminarse estos campos para que no sea editable. -->
+						<xs:attribute name="Number_Nodes_Axial" type="xs:unsignedInt"/> <!-- Número de nodos en dirección axial --> <!-- Valor por defecto: 5 -->
+						<xs:attribute name="Number_Nodes_Radial" type="xs:unsignedInt"/> <!-- Número de nodos en dirección radial --> <!-- Valor por defecto: 2 -->
+						<xs:attribute name="Number_Nodes_Circumferential" type="xs:unsignedInt"/> <!-- Número de nodos en dirección circunferencial --> <!-- Valor por defecto: 6 -->
+						<xs:attribute name="Angle_Liner_Uncooled" type="xs:double"/> <!-- Ángulo de apretura de la zona no refrigerada de la camisa [degrees] --> <!-- Valor por defecto: 30 -->
+						
+						<!-- Modo de inicializar temperturas -->
+						<!-- Hay que seleccionar una de las dos opciones -->
+                        <xs:attribute name="Temperature_Initial" type="xs:double"/> <!-- Temperatura inicial de los nodos [K] --> <!-- Valor por defecto: 298 -->
+						<xs:choice minOccurs="0" maxOccurs="1">
+							<xs:element ref="Stationary_preliminar_execution"/> <!-- Ejecutar el primer instante en estacionario para determinar temperaturas iniciales de nodos -->
+						</xs:choice>
+						
+						<!-- Materiales -->
+						<!-- Esto podría hacer referencia a una lista de materiales sólidos relacionada con la base de datos de propiedades de materiales, incluyendo materiales definidos por el usuario -->
+                        <xs:attribute name="Material_Liner"> <!-- Material de la camisa del cilindro -->
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="STEEL"/> <!-- Acero -->
+                                    <xs:enumeration value="ALUMINUM"/> <!-- Aluminio -->
+									<!-- Resto de la lista -->
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="Material_Piston"> <!-- Material del pistón -->
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="STEEL"/>
+                                    <xs:enumeration value="ALUMINUM"/>
+									<!-- Resto de la lista -->
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="Material_Cylinder_Head">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="STEEL"/>
+                                    <xs:enumeration value="ALUMINUM"/>
+									<!-- Resto de la lista -->
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

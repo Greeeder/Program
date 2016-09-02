@@ -1,0 +1,11 @@
+﻿  HydroNet_InserVolume.cpp
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_inservolume_wrkng\hydronet_inservolume\hydronet_inservolume\hydronet_inservolume.cpp(71): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_inservolume_wrkng\hydronet_inservolume\hydronet_inservolume\hydronet_inservolume.cpp(84): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_inservolume_wrkng\hydronet_inservolume\hydronet_inservolume\hydronet_inservolume.cpp(246): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_inservolume_wrkng\hydronet_inservolume\hydronet_inservolume\hydronet_inservolume.cpp(247): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_inservolume_wrkng\hydronet_inservolume\hydronet_inservolume\hydronet_inservolume.cpp(248): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_inservolume_wrkng\hydronet_inservolume\hydronet_inservolume\hydronet_inservolume.cpp(328): error C4700: uninitialized local variable 'volume' used
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_inservolume_wrkng\hydronet_inservolume\hydronet_inservolume\hydronet_inservolume.cpp(328): error C4700: uninitialized local variable 'value' used
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_inservolume_wrkng\hydronet_inservolume\hydronet_inservolume\hydronet_inservolume.cpp(328): error C4700: uninitialized local variable 'temp_action' used
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_inservolume_wrkng\hydronet_inservolume\hydronet_inservolume\hydronet_inservolume.cpp(328): error C4700: uninitialized local variable 'end_pos' used
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_inservolume_wrkng\hydronet_inservolume\hydronet_inservolume\hydronet_inservolume.cpp(328): error C4700: uninitialized local variable 'start_pos' used

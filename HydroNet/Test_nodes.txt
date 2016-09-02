@@ -1,0 +1,38 @@
+#1				identifier
+Node_1			name
+node			class
+3				number_connections
+2				connection_1
+3				connection_2
+5				connection_3
+
+#2				identifier
+Node_2			name
+node			class
+3				number_connections
+1				connection_1
+3				connection_2
+5				connection_3
+
+#3				identifier
+Node_3			name
+node			class
+3				number_connections
+1				connection_1
+2				connection_2
+4				connection_3
+
+#4				identifier
+Node_4			name
+node			class
+1				number_connections
+3				connection_1
+
+#5				identifier
+Node_5			name
+pipe			class
+1				inlet_object
+2				outlet_object
+2				length	[meter]
+0.02			diameter	[meter]
+0.02			friction_coef	[]

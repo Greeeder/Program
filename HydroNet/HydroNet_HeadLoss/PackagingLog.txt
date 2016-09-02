@@ -1,0 +1,76 @@
+ant:
+<ant>
+  <mkdir dir="C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_redistribution" />
+  <mkdir dir="C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_testing" />
+  <mkdir dir="C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_redistribution_files_only" />
+</ant>
+mcc -W cpplib:HydroNet_HeadLoss -T link:lib -d 'C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_testing' -v 'C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet_HeadLoss.m' 
+Compiler version: 6.0 (R2015a)
+Dependency analysis by REQUIREMENTS.
+[Warning: Adding path "C:\Users\Jaime\Documents\& PFC-CMT\Program" to Compiler
+path instance.] 
+Parsing file "C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet_HeadLoss.m"
+	(Referenced from: "Compiler Command Line").
+Deleting 0 temporary MEX authorization files.
+Generating file "C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_testing\HydroNet_HeadLoss.h".
+Generating file "C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_testing\HydroNet_HeadLoss.cpp".
+Generating file "C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_testing\HydroNet_HeadLoss.exports".
+Generating file "C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_testing\readme.txt".
+Executing command: ""C:\Program Files\MATLAB\MATLAB Production Server\R2015a\bin\mbuild"  -client mbuild -O -v -output "HydroNet_HeadLoss" -I"C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_testing" "C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_testing\HydroNet_HeadLoss.cpp"  DEFFILE"=""C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_testing\HydroNet_HeadLoss.def""" LINKEXPORT"=""/DLL /def:\"$DEFFILE\"""" LDEXT"="".dll""" CMDLINE250"=""mt -outputresource:$EXE;2 -manifest $MANIFEST""" -outdir "C:\Users\Jaime\Documents\& PFC-CMT\Program\HydroNet\HydroNet_HeadLoss\for_testing""Verbose mode is on.
+No MEX options file identified; looking for an implicit selection.
+... Looking for compiler 'Intel C++ Composer XE 2011 with Microsoft SDK 7.1' ...
+... Looking for environment variable 'ICPP_COMPILER12' ...No.
+Did not find installed compiler 'Intel C++ Composer XE 2011 with Microsoft SDK 7.1'.
+... Looking for compiler 'Intel C++ Composer XE 2011 with Microsoft Visual Studio 2008' ...
+... Looking for environment variable 'ICPP_COMPILER12' ...No.
+Did not find installed compiler 'Intel C++ Composer XE 2011 with Microsoft Visual Studio 2008'.
+... Looking for compiler 'Intel C++ Composer XE 2011 with Microsoft Visual Studio 2010 ' ...
+... Looking for environment variable 'ICPP_COMPILER12' ...No.
+Did not find installed compiler 'Intel C++ Composer XE 2011 with Microsoft Visual Studio 2010 '.
+... Looking for compiler 'Intel C++ Composer XE 2013 with Microsoft SDK 7.1' ...
+... Looking for environment variable 'ICPP_COMPILER14' ...No.
+... Looking for environment variable 'ICPP_COMPILER13' ...No.
+Did not find installed compiler 'Intel C++ Composer XE 2013 with Microsoft SDK 7.1'.
+... Looking for compiler 'Intel C++ Composer XE 2013 with Microsoft Visual Studio 2010' ...
+... Looking for environment variable 'ICPP_COMPILER14' ...No.
+... Looking for environment variable 'ICPP_COMPILER13' ...No.
+Did not find installed compiler 'Intel C++ Composer XE 2013 with Microsoft Visual Studio 2010'.
+... Looking for compiler 'Intel C++ Composer XE 2013 with Microsoft Visual Studio 2012' ...
+... Looking for environment variable 'ICPP_COMPILER14' ...No.
+... Looking for environment variable 'ICPP_COMPILER13' ...No.
+Did not find installed compiler 'Intel C++ Composer XE 2013 with Microsoft Visual Studio 2012'.
+... Looking for compiler 'Microsoft Visual C++ 2008' ...
+... Looking for environment variable 'VS90COMNTOOLS' ...No.
+Did not find installed compiler 'Microsoft Visual C++ 2008'.
+... Looking for compiler 'Microsoft Visual C++ 2010' ...
+... Looking for environment variable 'VS100COMNTOOLS' ...No.
+Did not find installed compiler 'Microsoft Visual C++ 2010'.
+... Looking for compiler 'Microsoft Visual C++ 2012' ...
+... Looking for registry setting 'HKLM\SOFTWARE\Microsoft\VisualStudio\SxS\VS7' 11.0 ...No.
+... Looking for registry setting 'HKCU\SOFTWARE\Microsoft\VisualStudio\SxS\VS7' 11.0 ...No.
+... Looking for registry setting 'HKLM\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VS7' 11.0 ...Yes ('C:\Program Files (x86)\Microsoft Visual Studio 11.0\').
+... Looking for file 'C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\amd64\cl.exe' ...No.
+Did not find installed compiler 'Microsoft Visual C++ 2012'.
+... Looking for compiler 'Microsoft Visual C++ 2013 Professional' ...
+... Looking for registry setting 'HKLM\SOFTWARE\Microsoft\VisualStudio\SxS\VS7' 12.0 ...No.
+... Looking for registry setting 'HKCU\SOFTWARE\Microsoft\VisualStudio\SxS\VS7' 12.0 ...No.
+... Looking for registry setting 'HKLM\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VS7' 12.0 ...Yes ('C:\Program Files (x86)\Microsoft Visual Studio 12.0\').
+... Looking for file 'C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\amd64\cl.exe' ...Yes.
+... Looking for folder 'C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC' ...Yes.
+... Looking for registry setting 'HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1' InstallationFolder ...No.
+... Looking for registry setting 'HKCU\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1' InstallationFolder ...No.
+... Looking for registry setting 'HKLM\SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v8.1' InstallationFolder ...Yes ('C:\Program Files (x86)\Windows Kits\8.1\').
+... Looking for registry setting 'HKLM\SOFTWARE\Microsoft\VisualStudio\SxS\VS7' 12.0 ...No.
+... Looking for registry setting 'HKCU\SOFTWARE\Microsoft\VisualStudio\SxS\VS7' 12.0 ...No.
+... Looking for registry setting 'HKLM\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VS7' 12.0 ...Yes ('C:\Program Files (x86)\Microsoft Visual Studio 12.0\').
+... Looking for registry setting 'HKLM\SOFTWARE\Microsoft\VisualStudio\SxS\VC7' 12.0 ...No.
+... Looking for registry setting 'HKCU\SOFTWARE\Microsoft\VisualStudio\SxS\VC7' 12.0 ...No.
+... Looking for registry setting 'HKLM\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VC7' 12.0 ...Yes ('C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\').
+No supported compiler or SDK was found. For options, visit http://www.mathworks.com/support/compilers/R2015a/win64.html.
+... Looking for environment variable 'VS120COMNTOOLS' ...No.
+Did not find installed compiler 'Microsoft Visual C++ 2013 Professional'.
+... Looking for compiler 'Microsoft Windows SDK 7.1 (C++)' ...
+... Looking for registry setting 'HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.1' InstallationFolder ...No.
+Did not find installed compiler 'Microsoft Windows SDK 7.1 (C++)'.
+Error: An error occurred while shelling out to mbuild (error code = -1).
+Unable to build executable.

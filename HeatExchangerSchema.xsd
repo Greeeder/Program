@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="HeatExchanger" xmlns:ow="OpenWAM" attributeFormDefault="unqualified">
+    <xs:element name="HeatExchangers"> <!-- Intercambiadores de calor -->
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="HeatExchanger"> <!-- Intercambiador de calor -->
+                    <xs:complexType>
+						<xs:atribute name="ID_htx" type="xs:unsignedInt" /> <!-- Identificador del intercambiador de calor-->
+						<xs:atribute name="ID_htx_HydroNet" type="xs:unsignedInt" /> <!-- Identificador del intercambiador de calor en HydroNet-->
+						<xs:attribute name="Name"  type="xs:string" /> <!-- valor por defecto: "HT_x" con x = número de intercambiador -->
+                        <xs:attribute name="Fluid type">  <!-- Tipo de fluidos -->
+                            <xs:complexType>
+                                <xs:restriction base="xs:string" use="required">
+									<!-- El tipo de fluidos debe limitar las pantallas a las que el intercambiador puede ser copiado. -->
+									<!-- Ejemplo: un intercambiador GAS-GAS no puede ser copiado a una ventana de circuito hidráulico (de líquidos) -->
+                                    <!-- Si el intercambiador ha sido creado en una pantalla incorrecta, mostrar advertencia -->
+									<xs:enumeration value="GAS-GAS"/>
+                                    <xs:enumeration value="GAS-LIQUID"/>
+									<xs:enumeration value="GAS-AMBIENT"/>
+									<xs:enumeration value="LIQUID-LIQUID"/>
+									<xs:enumeration value="LIQUID-AMBIENT"/>
+                                </xs:restriction>
+								</xs:atribute name="fluid_tipe_1">
+									</xs:simpleType>
+									</xs:restriction base="xs:string" use="required">
+										<!--elegir una de las opciones-->
+										<xs:enumeration value="CURRENT CIRCUIT FLUID"/> <!-- Fluido del circuito actual-->
+										<xs:enumeration value="AMBIENT"/> <!-- Ambiente-->
+										<xs:enumeration value=""/> <!--En blanco-->
+									
+									<xs:restriction>
+								<xs:atribute>
+								</xs:atribute name="fluid_tipe_2">
+									</xs:simpleType>
+									</xs:restriction base="xs:string" use="required">
+										<!--elegir una de las opciones-->
+										<xs:enumeration value="CURRENT CIRCUIT FLUID"/> <!-- Fluido del circuito actual-->
+										<xs:enumeration value="AMBIENT"/> <!-- Ambiente-->
+										<xs:enumeration value=""/> <!--En blanco-->
+										
+									<xs:restriction>
+								<xs:atribute>
+								<!-- Cada fluido correspondera a un circuito diferente, esto deberia tenerse en cuenta al montar los circuitos-->
+                            </xs:complexType>
+                        </xs:attribute>
+						<!-- Cada intercambiador puede tener la eficiencia definida mediante una tabla o mediante las caracteristicas del itercambiador -->
+						<!-- Hay que seleccionar una de las dos opciones -->
+						<!-- Por defecto: intercambiador ideal - eficiencia = 1 -->
+						<!-- Los valores por omisión pueden ser los mismos que por defecto -->
+						<xs:element maxOccurs="1" minOccurs="0" name="Efficiency table" >
+							<xs:complexType>
+							<!-- Columnas de una tabla que contiene los valores de la eficiencia en función de los valores de NTU y Cr (adimensionales) -->
+							<!-- Si se usa este metodo para definir la eficiencia deberia ponerse en "true" la varable boolenana "flag_efficiency_table" en caso cotrario deveria estar en "false"-->
+							   <xs:attribute name="NTU"  type="xsd:double" /> <!-- 2 valores por defecto: 0 y 999999999 -->
+							   <xs:attribute name="Cr"   type="xsd:double" /> <!-- 2 valores por defecto: 0 y 1 -->
+							   <xs:attribute name="Efficiency"    type="xsd:double" /> <!-- 2 valores por defecto: 1 y 1 -->
+							</xs:complexType>
+						</xs:element>
+						<xs:element >
+							<xs:simpleType>
+                                <xs:restriction base="xs:string" use="required">
+								<!-- Elegr uno de los casos -->
+								<!-- En el casao de elegir "Shell and tube" deberia pedir un campo nuevo llamado "n_shell_passes" ( el numero de pasos por carcasa)-->
+									<xs:enumeration value="Simple co-current"/> 
+									<xs:enumeration value="Simple counter-current"/>
+									<xs:enumeration value="Shell and tube"/>
+									<xs:enumeration value="Crossed flows (simple pass, fluids not mixed)"/> 
+									<xs:enumeration value="Crossed flows (simple pass, fluids 1 mixed, fluid 2 not mixed)"/>
+									<xs:enumeration value="Crossed flows (simple pass, fluids 1 not mixed, fluid 2 mixed)"/>
+									<xs:enumeration value="Crossed flows (simple pass, fluids 1 and 2 mixed)"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:atribute name="hydraulic_resistance" type="xs:double" /> <!-- Resistencia hidraulica al flujo de fluido-->
+						<xs:atribute name="head_loss" type="xs:double" /> <!-- Perdida de carga fija -->
+						<xs:atribute name="UA" type="xs:double" /> <!-- Coeficiente general de transmision de calor -->
+					</xs:complexType>
+				</xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

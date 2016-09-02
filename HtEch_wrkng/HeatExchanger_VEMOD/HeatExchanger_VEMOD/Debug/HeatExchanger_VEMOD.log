@@ -1,0 +1,8 @@
+﻿  HeatExchanger.cpp
+c:\users\jaime\documents\& pfc-cmt\program\&htech_wrkng\heatexchanger_vemod\heatexchanger.cpp(11): warning C4101: 'count': unreferenced local variable
+c:\users\jaime\documents\& pfc-cmt\program\&htech_wrkng\heatexchanger_vemod\heatexchanger.cpp(121): warning C4101: 'prop_htxch_index': unreferenced local variable
+c:\users\jaime\documents\& pfc-cmt\program\&htech_wrkng\heatexchanger_vemod\heatexchanger.cpp(120): warning C4101: 'n_htxch': unreferenced local variable
+c:\users\jaime\documents\& pfc-cmt\program\&htech_wrkng\heatexchanger_vemod\heatexchanger.cpp(119): warning C4101: 'count': unreferenced local variable
+c:\users\jaime\documents\& pfc-cmt\program\&htech_wrkng\heatexchanger_vemod\heatexchanger.cpp(356): warning C4101: 'count': unreferenced local variable
+  HeatExchanger_VEMOD.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HtEch_wrkng\HeatExchanger_VEMOD\Debug\HeatExchanger_VEMOD.exe
+  HeatExchanger_VEMOD.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HtEch_wrkng\HeatExchanger_VEMOD\Debug\HeatExchanger_VEMOD.pdb (Full PDB)

@@ -1,0 +1,16 @@
+﻿Compilación iniciada a las 15/03/2016 17:03:54.
+     1>Proyecto "D:\JOSEP\PROGRAMAS_CMT\VEMOD\VEMOD\VEMOD.vcxproj" en el nodo 2 (Build destinos).
+     1>ClCompile:
+         D:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Clases\Constantes.cpp
+         Constantes.cpp
+       Link:
+         D:\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\JOSEP\PROGRAMAS_CMT\VEMOD\Debug\VEMOD.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\JOSEP\PROGRAMAS_CMT\VEMOD\Debug\VEMOD.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\JOSEP\PROGRAMAS_CMT\VEMOD\Debug\VEMOD.lib" /MACHINE:X86 Debug\Comun.obj
+         Debug\Constantes.obj
+         Debug\TransmisionCalor.obj
+     1>MSVCRTD.lib(crtexe.obj) : error LNK2019: símbolo externo _main sin resolver al que se hace referencia en la función ___tmainCRTStartup
+     1>D:\JOSEP\PROGRAMAS_CMT\VEMOD\Debug\VEMOD.exe : fatal error LNK1120: 1 externos sin resolver
+     1>Compilación del proyecto terminada "D:\JOSEP\PROGRAMAS_CMT\VEMOD\VEMOD\VEMOD.vcxproj" (Build destinos) -- ERROR.
+
+ERROR al compilar.
+
+Tiempo transcurrido 00:00:02.72

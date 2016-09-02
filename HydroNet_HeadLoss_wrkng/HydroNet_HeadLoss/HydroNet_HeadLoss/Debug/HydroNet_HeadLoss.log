@@ -1,0 +1,3 @@
+﻿  stdafx.cpp
+  HydroNet_HeadLoss.cpp
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_headloss_wrkng\hydronet_headloss\hydronet_headloss\hydronet_headloss.cpp(307): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?

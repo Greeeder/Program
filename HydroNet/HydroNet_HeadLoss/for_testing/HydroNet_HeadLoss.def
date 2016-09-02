@@ -1,0 +1,8 @@
+LIBRARY HydroNet_HeadLoss
+EXPORTS
+HydroNet_HeadLossInitialize
+HydroNet_HeadLossInitializeWithHandlers
+HydroNet_HeadLossTerminate
+HydroNet_HeadLossPrintStackTrace
+mlxHydroNet_HeadLoss
+

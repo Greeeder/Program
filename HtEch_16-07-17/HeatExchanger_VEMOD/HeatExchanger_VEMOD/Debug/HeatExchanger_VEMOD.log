@@ -1,0 +1,5 @@
+﻿  HeatExchanger.cpp
+c:\users\jaime\documents\& pfc-cmt\program\&htech_wrkng\heatexchanger_vemod\heatexchanger.cpp(14): warning C4101: 'N': unreferenced local variable
+c:\users\jaime\documents\& pfc-cmt\program\&htech_wrkng\heatexchanger_vemod\heatexchanger.cpp(82): warning C4101: 'block': unreferenced local variable
+  HeatExchanger_VEMOD.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HtEch_wrkng\HeatExchanger_VEMOD\Debug\HeatExchanger_VEMOD.exe
+  HeatExchanger_VEMOD.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HtEch_wrkng\HeatExchanger_VEMOD\Debug\HeatExchanger_VEMOD.pdb (Full PDB)

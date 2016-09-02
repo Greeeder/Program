@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="HydraulicNet" xmlns:ow="OpenWAM" attributeFormDefault="unqualified">
+	<xs:element name="Hydraulic_Circuits">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" name="Hydraulic_Circuit">
+                    <xs:complexType>
+						<xs:sequence>
+							<xs:attribute maxOccurs="1" minOccurs="1" name="Fluid"> <!-- Fluido que circula por el circuito -->
+							<!-- Esto podría hacer referencia a una lista de fluidos líquidos relacionada con la base de datos de propiedades de fluidos, incluyendo fluidos definidos por el usuario -->
+							   <xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="OIL"/> <!-- Aceite -->
+										<xs:enumeration value="WATER"/> <!-- Agua -->
+										<xs:enumeration value="WATER GLYCOL 10%"/> <!-- Agua glicolada al 10% -->
+										<xs:enumeration value="WATER GLYCOL 25%"/> <!-- Agua glicolada al 25% -->
+										<xs:enumeration value="WATER GLYCOL 50%"/> <!-- Agua glicolada al 50% -->
+										<xs:enumeration value="WATER GLYCOL 75%"/> <!-- Agua glicolada al 75% -->
+										<xs:enumeration value="PROPYLENE GLYCOL"/> <!-- Propilenglicol -->
+										<xs:enumeration value="ETHANOL"/> <!-- Etanol -->
+										<!-- Resto de la lista -->
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:element name="Pipes"> <!-- Tuberías -->
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" minOccurs="0" name="Pipe"> <!-- Tubería -->
+											<xs:simpleType>
+												<xs:attribute name="ID" type="xs:unsignedInt"/> <!-- Número de identificación. Lo necesito en todos los objetos para identificarlos. Se puede generar automáticamente cuando se crea el objeto, como una secuencia de números naturales. -->
+												<xs:attribute name="Diameter" type="xs:double" use="required"/> <!-- Diámetro[m] --> <!-- Valor por defecto: 0.02 -->
+												<xs:attribute name="Length" type="xs:double" use="required"/> <!-- Longitud [m] --> <!-- Valor por defecto: 0.5 -->
+												<xs:attribute name="Coefficient_Friction" type="xs:double"/> <!-- Valor por defecto: 0.02 -->
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Valves_fixed"> <!-- Válvulas de apertura fija -->
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" minOccurs="0" name="Valve_fixed"> <!-- Válvula de apertura fija -->
+											<xs:simpleType>
+												<xs:attribute name="ID" type="xs:unsignedInt"/>
+												<xs:attribute name="HeadLoss_fixed" type="xs:double"/>  <!-- Pérdida de carga fija [m.c.f.] -->
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Valves_adjustable"> <!-- Válvulas de apertura ajustable -->
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" minOccurs="0" name="Valve_adjustable"> <!-- Válvula de apertura ajustable -->
+											<xs:complexType>
+												<xs:attribute name="ID" type="xs:unsignedInt"/>
+												<xs:element name="Opening" > <!-- Grado de apertura (0 - 1) -->
+													<xs:simpleType>
+														<xs:restriction base="xs:double">
+														  <xs:minInclusive value="0"/>
+														  <xs:maxInclusive value="1"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+												<!-- Coeficientes de una correlación para obtener las pérdidas de carga en función del grado de apertura -->
+												<xs:element maxOccurs="1" minOccurs="0" name="HeadLoss_correlation" > <!-- Correlación para las pérdidas de carga en la válvula -->
+													<xs:simpleType>
+														<xs:attribute name="Coefficient_HeadLoss_Opening0" type="xs:double"/> <!-- Constante [m.c.f] --> <!-- Valor por defecto: 0 -->
+														<xs:attribute name="Coefficient_HeadLoss_Opening1" type="xs:double"/> <!-- Coef Apertura [m.c.f] --> <!-- Valor por defecto: 0 -->
+														<xs:attribute name="Coefficient_HeadLoss_Opening2" type="xs:double"/> <!-- Coef Apertura^2 [m.c.f] --> <!-- Valor por defecto: 0 -->
+														<xs:attribute name="Coefficient_HeadLoss_Opening3" type="xs:double"/> <!-- Coef Apertura^3 [m.c.f] --> <!-- Valor por defecto: 0 -->
+													</xs:simpleType>
+												</xs:element>
+												<xs:element maxOccurs="1" minOccurs="0" name="HeadLoss_table" > <!-- Tabla para la pérdida de carga en la válvula -->
+													<xs:complexType>
+													<!-- Columnas de una tabla que contiene los valores de las pérdidas de carga en función del grado de apertura (adimensionales) -->
+													   <xs:attribute name="Opening"  type="xsd:double" /> <!-- Valores del grado de apertura --> <!-- 2 valores por defecto: 0 y 1 -->
+													   <xs:attribute name="Head_Loss"    type="xsd:double" />  <!-- Valores de las pérdidas de carga [m.c.f] --> <!-- 2 valores por defecto: 0 y 0 -->
+													</xs:complexType>
+												</xs:element>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							
+							
+							
+							
+							
+							<xs:element name="Valves_thermostat"> <!-- Válvulas de termostato -->
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" minOccurs="0" name="Valve_thermostat"> <!-- Válvula de termostato -->
+											<xs:simpleType>
+												<xs:attribute name="ID" type="xs:unsignedInt"/>
+												<xs:attribute name="Coefficient_Opening_Temperature0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Opening_Temperature1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Opening_Temperature2" type="xs:double"/>
+												<xs:attribute name="Coefficient_Opening_Temperature3" type="xs:double"/>
+												<xs:attribute name="Coefficient_HeadLoss_Opening0" type="xs:double"/>
+												<xs:attribute name="Coefficient_HeadLoss_Opening1" type="xs:double"/>
+												<xs:attribute name="Coefficient_HeadLoss_Opening2" type="xs:double"/>
+												<xs:attribute name="Coefficient_HeadLoss_Opening3" type="xs:double"/>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Pumps_volumetric">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" minOccurs="0" name="Pump_volumetric">
+											<xs:simpleType>
+												<xs:attribute name="ID" type="xs:unsignedInt"/>
+												<xs:attribute name="ID_Outlet_object" type="xs:unsignedInt"/>
+												<xs:attribute name="Volume" type="xs:double"/>
+												<xs:attribute name="Speed" type="xs:double"/>
+												<xs:attribute name="Head_Maximum" type="xs:double"/>
+												<xs:attribute name="Coefficient_Flow_Speed0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Flow_Speed1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Flow_Speed2" type="xs:double"/>
+												<xs:attribute name="Coefficient_Flow_Speed3" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow0_Head0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow1_Head0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow2_Head0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow0_Head1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow0_Head2" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow1_Head1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow2_Head1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow1_Head2" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow2_Head2" type="xs:double"/>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Pumps_turbopump">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" minOccurs="0" name="Pump_turbopump">
+											<xs:simpleType>
+												<xs:attribute name="ID" type="xs:unsignedInt"/>
+												<xs:attribute name="ID_Outlet_object" type="xs:unsignedInt"/>
+												<xs:attribute name="Volume" type="xs:double"/>
+												<xs:attribute name="Speed" type="xs:double"/>
+												<xs:attribute name="Head_Maximum" type="xs:double"/>
+												<xs:attribute name="Coefficient_Head_Flow0_Speed0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Head_Flow1_Speed0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Head_Flow2_Speed0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Head_Flow0_Speed1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Head_Flow0_Speed2" type="xs:double"/>
+												<xs:attribute name="Coefficient_Head_Flow1_Speed1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Head_Flow2_Speed1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Head_Flow1_Speed2" type="xs:double"/>
+												<xs:attribute name="Coefficient_Head_Flow2_Speed2" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow0_Head0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow1_Head0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow2_Head0" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow0_Head1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow0_Head2" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow1_Head1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow2_Head1" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow1_Head2" type="xs:double"/>
+												<xs:attribute name="Coefficient_Efficiency_Flow2_Head2" type="xs:double"/>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Heat_Exchangers_HeatFixed">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" minOccurs="0" name="Heat_Exchanger_HeatFixed">
+											<xs:simpleType>
+												<xs:attribute name="ID" type="xs:unsignedInt"/>
+												<xs:attribute name="Volume" type="xs:double"/>
+												<xs:attribute name="Heat" type="xs:double"/>
+												<xs:attribute name="Hydraulic_Resistance" type="xs:double"/>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Heat_Exchangers_TemperatureOutlet">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" minOccurs="0" name="Heat_Exchanger_TemperatureOutlet">
+											<xs:simpleType>
+												<xs:attribute name="ID" type="xs:unsignedInt"/>
+												<xs:attribute name="ID_Outlet_object" type="xs:unsignedInt"/>
+												<xs:attribute name="Volume" type="xs:double"/>
+												<xs:attribute name="Temperature_Outlet" type="xs:double"/>
+												<xs:attribute name="Hydraulic_Resistance" type="xs:double"/>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

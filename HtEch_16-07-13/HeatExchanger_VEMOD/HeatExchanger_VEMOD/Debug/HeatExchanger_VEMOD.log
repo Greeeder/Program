@@ -1,0 +1,74 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Platforms\Win32\PlatformToolsets\v140_xp\Toolset.targets(36,5): warning MSB8003: Could not find WindowsSdkDir_71A variable from the registry.  TargetFrameworkVersion or PlatformToolset may be set to an invalid version number.
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(366,5): warning MSB8003: Could not find WindowsSDKDir variable from the registry.  TargetFrameworkVersion or PlatformToolset may be set to an invalid version number.
+  Source.cpp
+  HeatExchanger.cpp
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(70): error C2131: expression did not evaluate to a constant
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(70): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(70): note: see usage of 'line'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(71): error C2131: expression did not evaluate to a constant
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(71): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(71): note: see usage of 'line'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(72): error C2131: expression did not evaluate to a constant
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(72): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(72): note: see usage of 'lines'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(76): error C2665: 'std::getline': none of the 2 overloads could convert all the argument types
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(146): note: could be 'std::basic_istream<char,std::char_traits<char>> &std::getline<char,std::char_traits<char>,std::allocator<char>>(std::basic_istream<char,std::char_traits<char>> &,std::basic_string<char,std::char_traits<char>,std::allocator<char>> &,const _Elem)' [found using argument-dependent lookup]
+          with
+          [
+              _Elem=char
+          ]
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(73): note: or       'std::basic_istream<char,std::char_traits<char>> &std::getline<char,std::char_traits<char>,std::allocator<char>>(std::basic_istream<char,std::char_traits<char>> &&,std::basic_string<char,std::char_traits<char>,std::allocator<char>> &,const _Elem)' [found using argument-dependent lookup]
+          with
+          [
+              _Elem=char
+          ]
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(76): note: while trying to match the argument list '(std::ifstream, std::string [line], char)'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(78): error C2665: 'std::getline': none of the 2 overloads could convert all the argument types
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(146): note: could be 'std::basic_istream<char,std::char_traits<char>> &std::getline<char,std::char_traits<char>,std::allocator<char>>(std::basic_istream<char,std::char_traits<char>> &,std::basic_string<char,std::char_traits<char>,std::allocator<char>> &,const _Elem)' [found using argument-dependent lookup]
+          with
+          [
+              _Elem=char
+          ]
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(73): note: or       'std::basic_istream<char,std::char_traits<char>> &std::getline<char,std::char_traits<char>,std::allocator<char>>(std::basic_istream<char,std::char_traits<char>> &&,std::basic_string<char,std::char_traits<char>,std::allocator<char>> &,const _Elem)' [found using argument-dependent lookup]
+          with
+          [
+              _Elem=char
+          ]
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(78): note: while trying to match the argument list '(std::ifstream, std::string [lines], char)'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(80): error C2665: 'std::getline': none of the 2 overloads could convert all the argument types
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(146): note: could be 'std::basic_istream<char,std::char_traits<char>> &std::getline<char,std::char_traits<char>,std::allocator<char>>(std::basic_istream<char,std::char_traits<char>> &,std::basic_string<char,std::char_traits<char>,std::allocator<char>> &,const _Elem)' [found using argument-dependent lookup]
+          with
+          [
+              _Elem=char
+          ]
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(73): note: or       'std::basic_istream<char,std::char_traits<char>> &std::getline<char,std::char_traits<char>,std::allocator<char>>(std::basic_istream<char,std::char_traits<char>> &&,std::basic_string<char,std::char_traits<char>,std::allocator<char>> &,const _Elem)' [found using argument-dependent lookup]
+          with
+          [
+              _Elem=char
+          ]
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(80): note: while trying to match the argument list '(std::ifstream, std::string [line], char)'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(97): error C2665: 'std::stod': none of the 2 overloads could convert all the argument types
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(452): note: could be 'double std::stod(const std::wstring &,size_t *)'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(318): note: or       'double std::stod(const std::string &,size_t *)'
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(97): note: while trying to match the argument list '(std::string [line])'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(99): error C2665: 'std::stod': none of the 2 overloads could convert all the argument types
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(452): note: could be 'double std::stod(const std::wstring &,size_t *)'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(318): note: or       'double std::stod(const std::string &,size_t *)'
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(99): note: while trying to match the argument list '(std::string [lines])'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(101): error C2665: 'std::stod': none of the 2 overloads could convert all the argument types
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(452): note: could be 'double std::stod(const std::wstring &,size_t *)'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\string(318): note: or       'double std::stod(const std::string &,size_t *)'
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(101): note: while trying to match the argument list '(std::string [line])'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(205): error C2131: expression did not evaluate to a constant
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(205): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(205): note: see usage of 'n_rows'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(206): error C2131: expression did not evaluate to a constant
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(206): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(206): note: see usage of 'n_rows'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(207): error C2131: expression did not evaluate to a constant
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(207): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+  c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(207): note: see usage of 'n_rows'
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(233): error C3863: array type 'double [n_rows]' is not assignable
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(236): error C3863: array type 'double [n_rows]' is not assignable
+c:\users\jaime\desktop\jaime\heatexchanger_vemod\heatexchanger.cpp(242): error C3863: array type 'double [n_rows]' is not assignable
+  Generating Code...

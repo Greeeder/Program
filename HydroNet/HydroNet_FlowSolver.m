@@ -385,7 +385,7 @@ idp_mesh_branches = mesh_branches(idp_mesh);
 
 
 % Initial values for the non-linear solver
-x0 = ones(n_unknown, 1) * 0.001; % size equal to number of unknowns
+x0 = ones(n_unknown, 1) *.0001; % size equal to number of unknowns
     % flow 1 liter per second
 % x0 = zeros(n_unknown, 1); % size equal to number of unknowns
 % x0(flows_ind_aux) = 0.001; % flow 1 liter per second

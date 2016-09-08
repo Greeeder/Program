@@ -7,17 +7,20 @@
 #include <vector>
 
 
-template<typename _Scalar, int NX = Eigen::Dynamic, int NY = Eigen::Dynamic>
+template<typename _Scalar,int DATA = Eigen:Dynamic, int NX = Eigen::Dynamic, int NY = Eigen::Dynamic>
 struct Functor
 {
 	typedef _Scalar Scalar;
 	enum {
+		
 		InputsAtCompileTime = NX,
 		ValuesAtCompileTime = NY
 	};
+	typedef Eigen::Matrix <Scalar, data, 1> InputType;
 	typedef Eigen::Matrix <Scalar, InputsAtCompileTime, 1> InputType;
 	typedef Eigen::Matrix <Scalar, ValuesAtCompileTime, 1> ValueType;
 	typedef Eigen::Matrix <Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
+	
 
 	const int m_inputs, m_values;
 
@@ -31,26 +34,35 @@ struct Functor
 	//  void operator() (const InputType& x, ValueType* v, JacobianType* _j=0) const;
 };
 
-struct hybrj_functor : Functor <double>
+struct hybrj_functor : Functor <double> 
 {
-	hybrj_functor(void) : Functor <double>(3,3) {}
-
 	
+	hybrj_functor(void) : Functor <double>(3,3) {}
 
 
 	int operator()(const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const
 	{
 		double temp, temp1, temp2;
 		const int n = x.size();
-		const double A[] = { 3.0,10.0,7.0 }, B[] = { -1.0,-2.0,-1.0 }, C[] = { -.05,-1.3,2.0 };
+		/*const*/ double A[] = { 0,0,0 } /*= { 3.0, 10.0, 7.0 }*/, B[] = { 0,0,0,0,0,0,0,0,0 } /*= { -1.0,-2.0,-1.0,2.2,3.2,-5.2,-8.0,-1.2,1.0 }*/, C[] = { 0,0,0,0,0,0,0,0,0 }  /*= { -.05,-1.3,2.0,-2.0,-1.0,2.2,3.2,-5.2,0.2 }*/;
+		int count = 0;
+		
+		for (count; count < n; count++)
+			 A[count]= data [count];
+		for (count; n < count < n * 4; count++)
+			B[count - n] = data [count];
+		for (count; n * 4 < count < n * 7; count++)
+			C[count - 4 * n]= data [count] ;
 
 		assert(fvec.size() == n);
-		for (int k = 0; k < n; k++)
+		for (int k = 0,K=0; k < n; k++,K=K+3)
 		{
 			if (k < 4) {
 				temp = A[k];
-				temp1 = x[k] * B[k];
-				temp2 = x[k] * x[k] * C[k];
+				if (k <( 8 - 2)) {
+					temp1 = x[0] * B[K] + x[1]*B[K+1]+x[2]*B[K+2];
+					temp2 = x[0] * x[0] * C[K] + x[1] * x[1] * C[K+1] + x[2] * x[2] * C[K+2];
+				}
 				fvec[k] = temp + temp1 + temp2;
 			}
 			//if (k >= 4)
@@ -91,14 +103,28 @@ void tests()
 	int info;
 	std::vector <double> c;
 	Eigen::VectorXd x(n);
+	Eigen::VectorXd data(7*n);
+	double A[] = { 3.0,10.0,7.0 }, B[] = { -1.0,-2.0,-1.0,2.2,3.2,-5.2,-8.0,-1.2,1.0 }, C[] = { -.05,-1.3,2.0,-2.0,-1.0,2.2,3.2,-5.2,0.2 };
+	int count = 0;
+
 
 	/* the following starting values provide a rough fit. */
 	x.setConstant(n,0.0);
 
 
+		for (count; count < n; count++)
+			data[count] = A[count];
+		for (count; n < count < n * 4; count++)
+			data[count] = B[count - n];
+		for (count; n * 4 < count < n * 7; count++)
+			data[count] = C[count-4*n];
+
+
+
+
 
 	// do the computation
-	hybrj_functor functor;
+	hybrj_functor functor ;
 	Eigen::HybridNonLinearSolver<hybrj_functor> solver(functor);
 	solver.diag.setConstant(n, 1.);
 	solver.useExternalScaling = true;

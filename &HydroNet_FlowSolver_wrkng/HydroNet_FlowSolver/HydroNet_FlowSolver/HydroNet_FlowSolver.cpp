@@ -137,27 +137,143 @@ std::vector<double> roots(double a, double b, double c) {			//Roots a*x^2+b*x+c=
 	return r;
 }
 
+class Solver {
+	// Functor
+private:
+	std::vector<double> A, B, C, D;
+	int n;
 
-std::vector<double> NonLinearSolver(std::vector<double>_sol)
+
+
+public:
+	Solver(Eigen::VectorXd x0, Eigen::VectorXd data) {
+
+		int count = 0;
+
+		n = x0.size();
+		A.resize(n);
+		B.resize(n*n);
+		C.resize(n*n);
+		D.resize(n*n);
+
+
+		for (count; count < n; count++)
+			A[count] = data[count];
+		for (count; count < n*n + n; count++)
+			B[count - n] = data[count];
+		for (count; count < 2 * n*n + n; count++)
+			C[count - n*n - n] = data[count];
+		for (count; count < 3 * n*n + n; count++)
+			D[count - 2 * n*n - n] = data[count];
+
+	};
+
+
+	int operator()(const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const;
+	int df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const;
+	int inputs() const;// inputs is the dimension of x.
+	int values() const; // "values" is the dimension of F 
+
+};
+
+int Solver::operator()(const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const {
+
+	double temp, temp1, temp2;
+	assert(fvec.size() == n);
+	//Implementation of Y=D*X*|X|+C*X+B*X/|X|+A n-dimensional sistems
+	for (int k = 0; k < n; k++) {
+
+		temp = 0;
+		temp = A[k];
+		for (int j = 0; j<n; j++)
+			temp = temp + B[j + k * n] * x[j] / abs(x[j]);
+
+		temp1 = 0;
+		for (int j = 0; j<n; j++)
+			temp1 = temp1 + C[j + k * n] * x[j];
+
+
+		temp2 = 0;
+		for (int j = 0; j<n; j++)
+			temp2 = temp2 + D[j + k * n] * abs(x[j])*x[j];
+
+		fvec[k] = temp + temp1 + temp2;
+	}
+	return 0;
+}
+
+
+
+int Solver::df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const {
+
+	assert(fjac.rows() == n);
+	assert(fjac.cols() == n);
+	//Implementation of Y=D*X*|X|+C*X+B*X/|X|+A n-dimensional sistems Jacobian
+	for (int k = 0; k < n; k++)
+		for (int j = 0; j < n; j++) {
+
+			fjac(k, j) = 2 * D[n*k + j] * x[j] + C[n*k + j];
+		}
+	return (0);
+
+}
+int Solver::inputs() const { return n; } // inputs is the dimension of x.
+int Solver::values() const { return n; } // "values" is the number of f_i 
+
+
+
+std::vector<double> NonLinearSolver(Eigen::VectorXd _sol,std::vector<std::vector<double>> coef1_mat, std::vector<std::vector<double>> coef2_mat, std::vector<std::vector<double>> const_mat,std::vector<double> const_vec)
 {
+	/*
+	A is an independent constant vector
+	B is a vector dependent on the solution sing
+	C ia a vector containing the lineal coefficients
+	D ia a vector containing the quadratic coefficients
+	Y=D*X*|X|+C*X+B*X/|X|+A n-dimensional
+	*/
+
+	int n= _sol.size();
+	std::vector <double> sol;
 	int info;
-	std::vector<double> sol;
-	Eigen::VectorXd x(_sol.size());
-
-	
-	for (int count = 0; count<_sol.size(); count++)
-	x(count)=_sol.at(count);
+	Eigen::VectorXd data(10 * n);
+	//int count = 0;
+	std::vector<double> _data;
+	_data.resize(10 * n);
 
 
-	// do the computation
-	hybrj_functor functor;
-	Eigen::HybridNonLinearSolver<hybrj_functor> solver(functor);
-	solver.diag.setConstant(_sol.size(), 1.);
+	//The matrix an vector's coeficients are stored in a single Eigen vector
+	for (int count=0; count < n; count++) {
+		data[count] = const_vec[count];
+		for (int count1 = 0; count1 < n; count1++) {
+			data[(count + 1)*n + count1] = const_mat.at(count)[count1];
+			data[(count + 4)*n + count1] = coef1_mat.at(count).at(count1);
+			data[(count + 7)*n + count1] = coef2_mat.at(count).at(count1);
+		}
+
+
+	}
+
+	// To avoid inestabilities when the starting point is close to 0
+	for (int j = 0; j < _sol.size(); j++)
+		if (abs(_sol[j]) < 1E-9)
+			_sol[j] = _sol[j]/abs(_sol[j]*1E-9);
+
+	//Computation
+	Solver functor(_sol, data);
+	/*Eigen::LevenbergMarquardt<Solver,double> lm(functor);
+	lm.parameters.xtol = 1e-16;
+	lm.parameters.ftol = 1e-16;
+	info = lm.minimize(x);*/
+	Eigen::HybridNonLinearSolver<Solver> solver(functor);
+	solver.diag.setConstant(n, 1.);
 	solver.useExternalScaling = true;
-	info = solver.hybrj1(x);
+	info = solver.hybrj1(_sol);
 
-	for (int count=0;count<_sol.size();count++)
-	sol.push_back(x(count));
+
+	//The results are stored in the vector _results
+	sol.resize(_sol.size());
+	for (int count = 0; count < _sol.size(); count++)
+		sol.at(count) = _sol(count);
 
 	return sol;
 }
@@ -195,7 +311,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 	std::vector<bool> remain_branch;
 	int best_mesh;
 	int most_uns;
-	std::vector<double> x0;
+	Eigen::VectorXd x0;
 	std::vector<std::vector<int>> idp_mesh_branches;
 	bool flag;
 	std::vector<double> Y;
@@ -632,7 +748,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 
 
 	// Initial values for the non - linear solver
-	x0.assign(n_unknown, 0.001);
+	x0.setConstant(n_unknown, 0.0001);
 	/*x0.resize(flows.size()) ; // size equal to number of unknowns
 	for (int count = 0; count < solved.size(); count++) {
 		if (solved.at(count) == false)
@@ -707,20 +823,23 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 	// The system is complete
 
 	// Non-linear solver
-	
+	const_vec;
+	const_mat;
+	coef1_mat;
+	coef2_mat;
 
 
 	//f = @(x) coef2_mat*(x.*abs(x)) + coef1_mat*x + const_mat*(x. / abs(x)) + const_vec;
 	// oldopts = optimoptions('fsolve');
 	// opts = optimoptions(oldopts,'MaxFunEvals',1000000), 'Display','off');
-	Y = NonLinearSolver(x0); //,opts);
+	Y = NonLinearSolver(x0 , coef1_mat,  coef2_mat,  const_mat,  const_vec); //,opts);
 
 
 	// Save 
 	for (int count = 0; count < solved.size(); count++) {
-		for (int count1 = 0; count1 < Y.size()-1; count1++) {
-			if (solved.at(count) == false && unk_ind_aux.at(count1) == count)
-				flows.at(count) = Y.at(count1);
+		for (int count1 = 0; count1 < Y.size(); count1++) {
+			if (solved.at(count) == false && count== unk_ind_aux.at(count1))
+				flows.at( count) = Y.at(count1);
 		}
 	}
 	
@@ -728,8 +847,10 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 
 	// Save head in volumetric pumps 
 	for (int count = 0; count < volum_pump.size(); count++) {
-		if (volum_pump.at(count) == true && volpump_ind_aux.at(count) != 1)
-			head_vol_pump.at(count) = Y.at(count) * 10000;
+		for (int count1 = 0; count1 < Y.size(); count1++) {
+			if (volum_pump.at(count) == true && volpump_ind_aux.at(count1) == true)
+				head_vol_pump.at(count) = Y.at(count1) * 10000;
+		}
 	}
 
 	///head_vol_pump(volum_pump) = Y(volpump_ind_aux) * 10000;
@@ -793,7 +914,7 @@ int main()
 
 	hydr_resist1 = { 0,0,0,0,0,0 };
 
-	hydr_resist2 = {2.1209E6,5.1642E5,0,0,0,5.1642E5};
+	hydr_resist2 = { 2.120926015593668E06,1.016417857504270E06,0,50000,100000,5.1642E5};
 
 	n_tanks = 0;
 
@@ -890,7 +1011,7 @@ int main()
 
 	branches.at(4).objects.at(1).Class = "heat_exch_fix";
 	branches.at(4).objects.at(1).ID = 14;
-	branches.at(4).objects.at(1).name = "Head_cyl1";
+	branches.at(4).objects.at(1).name = "Head_cyl2";
 	branches.at(4).objects.at(1).volume = 5E-4;
 	branches.at(4).objects.at(1).inlet_object = 5;
 	branches.at(4).objects.at(1).outlet_oject = 6;

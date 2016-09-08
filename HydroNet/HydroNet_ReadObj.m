@@ -248,7 +248,7 @@ for count = 1 : sum(aux_pos)
     objects.volume(aux_ind(count)) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % volume
     heat_exch_fix(count, 2) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % heat
     heat_exch_fix(count, 3) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % hydr. resistance
-    heat_exch_fix(count, 3) = 0; % inlet temperature % initialization of instantaneous variable
+    heat_exch_fix(count, 4) = -999; % inlet temperature % initialization of instantaneous variable
 end
 
 
@@ -274,8 +274,8 @@ for count = 1 : sum(aux_pos)
     heat_exch_Tout(count, 2) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %d %*'); % outlet object
     objects.volume(aux_ind(count)) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % volume
     heat_exch_Tout(count, 3) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % hydr. resistance
-    heat_exch_Tout(count, 4) = 0; % outlet temperature % initialization of instantaneous variable
-    heat_exch_Tout(count, 5) = 0; % inlet temperature % initialization of instantaneous variable
+    heat_exch_Tout(count, 4) = -999; % outlet temperature % initialization of instantaneous variable
+    heat_exch_Tout(count, 5) = -999; % inlet temperature % initialization of instantaneous variable
 end
 
 

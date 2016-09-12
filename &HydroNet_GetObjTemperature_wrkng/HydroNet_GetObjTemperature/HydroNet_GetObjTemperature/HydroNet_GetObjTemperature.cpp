@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <vector>
 
-using namespace std;
+
 
 double HydroNet_GetObjTemperature(double obj_pos,std::vector<double> branch_temp_pos,std::vector<double> branch_temperature) {
 	

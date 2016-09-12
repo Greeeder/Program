@@ -140,8 +140,30 @@ struct strBranches
 void HydroNet_InsertVolume() {
 }
 
+double vec_abs_sum(std::vector<double> in) {
+	double sum = 0;
+	for (int i = 0; i < in.size(); i++)
+		sum = sum + abs(in.at(i));
+	return sum;
+}
+double vec_sum_elements(std::vector<double> in,std::vector<int> elem) {
+	double sum = 0;
+	for (int i = 0; i < elem.size(); i++)
+		sum = sum + in.at(elem.at(i));
+	return sum;
+}
 
-void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branches, std::vector<double> obj_inlet_pos, std::vector<double> obj_outlet_pos, std::vector<strHeat_exch_Tout> heat_exch_Tout, std::vector<strHeat_exch_fix>heat_exch_fix, std::vector<int> nodes_id, std::vector<std::vector<int>>branches_id, std::vector<std::vector<int>> node_branches, int n_nodes, int n_branch, std::vector<double> branch_volume, std::vector<std::vector<int>>branch_temp_pos, std::vector<std::vector<double>>branch_temperature, std::vector<std::vector<int>>branch_htx_Tout, std::vector<std::vector<int>>branch_htx_fix, std::vector<double> flows, double dt) {
+double density(/*std::string fluid_type, double temperature*/)
+{
+	// dummy fuction to be ignored when the model is integrated in VEMOD
+
+	return 1000;	// for tests: water [Kg/m3]
+}
+
+
+
+
+void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branches, std::vector<double> obj_inlet_pos, std::vector<double> obj_outlet_pos, std::vector<strHeat_exch_Tout> heat_exch_Tout, std::vector<strHeat_exch_fix>heat_exch_fix, std::vector<int> nodes_id, std::vector<std::vector<int>>branches_id, std::vector<std::vector<int>> node_branches, int n_nodes, int n_branch, std::vector<double> branch_volume, std::vector<std::vector<double>>branch_temp_pos, std::vector<std::vector<double>>branch_temperature, std::vector<std::vector<int>>branch_htx_Tout, std::vector<std::vector<int>>branch_htx_fix, std::vector<double> flows, double dt) {
 
 	// Finds positions where temperature changes and temperatures in those ranges.
 	// Moves positions and temperatures according to flows and, simultaneously,
@@ -149,11 +171,15 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 	// in every branch as well as temperatures for the inlet of heat exchangers.
 	// Merges ranges (volumes) and its temperatures if there are too many of them in a branch.
 
-	int max_divisions, position_count, position, overflow_temp_volpos_aux, overflow_temperature_aux;
-	std::vector<std::vector<double>> new_temp;
-	std::vector<std::vector<int>> new_pos;
-	std::vector<double> overflow, overflow_temperature;
-	double delta_pos,start_pos,end_pos,value, temp_action;
+	int max_divisions, position_count, position, node_count, end_node_ind,start_node_ind ;
+	std::vector<std::vector<double>>new_pos, new_temp;
+	std::vector<std::vector<int>>  node_inlet_branches, node_outlet_branches;
+	std::vector<double> overflow, overflow_temperature, overflow_temp_volpos_aux, overflow_temperature_aux;
+	double delta_pos,start_pos,end_pos,value, temp_action,sum_aux, temp_aux, flow_sum, extra_div, pos_aux;
+	bool flows_flag = false;
+	std::vector<bool>flag_inlet, to_remove;
+	std::vector<double> node_volume_in, node_mass, node_temperature, volume_share, new_pos_aux, aux_vec;
+	std::vector<int>branch_ind_order_aux;
 
 
 
@@ -178,7 +204,7 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 	// Branches without volume
 	for (int count_branch = 0; count_branch < branch_volume.size(); count_branch++) {//count_branch = transpose(find(branch_volume == 0))
 		if (branch_volume.at(count_branch) == 0) {
-			new_pos.at(count_branch) = [0, 100];
+			new_pos.at(count_branch).insert(new_pos.at(count_branch).begin(), 0);
 			new_temp.at(count_branch) = branch_temperature.at(count_branch);
 		}
 	}
@@ -248,8 +274,9 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 		}
 		// New position is in another branch OR there are no more positions in the branch
 		// Closes branch
-		new_pos.at( count_branch ) = [0, new_pos.at( count_branch ), 100]; // add vector start and end
-		new_temp.at( count_branch ) = [new_temp.at( count_branch ), branch_temperature.at( count_branch ).at(position_count - 1)];
+		new_pos.at(count_branch).insert(new_pos.at(count_branch).begin(),0)   ; // add vector start 
+		new_pos.at(count_branch).push_back(100); // add vector end
+		new_temp.at( count_branch ).push_back( branch_temperature.at( count_branch ).at(position_count - 1));
 		// add new temperature at the end of the vector
 
 
@@ -262,15 +289,16 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 
 			// Makes a new pair of vectors like branch_temp_pos and branch_temperature
 			// for the volume that goes out of the branch
-			overflow_temp_volpos_aux = 100; // initialization: branch end
+			overflow_temp_volpos_aux = { 100 }; // initialization: branch end
 				// position specified as \// of the branch volume
-			overflow_temperature_aux = [];
+			overflow_temperature_aux ;
 
-			for position_count = position_count : numel(branch_temp_pos{ count_branch }) {
+			for (int count=0; count<branch_temp_pos.size();count++) 
+				if (position_count==branch_temp_pos.at(count).size()) {
 
-				overflow_temp_volpos_aux = [overflow_temp_volpos_aux, branch_temp_pos{ count_branch }(position_count)+delta_pos];
+				overflow_temp_volpos_aux.push_back( branch_temp_pos.at(count ).at(position_count)+delta_pos);
 				// position specified as \// of the branch volume (> 100%)
-				overflow_temperature_aux = [overflow_temperature_aux, branch_temperature{ count_branch }(position_count - 1)];
+				overflow_temperature_aux.push_back(branch_temperature.at(count).at(position_count - 1));
 			}
 		}
 
@@ -283,24 +311,25 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 		// Second step to find the temperature of the buffer volume
 
 		// Heat exchanger of type T_out
-		for count_obj_htx = branch_htx_Tout{ count_branch } {// loop starting from the closest exchanger to the branch's end
+		for (int count = 0, count_obj_htx,ind_aux; count < branch_htx_Tout.at(count_branch).size(); count++) {// loop starting from the closest exchanger to the branch's end
+			count_obj_htx = branch_htx_Tout.at(count_branch).at(count);
 
-			ind_aux = heat_exch_Tout.obj_index(count_obj_htx);
+			ind_aux = heat_exch_Tout.at(count_obj_htx).heat_exch_Tout;
 			// index of the heat exchanger in the table objects
 
 			temp_action = 2; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
-			value = heat_exch_Tout.T_out(count_obj_htx); // new temperature
+			value = heat_exch_Tout.at(count_obj_htx).T_out; // new temperature
 
-			start_pos = obj_outlet_pos{ ind_aux }; // object's outlet position is the start position
+			start_pos = obj_outlet_pos.at(ind_aux ); // object's outlet position is the start position
 			end_pos = start_pos + delta_pos;
 
-			if end_pos > 100{
+			if (end_pos > 100){
 				start_pos = 100;
 
-				 HydroNet_InsertVolume(overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value);
+				 HydroNet_InsertVolume(/*overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value*/);
 
 				// For the volume inside the branch
-				start_pos = obj_outlet_pos{ ind_aux }; // object's outlet position is the start position
+				start_pos = obj_outlet_pos.at(ind_aux ); // object's outlet position is the start position
 				end_pos = 100;
 			}
 
@@ -308,36 +337,34 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 		}
 
 		// Heat exchanger of type fixed heat
-		for count_obj_htx = branch_htx_fix{ count_branch }{ // loop starting from the closest exchanger to the branch's end
-
-			ind_aux = heat_exch_fix.obj_index(count_obj_htx);
+		for (int count = 0, count_obj_htx,ind_aux; count < branch_htx_fix.at(count_branch).size(); count++) { // loop starting from the closest exchanger to the branch's end
+			count_obj_htx = branch_htx_fix.at(count_branch).at(count);
+			ind_aux = heat_exch_fix.at(count_obj_htx).heat_exch_fix;
 			// index of the heat exchanger in the table objects
 
 			temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
-			value = heat_exch_fix.heat(count_obj_htx);
+			value = heat_exch_fix.at(count_obj_htx).heat;
 
-			start_pos = obj_outlet_pos{ ind_aux }; // object's outlet position is the start position
+			start_pos = obj_outlet_pos.at(ind_aux); // object's outlet position is the start position
 			end_pos = start_pos + delta_pos;
 
-			if end_pos > 100{
+			if (end_pos > 100){
 
-				value = heat_exch_fix.heat(count_obj_htx) * (end_pos - 100) / (end_pos - start_pos);
+				value = heat_exch_fix.at(count_obj_htx).heat * (end_pos - 100) / (end_pos - start_pos);
 				// heat to add averaged for the volume that goes out of the branch
 
 				start_pos = 100;
 
-				[overflow_temp_volpos_aux, overflow_temperature_aux] = HydroNet_InsertVolume(overflow_temp_volpos_aux, ...
-					overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch));
+				HydroNet_InsertVolume(/*overflow_temp_volpos_aux,	overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch)*/);
 
 				// For the volume inside the branch
-				start_pos = obj_outlet_pos{ ind_aux }; // object's outlet position is the start position
+				start_pos = obj_outlet_pos.at(ind_aux); // object's outlet position is the start position
 				end_pos = 100;
-				value = heat_exch_fix.heat(count_obj_htx) * (100 - start_pos) / (end_pos - start_pos);
+				value = heat_exch_fix.at(count_obj_htx).heat * (100 - start_pos) / (end_pos - start_pos);
 				// heat to add averaged for the volume that stays inside the branch
 			}
 
-			[new_pos{ count_branch }, new_temp{ count_branch }] = HydroNet_InsertVolume(new_pos{ count_branch }, ...
-				new_temp{ count_branch }, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch));
+			HydroNet_InsertVolume(/*new_pos{ count_branch }, new_temp{ count_branch }, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch)*/);
 		}
 
 
@@ -346,189 +373,251 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 		// Final averaging of temperatures in the buffer volume
 
 		start_pos = 100;
-		end_pos = overflow_temp_volpos_aux(end);
+		end_pos = overflow_temp_volpos_aux.at(overflow_temp_volpos_aux.size());
 		temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
 
-		[~, overflow_temperature(count_branch)] = HydroNet_InsertVolume...
-			(overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type);
+		HydroNet_InsertVolume(/*overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type*/);
 		}
-	}
+	
 
-/*
+
 
 	//// SEPARES BRANCHES AT THE INLET AND OUTLET OF EVERY NODE
 	// Separates branches that are inlets to nodes and those that are outlets to nodes from node_branches
 	// All branches should start and end at a node!!
+	for (int count = 0; count < flows.size(); count++)
+		if (flows.at(count) > 0)
+			flows_flag = true;
 
-	if any(flows > 0) // if there is no movement in the branch, there is no need for this
+	if (flows_flag == true) { // if there is no movement in the branch, there is no need for this
 
 		node_inlet_branches = node_branches;
 		node_outlet_branches = node_branches;
 		//node_volume_out = zeros(n_nodes, 1);
 			// stores the sum of all volumes leaving every node to check if outlet branches are overflowed
 			// no used because, later, volume_share is more precise
-		for node_count = 1 : n_nodes // node loop
-			flag_inlet = false(numel(node_branches{node_count}), 1); // marks inlet branches to this node
+		node_count = 0;
+		for (int count; node_count < n_nodes; node_count++) { // node loop
+			flag_inlet.assign(false, node_branches.at(node_count).size()); // marks inlet branches to this node
 			count = 0; // counter of branches in every node
-			for count_branch = node_branches{node_count} // alternative: branch_count = 1 : numel(node_branches{node_count})
+			for (int count1 = 0, count_branch; count1 < node_branches.at(node_count).size(); count1++) {// alternative: branch_count = 1 : numel(node_branches{node_count})
+
+				count_branch = node_branches.at(node_count).at(count1);
 				count = count + 1;
-				if branches_ind{count_branch}(end) == nodes_ind(node_count)
+				if (branches_id.at(count_branch).at(branches_id.at(count_branch).size()) == nodes_id.at(node_count))
 					// flow goes into the node from the branch: it is an inlet branch to the node
-					flag_inlet(count) = true; // mark branch as inlet to node
+					flag_inlet.at(count) = true; // mark branch as inlet to node
 		//         else // flow goes into the branch from the node: it is an outlet branch from the node
 		//             node_volume_out(node_count) = node_volume_out(node_count) + branch_volume(branch_count);
-				end
-			end
+			}
+
 			// Separates inlet and outlet branches to each node
-			node_inlet_branches{node_count} = node_inlet_branches{node_count}(flag_inlet);
-			node_outlet_branches{node_count} = node_outlet_branches{node_count}(not(flag_inlet));
-		end
-	end
+			for (int aux = 0; aux < node_inlet_branches.size(); aux++)
+				if (flag_inlet.at(aux) == true)
+					node_inlet_branches.at(node_count).at(aux) = node_inlet_branches.at(node_count).at(aux);
+				else
+					node_inlet_branches.at(node_count).erase(node_inlet_branches.at(node_count).begin()+aux);
+			for (int aux=0;aux<node_outlet_branches.size();aux++)
+			if (flag_inlet.at(aux) == false)
+				node_outlet_branches.at(node_count).at(aux) = node_outlet_branches.at(node_count).at(aux);
+			else
+				node_outlet_branches.at(node_count).erase(node_outlet_branches.at(node_count).begin() + aux);
+		}
+	}
 
 
 	//// MANAGES OVERFLOWED VOLUMES
 	// All branches should start and end at a node!!
 	// The number of branches without volume must be minimized!!
 
-	while any(overflow ~= 0) // while there are overflows
+	while (vec_abs_sum(overflow) != 0) { // while there are overflows
 
 		// Makes an enthalpy balance of all volumes mixing in every node
-		node_volume_in = zeros(n_nodes, 1); // stores the sum of all volumes mixing in every node
-		node_mass = zeros(n_nodes, 1); // temporary vector to store mass in every node
-		node_temperature = zeros(n_nodes, 1); // stores temperatures in every node after mixing
+		node_volume_in.assign(n_nodes, 0); // stores the sum of all volumes mixing in every node
+		node_mass.assign(n_nodes, 0); // temporary vector to store mass in every node
+		node_temperature.assign(n_nodes, 0); // stores temperatures in every node after mixing
 
 		// Volume and mass in nodes
-		for count_branch = transpose(find(overflow > 0)) // 1 : n_branch // branch loop
+		for (int count = 0, count_branch; count < overflow.size(); count++) { // 1 : n_branch // branch loop
+			if (overflow.at(count) > 0)
+				count_branch = count;
 			// do not consider branches that do not have overflows (first iteration: do not considerer nodes without volume)
 			// branch_count = 1 : n_branch would be valid too (overflow = 0 does not add volume or mass)
-			end_node_ind = find(nodes_ind == branches_ind{count_branch}(end)); // index of the node at the end of the branch
-			node_volume_in(end_node_ind) = node_volume_in(end_node_ind)  + overflow(count_branch);
-			node_mass(end_node_ind) = node_mass(end_node_ind) + ...
-				density(fluid_type, overflow_temperature(count_branch)) * overflow(count_branch);
-		end
+			for (int aux = 0; aux < branches_id.at(count_branch).size(); aux++)
+				if (nodes_id.at(aux) == branches_id.at(count_branch).at(branches_id.at(count_branch).size()))
+					end_node_ind = aux; // index of the node at the end of the branch
+
+			node_volume_in.at(end_node_ind) = node_volume_in.at(end_node_ind) + overflow.at(count_branch);
+			node_mass.at(end_node_ind) = node_mass.at(end_node_ind) + density(/*fluid_type, overflow_temperature.at(count_branch)*/) * overflow.at(count_branch);
+		}
 
 		// Temperature in nodes, provisional
 		// Processes nodes that have overflow buffer volumes > 0
-		for count_node = transpose(find(node_mass > 0)) // to avoid dividing by zero
-			for count_branch = node_inlet_branches{count_node}
-				end_node_ind = find(nodes_ind == branches_ind{count_branch}(end)); // index of the node at the end of the branch
-				node_temperature(end_node_ind) = node_temperature(end_node_ind) + ...
-					overflow_temperature(count_branch) * density(fluid_type, overflow_temperature(count_branch)) * ...
-					overflow(count_branch) / node_mass(end_node_ind);
-					// T branch to node * branch mass to node / total mass to node
-			end
-		end
+
+		for (int count = 0, count_node; count < node_mass.size(); count++) { // to avoid dividing by zero
+			if (node_mass.at(count) > 0)
+				count_node = count;
+			for (int count1 = 0, count_branch; count1 < node_inlet_branches.at(count_node).size(); count1++) {
+				count_branch = node_inlet_branches.at(count_node).at(count1);
+				for (int aux = 0; aux < branches_id.at(count_branch).size(); aux++)
+					if (nodes_id.at(aux) == branches_id.at(count_branch).at(branches_id.at(count_branch).size()))
+						end_node_ind = aux; // index of the node at the end of the branch
+				node_temperature.at(end_node_ind) = node_temperature.at(end_node_ind) + overflow_temperature.at(count_branch) * density(/*fluid_type, overflow_temperature.at(count_branch)*/) *overflow.at(count_branch) / node_mass.at(end_node_ind);
+				// T branch to node * branch mass to node / total mass to node
+			}
+		}
 
 		// Control goes to buffer volumes in the nodes node_volume_in
-		overflow(:) = 0;
-		overflow_temperature(:) = 0;
+		for (int count = 0; count < overflow.size(); count++) {
+			overflow.at(count) = 0;
+			overflow_temperature.at(count) = 0;
+		}
 
 
 		// Passes buffer volumes that are at the inlet node of branches with
 		// volume = 0 to the end node
 
 		sum_aux = 0; // sum of volumes at the start of branches without volume
-		for count_branch = transpose(find((branch_volume == 0) .* (flows > 0)));
-			// loop of branches without volume but with flow movement
-			start_node_ind = find(nodes_ind == branches_ind{count_branch}(1));
-			sum_aux = sum_aux + node_volume_in(start_node_ind);
-		end
+		for (int count = 0, count_branch; count < flows.size(); count++) {
+			if ((branch_volume.at(count) == 0) && (flows.at(count) > 0)) {
+				count_branch = count;
+				// loop of branches without volume but with flow movement
 
-		while sum_aux > 0
+				for (int aux = 0; aux < nodes_id.size(); aux++)
+					if ((nodes_id.at(aux) == branches_id.at(count_branch).at(0)))
+						start_node_ind = nodes_id.at(aux);
+				sum_aux = sum_aux + node_volume_in.at(start_node_ind);
+			}
+		}
+
+		while (sum_aux > 0) {
 			// there are buffer volumes at the start of branches without volume; they must be past through
 
 			// Priority: the node at the start of the branch has no inlet branches
 			// without volume (they also would get passed a volume from behind)
-			branch_ind_order_aux = find((branch_volume == 0) .* (flows > 0)); // branches without volume but with flow movement
-			for count_branch = transpose(find((branch_volume == 0) .* (flows > 0)))
-				start_node_ind = find(nodes_ind == branches_ind{count_branch}(1)); // index of the node at the start of the branch
-				if any(branch_volume(node_inlet_branches{start_node_ind}) == 0)
-					// any of the inlet branches to the start node has no volume
-					branch_ind_order_aux(branch_ind_order_aux == count_branch) = []; // remove the branch
-					branch_ind_order_aux = [branch_ind_order_aux; count_branch]; // put the branch at the bottom of the list
-				end
-			end
+
+			for (int count = 0, count_branch; count < flows.size(); count++)
+				if ((branch_volume.at(count) == 0) && (flows.at(count) > 0))
+					branch_ind_order_aux.push_back(count); // branches without volume but with flow movement
+
+			for (int count = 0, count_branch; count < flows.size(); count++) {
+				if ((branch_volume.at(count) == 0) && (flows.at(count) > 0))
+					count_branch = count;
+				for (int aux = 0; aux < nodes_id.size(); aux++)
+					if ((nodes_id.at(aux) == branches_id.at(count_branch).at(0)))
+						start_node_ind = nodes_id.at(aux);
+				for (int aux = 0; aux < node_inlet_branches.at(start_node_ind).size(); aux++)
+					if (branch_volume.at(node_inlet_branches.at(start_node_ind).at(aux)) == 0) {
+						// any of the inlet branches to the start node has no volume
+						for (int count1 = 0; count < branch_ind_order_aux.size(); count1++) {
+							if (branch_ind_order_aux.at(count1) == count_branch) {
+								branch_ind_order_aux.erase(branch_ind_order_aux.begin() + count1); // remove the branch
+								branch_ind_order_aux.push_back(count_branch); // put the branch at the bottom of the list
+							}
+						}
+					}
+			}
 
 			// Moves volumes according to priority
-			for count_branch = transpose(branch_ind_order_aux)
-				start_node_ind = find(nodes_ind == branches_ind{count_branch}(1)); // index of the node at the start of the branch
-				end_node_ind = find(nodes_ind == branches_ind{count_branch}(end)); // index of the node at the end of the branch
+			for (int count = 0, count_branch; count < branch_ind_order_aux.size(); count++) {
+				count_branch = branch_ind_order_aux.at(count);
+				for (int aux = 0; aux < nodes_id.size(); aux++)
+					if ((nodes_id.at(aux) == branches_id.at(count_branch).at(0)))
+						start_node_ind = nodes_id.at(aux);// index of the node at the start of the branch
+				for (int aux = 0; aux < branches_id.at(count_branch).size(); aux++)
+					if (nodes_id.at(aux) == branches_id.at(count_branch).at(branches_id.at(count_branch).size()))
+						end_node_ind = aux; // index of the node at the end of the branch
 
-				node_volume_in(end_node_ind) = node_volume_in(end_node_ind) + node_volume_in(start_node_ind);
-				temp_aux = (node_temperature(end_node_ind) * node_mass(end_node_ind) + ...
-					 node_temperature(start_node_ind) * node_mass(start_node_ind)) / (node_mass(end_node_ind) + node_mass(start_node_ind));
-					// balance between volume already present and incoming volume
-				node_temperature(end_node_ind) = temp_aux;
-				node_mass(end_node_ind) = node_mass(end_node_ind) + node_mass(start_node_ind);
-				node_volume_in(start_node_ind) = 0;
-				node_mass(start_node_ind) = 0;
-				node_temperature(start_node_ind) = 0;
-				new_temp{count_branch} = temp_aux; // assigns temperature to the branch
-			end
+				node_volume_in.at(end_node_ind) = node_volume_in.at(end_node_ind) + node_volume_in.at(start_node_ind);
+				temp_aux = (node_temperature.at(end_node_ind) * node_mass.at(end_node_ind) + node_temperature.at(start_node_ind) * node_mass.at(start_node_ind)) / (node_mass.at(end_node_ind) + node_mass.at(start_node_ind));
+				// balance between volume already present and incoming volume
+				node_temperature.at(end_node_ind) = temp_aux;
+				node_mass.at(end_node_ind) = node_mass.at(end_node_ind) + node_mass.at(start_node_ind);
+				node_volume_in.at(start_node_ind) = 0;
+				node_mass.at(start_node_ind) = 0;
+				node_temperature.at(start_node_ind) = 0;
+				new_temp.at(count_branch).push_back(temp_aux); // assigns temperature to the branch
+			}
 
 			sum_aux = 0; // sum of volumes at the start of branches without volume
-			for count_branch = transpose(find((branch_volume == 0) .* (flows > 0)))
+			for (int count = 0, count_branch; count < flows.size(); count++) {
+				if ((branch_volume.at(count) == 0) && (flows.at(count) > 0))
+					count_branch = count;
 				// loop of branches without volume but with flow movement
-				start_node_ind = find(nodes_ind == branches_ind{count_branch}(1)); // index of the node at the start of the branch
-				sum_aux = sum_aux + node_volume_in(start_node_ind);
-			end
-		end
+				for (int aux = 0; aux < nodes_id.size(); aux++)
+					if ((nodes_id.at(aux) == branches_id.at(count_branch).at(0)))
+						start_node_ind = nodes_id.at(aux); // index of the node at the start of the branch
+				sum_aux = sum_aux + node_volume_in.at(start_node_ind);
+			}
+		}
+
 
 
 		// Distributes volume among branches
-		for node_count = transpose(find(node_volume_in > 0)) // loop of nodes that have a buffer volume
-			flow_sum = sum(flows(node_outlet_branches{node_count})); // sum of flows leaving the node
-			volume_share = flows(node_outlet_branches{node_count}) / flow_sum .* node_volume_in(node_count);
+		for (int count = 0; count < node_volume_in.size(); count++)
+			if (node_volume_in.at(count) > 0) { // loop of nodes that have a buffer volume
+				node_count = count;
+
+				flow_sum = vec_sum_elements(flows, node_outlet_branches.at(node_count)); // sum of flows leaving the node
+				for (int aux = 0; aux < node_outlet_branches.at(node_count).size(); aux++)
+					volume_share.at(aux) = flows.at(node_outlet_branches.at(node_count).at(aux)) / flow_sum*node_volume_in.at(node_count);
 				// volume that goes to every branch that is an outlet to the node (proportional to flow)
-			for count_branch = 1 : numel(node_outlet_branches{node_count}) // loop of branches that are outlets to the node
-				branch_aux = node_outlet_branches{node_count}(count_branch); // branch index
-				if volume_share(count_branch) > 0 // processes only branches where volume actually goes in
-					if volume_share(count_branch) <= branch_volume(branch_aux)
-						// volume in the branch is bigger than incoming volume
-						// also avoids dividing by zero
+				for (int count_branch = 0, branch_aux; count_branch < node_outlet_branches.at(node_count).size(); count_branch++) { // loop of branches that are outlets to the node
+					branch_aux = node_outlet_branches.at(node_count).at(count_branch); // branch index
+					if (volume_share.at(count_branch) > 0) {// processes only branches where volume actually goes in
+						if (volume_share.at(count_branch) <= branch_volume.at(branch_aux)) {
+							// volume in the branch is bigger than incoming volume
+							// also avoids dividing by zero
 
-						// Adds position and temperature at the beginning
-						new_pos{branch_aux} = [(volume_share(count_branch) / branch_volume(branch_aux) * 100), new_pos{branch_aux}];
-						new_temp{branch_aux} = [node_temperature(node_count), new_temp{branch_aux}];
+							// Adds position and temperature at the beginning
+							new_pos.at(branch_aux).insert(new_pos.at(branch_aux).begin(), (volume_share.at(count_branch) / branch_volume.at(branch_aux) * 100));
+							new_temp.at(branch_aux).insert(new_pos.at(branch_aux).begin(), node_temperature.at(node_count));
 
-						// Removes positions lower than or equal to the new one
-						to_remove = false(numel(new_pos{branch_aux}), 1);
-						for pos_aux = 2 : numel(new_pos{branch_aux})
-							if new_pos{branch_aux}(pos_aux) <= new_pos{branch_aux}(1)
-								to_remove(pos_aux) = true;
-							end
-						end
-						new_pos{branch_aux} = new_pos{branch_aux}(not(to_remove));
+							// Removes positions lower than or equal to the new one
+							to_remove.assign(false, new_pos.at(branch_aux).size());
+							for (int pos_aux = 1; pos_aux < new_pos.at(branch_aux).size(); pos_aux++) {
+								if (new_pos.at(branch_aux).at(pos_aux) <= new_pos.at(branch_aux).at(0)) {
+									to_remove.at(pos_aux) = true;
+								}
+							}
+							for (int aux = 0; aux < to_remove.size(); aux++)
+								if (to_remove.at(aux) == false)
+									new_pos.at(branch_aux) = new_pos.at(branch_aux);
 
-						// Does not remove temperature that is after the last position to remove
-						for count = numel(to_remove) : -1 : 1
-							if to_remove(count)
-								to_remove(count) = false;
-								break;
-							end
-						end
-						to_remove = to_remove(1:(end-1));
-						new_temp{branch_aux} = new_temp{branch_aux}(not(to_remove));
+							// Does not remove temperature that is after the last position to remove
+							for (int count1 = 0; count1 < to_remove.size(); count1++) /*: -1 : 1*/ {
+								if (to_remove.at(count) == true) {
+									to_remove.at(count) = false;
+									break;
+								}
+							}
+							to_remove.erase(to_remove.begin() + to_remove.size());
+							for (int aux = 0; aux < to_remove.size(); aux++)
+								if (to_remove.at(aux) == false)
+									new_temp.at(branch_aux) = new_temp.at(branch_aux);
 
-						// Adds position 0 at the beginning
-						new_pos{branch_aux} = [0, new_pos{branch_aux}];
+							// Adds position 0 at the beginning
+							new_pos.at(branch_aux).insert(new_pos.at(branch_aux).begin(), 0);
+						}
 
-					else // volume in the branch is smaller than incoming volume
+						else { // volume in the branch is smaller than incoming volume
 
-						// Fills branch
-						new_pos{branch_aux} = [0, 100];
-						new_temp{branch_aux} = node_temperature(node_count);
+							// Fills branch
+							new_pos.at(branch_aux) = { 0, 100 };
+							new_temp.at(branch_aux).at(0) = node_temperature.at(node_count);
 
-						// Stores the excess volume
-						overflow(branch_aux) = volume_share(count_branch) - branch_volume(branch_aux);
-						overflow_temperature(branch_aux) = node_temperature(node_count);
-					end
-				end
-			end
-		end
-		node_volume_in(:) = 0; // just in case it is used after the while loop
-			// control passes to overflow in branches
-	end
+							// Stores the excess volume
+							overflow.at(branch_aux) = volume_share.at(count_branch) - branch_volume.at(branch_aux);
+							overflow_temperature.at(branch_aux) = node_temperature.at(node_count);
+						}
+					}
+				}
+			}
+
+		for (int count = 0; count < node_volume_in.size(); count++)
+			node_volume_in.at(count) = 0; // just in case it is used after the while loop
+				// control passes to overflow in branches
+	}
 
 
 
@@ -536,31 +625,30 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 	//// MERGES VOLUMES INSIDE A BRANCH
 	// If there are more volumes than the value specified in max_divisions
 
-	for count_branch = 1 : n_branch
-		extra_div = (numel(new_pos{count_branch}) - 1) - max_divisions; // number of divisions over max_divisions
-		while extra_div > 0
-			new_pos_aux = new_pos{count_branch};
+	for (int count_branch = 0; count_branch < n_branch; count_branch++) {
+		extra_div = (new_pos.at(count_branch).size() - 1) - max_divisions; // number of divisions over max_divisions
+		while (extra_div > 0) {
+			new_pos_aux = new_pos.at(count_branch);
 
 			// Finds smaller combination of adjacent volumes
-			pos_aux = min(new_pos_aux(3:end) - new_pos_aux(1:end-2));
+			for (int aux = 0; aux < new_pos.size() - 3; aux++)
+				aux_vec.push_back(new_pos_aux.at(3 + aux) - new_pos_aux.at(aux));
+			pos_aux = std::min_element(aux_vec.at(0), aux_vec.at(aux_vec.size()));
 
 			// Obtains temperature by means of an enthalpy balance
-			temp_aux = (new_temp(pos_aux) * density(fluid_type, new_temp(pos_aux)) * (new_pos(pos_aux + 1) - new_pos(pos_aux)) + ...
-				new_temp(pos_aux + 1) * density(fluid_type, new_temp(pos_aux + 1)) * (new_pos(pos_aux + 2) - new_pos(pos_aux + 1))) / ...
-				(density(fluid_type, new_temp(pos_aux)) * (new_pos_aux(pos_aux + 1) - new_pos_aux(pos_aux)) + ...
-				density(fluid_type, new_temp(pos_aux + 1)) * (new_pos_aux(pos_aux + 2) - new_pos_aux(pos_aux + 1)));
+			temp_aux = (new_temp.at(pos_aux).at(0) * density(/*fluid_type, new_temp.at(pos_aux)*/) * (new_pos.at(pos_aux + 1).at(0) - new_pos.at(pos_aux)).at(0) + new_temp.at(pos_aux + 1).at(0) * density(/*fluid_type, new_temp.at(pos_aux + 1)*/) * (new_pos.at(pos_aux + 2).at(0) - new_pos.at(pos_aux + 1).at(0))) / (density(/*fluid_type, new_temp.at(pos_aux)*/) * (new_pos_aux.at(pos_aux + 1) - new_pos_aux.at(pos_aux)) + density(/*fluid_type, new_temp.at(pos_aux + 1)*/) * (new_pos_aux.at(pos_aux + 2) - new_pos_aux.at(pos_aux + 1)));
 
 			// Merges volumes
-			new_pos{count_branch}(new_pos_aux + 1) = []; // remove position in the middle
-			new_pos{count_branch}(new_pos_aux + 1) = []; // remove second temperature
-			new_pos{count_branch}(new_pos_aux) = temp_aux; // enter temperature from balance
+			new_pos{ count_branch }(new_pos_aux + 1) = []; // remove position in the middle
+			new_pos{ count_branch }(new_pos_aux + 1) = []; // remove second temperature
+			new_pos{ count_branch }(new_pos_aux) = temp_aux; // enter temperature from balance
 
 			extra_div = extra_div - 1; // next division to merge
-		end
-	end
+		}
+	}
 
 
-
+/*
 	//// CALCULATES INLET TEMPERATURE TO HEAT EXCHANGERS
 	// Asumption: the flow that will pass through the heat exchanger in the next
 	// instant is equal to the branch flow in the current instant.

@@ -334,7 +334,7 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 
 	positions = _positions;
 
-		
+	return void(temperatures);
 }
 
 int main()
@@ -350,6 +350,7 @@ int main()
 
 
 	HydroNet_InsertVolume(positions, temperatures, start_pos, end_pos, temp_action, fluid_type, value, volume);
+	temperatures;
 
     return 0;
 }

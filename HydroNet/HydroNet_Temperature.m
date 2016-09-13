@@ -400,8 +400,8 @@ for count_branch = 1 : n_branch
         
         % Merges volumes
         new_pos{count_branch}(new_pos_aux + 1) = []; % remove position in the middle
-        new_pos{count_branch}(new_pos_aux + 1) = []; % remove second temperature
-        new_pos{count_branch}(new_pos_aux) = temp_aux; % enter temperature from balance
+        new_temp{count_branch}(new_pos_aux + 1) = []; % remove second temperature
+        new_temp{count_branch}(new_pos_aux) = temp_aux; % enter temperature from balance
         
         extra_div = extra_div - 1; % next division to merge
     end

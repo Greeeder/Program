@@ -1,0 +1,31 @@
+﻿  HydroNet_FlowSolver.cpp
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(123): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(373): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(374): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(381): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(415): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(433): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(483): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(498): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(518): warning C4804: '~': unsafe use of type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(518): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(539): warning C4804: '~': unsafe use of type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(539): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(602): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(612): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(653): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(699): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(710): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(723): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(734): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(746): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(773): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(777): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(800): warning C4804: '~': unsafe use of type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(800): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(839): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(840): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(849): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\hydronet_flowsolver.cpp(850): warning C4018: '<': signed/unsigned mismatch
+  HydroNet_FlowSolver.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet_FlowSolver_wrkng\HydroNet_FlowSolver\Debug\HydroNet_FlowSolver.exe
+  HydroNet_FlowSolver.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet_FlowSolver_wrkng\HydroNet_FlowSolver\Debug\HydroNet_FlowSolver.pdb (Full PDB)

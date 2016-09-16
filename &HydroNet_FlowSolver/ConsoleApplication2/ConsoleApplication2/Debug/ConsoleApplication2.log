@@ -1,0 +1,5 @@
+﻿  ConsoleApplication2.cpp
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\libraries\eigen\src\core\matrix.h(276): error C2338: THIS_METHOD_IS_ONLY_FOR_VECTORS_OF_A_SPECIFIC_SIZE
+  c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\hydronet_flowsolver\hydronet_flowsolver\libraries\eigen\src\core\matrix.h(273): note: while compiling class template member function 'Eigen::Matrix<double,-1,1,0,-1,1>::Matrix(const double &,const double &,const double &,const double &)'
+  c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\consoleapplication2\consoleapplication2\consoleapplication2.cpp(82): note: see reference to function template instantiation 'Eigen::Matrix<double,-1,1,0,-1,1>::Matrix(const double &,const double &,const double &,const double &)' being compiled
+  c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver_wrkng\consoleapplication2\consoleapplication2\consoleapplication2.cpp(53): note: see reference to class template instantiation 'Eigen::Matrix<double,-1,1,0,-1,1>' being compiled

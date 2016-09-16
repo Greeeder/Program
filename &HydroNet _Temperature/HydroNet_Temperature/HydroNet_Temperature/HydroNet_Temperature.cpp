@@ -7,6 +7,22 @@
 #include <algorithm>
 #include <string>
 
+// From OpenWAM
+
+typedef unsigned int Uint; //< Unsigned integer
+
+template<class T>
+inline T MinComponent(std::vector<T> &x) {
+	T min = x[0];
+	for (Uint i = 1; i < x.size(); i++) {
+		if (x[i] < min)
+			min = x[i];
+	}
+	return min;
+}
+
+// End 
+
 struct strPipe
 {
 	int pipe_id;					// Identifier
@@ -1020,8 +1036,8 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 			// Finds smaller combination of adjacent volumes
 			for (int aux = 0; aux < new_pos.size() - 3; aux++)
 				aux_vec.push_back(new_pos_aux.at(3 + aux) - new_pos_aux.at(aux));
-			//pos_aux = std::min_element(aux_vec.at(0), aux_vec.at(aux_vec.size()));
-			pos_aux = 0;
+			pos_aux = MinComponent(aux_vec);
+			//pos_aux = 0;
 
 			// Obtains temperature by means of an enthalpy balance
 			temp_aux = (new_temp.at(count_branch).at(pos_aux) * density(fluid_type, new_temp.at(count_branch).at(pos_aux)) * (new_pos.at(count_branch).at(pos_aux + 1) - new_pos.at(count_branch).at(pos_aux)) +new_temp.at(count_branch).at(pos_aux + 1) * density(fluid_type, new_temp.at(count_branch).at(pos_aux + 1)) * (new_pos.at(count_branch).at(pos_aux + 2) - new_pos.at(count_branch).at(pos_aux + 1))) / (density(fluid_type, new_temp.at(count_branch).at(pos_aux)) * (new_pos_aux.at(pos_aux + 1) - new_pos_aux.at(pos_aux)) + density(fluid_type, new_temp.at(count_branch).at(pos_aux + 1)) * (new_pos_aux.at(pos_aux + 2) - new_pos_aux.at(pos_aux + 1)));

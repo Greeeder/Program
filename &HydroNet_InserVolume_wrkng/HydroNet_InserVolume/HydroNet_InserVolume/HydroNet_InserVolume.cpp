@@ -43,8 +43,8 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 	double mass_start;
 	double mass_end;
 	double temp_mass_end;
-	double mass_sum;
-	double temp_mass_sum;
+	double mass_sum=0;
+	double temp_mass_sum=0;
 	double temp_mass_start;
 	bool flag_start_exists = false;
 	bool flag_end_exists = false;
@@ -52,8 +52,8 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 	std::vector<double> _temperatures;
 	std::vector<double> _positions;
 
-	_temperatures.resize(1);
-	_positions.resize(1);
+	_temperatures.resize(0);
+	_positions.resize(0);
 
 	
 
@@ -68,7 +68,7 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 
 	// Finds start position inside positions vector
 
-	while (count < positions.size() && start_pos < positions.at(count)) {
+	while ((count < positions.size()) && (start_pos > positions.at(count))) {
 
 		count++;
 	}
@@ -81,7 +81,9 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 
 	// Finds end position inside positions vector
 
-	while (count < positions.size() && end_pos < positions.at(count)) {
+	count = 0;
+
+	while ((count < positions.size()) && (end_pos > positions.at(count))) {
 
 		count++;
 	}
@@ -112,15 +114,15 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 			temp_mass_start = 0;
 		}
 		else if (start_pos_ind == end_pos_ind) {			// both are inside the same volume initially
-			mass_start = density(fluid_type, temperatures.at(start_pos_ind - 1)) * (end_pos - start_pos);
+			mass_start = density(fluid_type, temperatures.at(start_pos_ind /*- 1*/)) * (end_pos - start_pos);
 			// Not a real mass.Volume is not included because it appears both
 			// in the numerator and the denominator multiplying all terms.
-			temp_mass_start = temperatures.at(start_pos_ind - 1) * mass_start;
+			temp_mass_start = temperatures.at(start_pos_ind /*- 1*/) * mass_start;
 		}
 		else {
-			mass_start = density(fluid_type, temperatures.at(start_pos_ind - 1)) * (positions.at(start_pos_ind) - start_pos);
+			mass_start = density(fluid_type, temperatures.at(start_pos_ind /*-1*/)) * (positions.at(start_pos_ind) - start_pos);
 			// Not a real mass.Volume is not included because it appears both in the numerator and the denominator multiplying all terms.
-			temp_mass_start = temperatures.at(start_pos_ind - 1) * mass_start;
+			temp_mass_start = temperatures.at(start_pos_ind /*- 1*/) * mass_start;
 		}
 
 		if (flag_end_exists == true) {							 // end_pos already exists in the vector
@@ -133,8 +135,8 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 			temp_mass_end = 0;
 		}
 		else {
-			mass_end = density(fluid_type, temperatures.at(end_pos_ind - 1)) * (end_pos - positions.at(end_pos_ind - 1));
-			temp_mass_end = temperatures.at(end_pos_ind - 1) * mass_end;
+			mass_end = density(fluid_type, temperatures.at(end_pos_ind /*- 1*/)) * (end_pos - positions.at(end_pos_ind /*- 1*/));
+			temp_mass_end = temperatures.at(end_pos_ind /*- 1*/) * mass_end;
 		}
 
 		mass_sum = mass_start + mass_end;						// denominator
@@ -186,17 +188,17 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 			temp_mass_start = 0;
 		}
 		else if (start_pos_ind == end_pos_ind) {						 // both are inside the same volume initially
-			mass_start = density(fluid_type, temperatures.at(start_pos_ind - 1)) * (end_pos - start_pos);
+			mass_start = density(fluid_type, temperatures.at(start_pos_ind /*- 1*/)) * (end_pos - start_pos);
 			// Not a real mass.Volume is not included because it appears both
 			// in the numerator and the denominator multiplying all terms.
-			temp_mass_start = temperatures.at(start_pos_ind - 1) * mass_start;
+			temp_mass_start = temperatures.at(start_pos_ind /*- 1*/) * mass_start;
 		}
 
 		else {
-			mass_start = density(fluid_type, temperatures.at(start_pos_ind - 1)) * (positions.at(start_pos_ind) - start_pos);
+			mass_start = density(fluid_type, temperatures.at(start_pos_ind /*- 1*/)) * (positions.at(start_pos_ind) - start_pos);
 			// Not a real mass.Volume is not included because it appears both
 			// in the numerator and the denominator multiplying all terms.
-			temp_mass_start = temperatures.at(start_pos_ind - 1) * mass_start;
+			temp_mass_start = temperatures.at(start_pos_ind /*- 1*/) * mass_start;
 		}
 
 
@@ -209,8 +211,8 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 			temp_mass_end = 0;
 		}
 		else {
-			mass_end = density(fluid_type, temperatures.at(end_pos_ind - 1)) * (end_pos - positions.at(end_pos_ind - 1));
-			temp_mass_end = temperatures.at(end_pos_ind - 1) * mass_end;
+			mass_end = density(fluid_type, temperatures.at(end_pos_ind /*- 1*/)) * (end_pos - positions.at(end_pos_ind /*- 1*/));
+			temp_mass_end = temperatures.at(end_pos_ind /*- 1*/) * mass_end;
 		}
 
 
@@ -242,7 +244,7 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 		}
 	}
 	// Inserts calculated temperature and removes intermediate temperatures in the branch
-	for (int count = 1, aux = 1; flag_start_exists == false && flag_end_exists == false && count < temperatures.size() + 2
+	for (int count = 0, aux = 0; flag_start_exists == false && flag_end_exists == false && count < temperatures.size() + 2
 		|| flag_start_exists == true && flag_end_exists == false && count < temperatures.size() + 1
 		|| flag_start_exists == false && flag_end_exists == true && count < temperatures.size() + 1
 		|| flag_start_exists == true && flag_end_exists == true && count < temperatures.size(); count++) {
@@ -287,7 +289,7 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 
 	flag_inserted = false;
 
-	for (int count = 1, aux = 1; flag_start_exists == false && flag_end_exists == false && count < positions.size() + 2
+	for (int count = 0, aux = 0; flag_start_exists == false && flag_end_exists == false && count < positions.size() + 2
 		|| flag_start_exists == true && flag_end_exists == false && count < positions.size()
 		|| flag_start_exists == false && flag_end_exists == true && count < positions.size()
 		|| flag_start_exists == true && flag_end_exists == true && count < positions.size(); count++) {
@@ -339,18 +341,18 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 
 int main()
 {
-	std::vector<double> positions;
-	std::vector<double> temperatures;
-	double start_pos;
-	double end_pos;
-	int temp_action;
-	std::string fluid_type;
-	double value;
-	double volume;
+	std::vector<double> positions = {0,20,35.2,100};
+	std::vector<double> temperatures = {10,-1,300};
+	double start_pos=20;
+	double end_pos=35.2;
+	int temp_action = 0;
+	std::string fluid_type= "water";
+	double value=900;
+	double volume=0.1;
 
 
-	HydroNet_InsertVolume(positions, temperatures, start_pos, end_pos, temp_action, fluid_type, value, volume);
-	temperatures;
+HydroNet_InsertVolume(positions, temperatures, start_pos, end_pos, temp_action, fluid_type, value, volume);
+	
 
     return 0;
 }

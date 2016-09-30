@@ -1,0 +1,6 @@
+﻿  ConsoleApplication2.cpp
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet _components_wrkng\consoleapplication2\consoleapplication2\consoleapplication2.cpp(10): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet _components_wrkng\consoleapplication2\consoleapplication2\consoleapplication2.cpp(19): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet _components_wrkng\consoleapplication2\consoleapplication2\consoleapplication2.cpp(33): warning C4101: 'flag_aux': unreferenced local variable
+  ConsoleApplication2.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Components_wrkng\ConsoleApplication2\Debug\ConsoleApplication2.exe
+  ConsoleApplication2.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Components_wrkng\ConsoleApplication2\Debug\ConsoleApplication2.pdb (Full PDB)

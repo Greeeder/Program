@@ -1,0 +1,88 @@
+-r
+C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\My Amplifier XE Results - HydroNet_Temperature\r000hs
+--stack-stitching
+--data-limit-mb=500
+--itt-config=frame
+--stackwalk=offline
+--mrte-mode=native
+--type=cpu:counters:nostack
+--type=cpu:stack
+--interval=10
+--search-dir
+sym=C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature\Debug
+--search-dir
+sym=C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature
+--search-dir
+sym=srv*C:\Users\Jaime\AppData\Local\Temp\SymbolCache
+--search-dir
+sym=srv*https://msdl.microsoft.com/download/symbols
+--search-dir
+bin=C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature\Debug
+--search-dir
+bin=C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature
+--search-dir
+bin=C:/Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(VC_ExecutablePath_x86)
+--search-dir
+bin=C:/Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(WindowsSDK_ExecutablePath)
+--search-dir
+bin=C:/Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(VS_ExecutablePath)
+--search-dir
+bin=C:/Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(MSBuild_ExecutablePath)
+--search-dir
+bin=C:\WINDOWS\SysWow64
+--search-dir
+bin=C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\FxCop
+--search-dir
+bin=C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\NativeBinaries\x86
+--search-dir
+bin=C:\Program Files (x86)\IntelSWTools\Trace Analyzer and Collector\9.1.2.024\bin
+--search-dir
+bin=C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2016.3.207\windows\mpi\intel64\bin
+--search-dir
+bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\mpirt
+--search-dir
+bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32_win\mpirt
+--search-dir
+bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\compiler
+--search-dir
+bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32_win\compiler
+--search-dir
+bin=C:\Windows\system32
+--search-dir
+bin=C:\Windows
+--search-dir
+bin=C:\Windows\System32\Wbem
+--search-dir
+bin=C:\Windows\System32\WindowsPowerShell\v1.0
+--search-dir
+bin=C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common
+--search-dir
+bin=C:\adb
+--search-dir
+bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\runtime\win64
+--search-dir
+bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\bin
+--search-dir
+bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\polyspace\bin
+--search-dir
+bin=C:\Program Files\Microsoft SQL Server\130\Tools\Binn
+--search-dir
+bin=C:\Program Files\Microsoft SQL Server\110\Tools\Binn
+--search-dir
+bin=C:\Program Files\Microsoft SQL Server\120\Tools\Binn
+--search-dir
+bin=C:\Program Files\Microsoft\Web Platform Installer
+--search-dir
+bin=C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit
+--search-dir
+bin=C:\Program Files\dotnet
+--search-dir
+bin=C:\Program Files (x86)\Microsoft SDKs\Azure\CLI\wbin
+--search-dir
+bin=C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code
+--search-dir
+bin=C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager
+--search-dir
+bin=C:\Program Files (x86)\IntelSWTools\Trace Analyzer and Collector\9.1.2.024\dll
+--
+C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature\Debug\HydroNet_Temperature.exe

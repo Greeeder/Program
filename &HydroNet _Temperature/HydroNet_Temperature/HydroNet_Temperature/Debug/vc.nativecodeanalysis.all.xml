@@ -1,0 +1,556 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+      <FILENAME>hydronet_temperature.cpp</FILENAME>
+      <LINE>386</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Local declaration of 'count' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '179' of 'c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\hydronet_temperature.cpp'.</DESCRIPTION>
+    <FUNCTION>HydroNet_InsertVolume</FUNCTION>
+    <DECORATED>?HydroNet_InsertVolume@@YA?AV?$vector@V?$vector@NV?$allocator@N@std@@@std@@V?$allocator@V?$vector@NV?$allocator@N@std@@@std@@@2@@std@@V?$vector@NV?$allocator@N@std@@@2@0NNHV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@NN@Z</DECORATED>
+    <FUNCLINE>173</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>179</LINE>
+        <COLUMN>11</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+      <FILENAME>hydronet_temperature.cpp</FILENAME>
+      <LINE>431</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Local declaration of 'count' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '179' of 'c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\hydronet_temperature.cpp'.</DESCRIPTION>
+    <FUNCTION>HydroNet_InsertVolume</FUNCTION>
+    <DECORATED>?HydroNet_InsertVolume@@YA?AV?$vector@V?$vector@NV?$allocator@N@std@@@std@@V?$allocator@V?$vector@NV?$allocator@N@std@@@std@@@2@@std@@V?$vector@NV?$allocator@N@std@@@2@0NNHV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@NN@Z</DECORATED>
+    <FUNCLINE>173</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>179</LINE>
+        <COLUMN>11</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+      <FILENAME>hydronet_temperature.cpp</FILENAME>
+      <LINE>794</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Local declaration of 'node_count' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '540' of 'c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\hydronet_temperature.cpp'.</DESCRIPTION>
+    <FUNCTION>HydroNet_Temperature</FUNCTION>
+    <DECORATED>?HydroNet_Temperature@@YAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$vector@UstrBranches@@V?$allocator@UstrBranches@@@std@@@2@V?$vector@V?$vector@NV?$allocator@N@std@@@std@@V?$allocator@V?$vector@NV?$allocator@N@std@@@std@@@2@@2@2V?$vector@UstrHeat_exch_Tout@@V?$allocator@UstrHeat_exch_Tout@@@std@@@2@V?$vector@UstrHeat_exch_fix@@V?$allocator@UstrHeat_exch_fix@@@std@@@2@V?$vector@HV?$allocator@H@std@@@2@V?$vector@V?$vector@HV?$allocator@H@std@@@std@@V?$allocator@V?$vector@HV?$allocator@H@std@@@std@@@2@@2@6HHV?$vector@NV?$allocator@N@std@@@2@22667N@Z</DECORATED>
+    <FUNCLINE>532</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>60</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+      <FILENAME>hydronet_temperature.cpp</FILENAME>
+      <LINE>980</LINE>
+      <COLUMN>16</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Local declaration of 'pos_aux' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '540' of 'c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\hydronet_temperature.cpp'.</DESCRIPTION>
+    <FUNCTION>HydroNet_Temperature</FUNCTION>
+    <DECORATED>?HydroNet_Temperature@@YAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$vector@UstrBranches@@V?$allocator@UstrBranches@@@std@@@2@V?$vector@V?$vector@NV?$allocator@N@std@@@std@@V?$allocator@V?$vector@NV?$allocator@N@std@@@std@@@2@@2@2V?$vector@UstrHeat_exch_Tout@@V?$allocator@UstrHeat_exch_Tout@@@std@@@2@V?$vector@UstrHeat_exch_fix@@V?$allocator@UstrHeat_exch_fix@@@std@@@2@V?$vector@HV?$allocator@H@std@@@2@V?$vector@V?$vector@HV?$allocator@H@std@@@std@@V?$allocator@V?$vector@HV?$allocator@H@std@@@std@@@2@@2@6HHV?$vector@NV?$allocator@N@std@@@2@22667N@Z</DECORATED>
+    <FUNCLINE>532</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>122</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+      <FILENAME>hydronet_temperature.cpp</FILENAME>
+      <LINE>1199</LINE>
+      <COLUMN>27</COLUMN>
+    </SFA>
+    <DEFECTCODE>6001</DEFECTCODE>
+    <DESCRIPTION>Using uninitialized memory 'branch_aux'.</DESCRIPTION>
+    <FUNCTION>HydroNet_Temperature</FUNCTION>
+    <DECORATED>?HydroNet_Temperature@@YAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$vector@UstrBranches@@V?$allocator@UstrBranches@@@std@@@2@V?$vector@V?$vector@NV?$allocator@N@std@@@std@@V?$allocator@V?$vector@NV?$allocator@N@std@@@std@@@2@@2@2V?$vector@UstrHeat_exch_Tout@@V?$allocator@UstrHeat_exch_Tout@@@std@@@2@V?$vector@UstrHeat_exch_fix@@V?$allocator@UstrHeat_exch_fix@@@std@@@2@V?$vector@HV?$allocator@H@std@@@2@V?$vector@V?$vector@HV?$allocator@H@std@@@std@@V?$allocator@V?$vector@HV?$allocator@H@std@@@std@@@2@@2@6HHV?$vector@NV?$allocator@N@std@@@2@22667N@Z</DECORATED>
+    <FUNCLINE>532</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>3</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>5</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>19</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>30</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>50</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>62</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>76</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>92</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>102</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>540</LINE>
+        <COLUMN>115</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>541</LINE>
+        <COLUMN>33</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>541</LINE>
+        <COLUMN>42</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>542</LINE>
+        <COLUMN>32</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>542</LINE>
+        <COLUMN>53</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>543</LINE>
+        <COLUMN>21</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>543</LINE>
+        <COLUMN>31</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>543</LINE>
+        <COLUMN>53</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>543</LINE>
+        <COLUMN>79</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>8</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>19</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>30</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>39</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>57</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>66</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>76</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>87</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>97</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>112</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>544</LINE>
+        <COLUMN>122</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>545</LINE>
+        <COLUMN>6</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>546</LINE>
+        <COLUMN>18</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>546</LINE>
+        <COLUMN>30</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>547</LINE>
+        <COLUMN>21</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>547</LINE>
+        <COLUMN>37</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>547</LINE>
+        <COLUMN>48</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>547</LINE>
+        <COLUMN>66</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>547</LINE>
+        <COLUMN>80</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>547</LINE>
+        <COLUMN>93</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>548</LINE>
+        <COLUMN>17</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>549</LINE>
+        <COLUMN>34</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>550</LINE>
+        <COLUMN>24</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>556</LINE>
+        <COLUMN>15</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>562</LINE>
+        <COLUMN>15</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>563</LINE>
+        <COLUMN>16</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>564</LINE>
+        <COLUMN>16</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>565</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>565</LINE>
+        <COLUMN>27</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>570</LINE>
+        <COLUMN>28</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>574</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>574</LINE>
+        <COLUMN>41</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>584</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>584</LINE>
+        <COLUMN>41</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>780</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>780</LINE>
+        <COLUMN>27</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>784</LINE>
+        <COLUMN>16</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>827</LINE>
+        <COLUMN>20</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>827</LINE>
+        <COLUMN>30</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1031</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1031</LINE>
+        <COLUMN>41</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1063</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1063</LINE>
+        <COLUMN>25</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1063</LINE>
+        <COLUMN>34</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1063</LINE>
+        <COLUMN>56</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1188</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1188</LINE>
+        <COLUMN>23</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>declaration</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'branch_aux' is not initialized</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1188</LINE>
+        <COLUMN>35</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1188</LINE>
+        <COLUMN>54</COLUMN>
+        <KEYEVENT>
+          <ID>2</ID>
+          <KIND>branch</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Enter this loop, (assume 'count_htx&lt;heat_exch_fix.size()')</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1191</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1192</LINE>
+        <COLUMN>11</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1192</LINE>
+        <COLUMN>28</COLUMN>
+        <KEYEVENT>
+          <ID>3</ID>
+          <KIND>branch</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Skip this loop, (assume 'count&lt;branches.size()' is false)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1199</LINE>
+        <COLUMN>27</COLUMN>
+        <KEYEVENT>
+          <ID>4</ID>
+          <KIND>declaration</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>'branch_aux' is an In/Out argument to 'std::vector&lt;double,std::allocator&lt;double&gt; &gt;::at' (declared at c:\program files (x86)\microsoft visual studio 14.0\vc\include\vector:1206)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\jaime\documents\&amp; pfc-cmt\program\&amp;hydronet _temperature\hydronet_temperature\hydronet_temperature\</FILEPATH>
+        <FILENAME>hydronet_temperature.cpp</FILENAME>
+        <LINE>1199</LINE>
+        <COLUMN>27</COLUMN>
+        <KEYEVENT>
+          <ID>5</ID>
+          <KIND>usage</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'branch_aux' is used, but may not have been initialized</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT></DEFECTS>

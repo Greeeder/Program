@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+ <connectionOption>localhost</connectionOption>
+ <rdmgr>
+  <timestamp type="u64_t">1474022968</timestamp>
+  <hostname>Jaime</hostname>
+  <os>windows</os>
+  <product>Intel® VTune™ Amplifier XE 2016 Update 4</product>
+  <buildNumber type="s32_t">470476</buildNumber>
+  <logicalCPUCount type="s32_t">8</logicalCPUCount>
+  <CPUFrequency type="s64_t">2400000000</CPUFrequency>
+  <isa>avx</isa>
+ </rdmgr>
+ <All_Configurations-All_Platforms>
+  <target_settings>
+   <selected_workload>
+    <localhost>launch</localhost>
+   </selected_workload>
+   <result_dir>
+    <localhost>C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\My Amplifier XE Results - HydroNet_Temperature</localhost>
+   </result_dir>
+   <workloads>
+    <localhost>
+     <attach type="pointer" type_id="dasID_cctrl2::AttachWorkload" ptr_type="dasID_cctrl2::IWorkload">
+      <workload>
+       <targetName>attach</targetName>
+       <use_app_dir_as_work_dir type="bool">false</use_app_dir_as_work_dir>
+       <attach.process_name>HydroNet_Temperature.exe</attach.process_name>
+       <attach.pid type="null"></attach.pid>
+       <result_directory.path>C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\My Amplifier XE Results - HydroNet_Temperature\r@@@{at}</result_directory.path>
+       <search_directories>
+        <item>
+         <value>sym=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\Debug</value>
+        </item>
+        <item>
+         <value>sym=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature</value>
+        </item>
+        <item>
+         <value>sym=srv*C:\Users\Jaime\AppData\Local\Temp\SymbolCache</value>
+        </item>
+        <item>
+         <value>sym=srv*https://msdl.microsoft.com/download/symbols</value>
+        </item>
+        <item>
+         <value>bin=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\Debug</value>
+        </item>
+        <item>
+         <value>bin=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(VC_ExecutablePath_x86)</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(WindowsSDK_ExecutablePath)</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(VS_ExecutablePath)</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(MSBuild_ExecutablePath)</value>
+        </item>
+        <item>
+         <value>bin=C:\WINDOWS\SysWow64</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\FxCop</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\NativeBinaries\x86</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\IntelSWTools\Trace Analyzer and Collector\9.1.2.024\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2016.3.207\windows\mpi\intel64\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\mpirt</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32_win\mpirt</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\compiler</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32_win\compiler</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows\system32</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows\System32\Wbem</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows\System32\WindowsPowerShell\v1.0</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common</value>
+        </item>
+        <item>
+         <value>bin=C:\adb</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\runtime\win64</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\polyspace\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SQL Server\130\Tools\Binn</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SQL Server\110\Tools\Binn</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SQL Server\120\Tools\Binn</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft\Web Platform Installer</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\dotnet</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Microsoft SDKs\Azure\CLI\wbin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\IntelSWTools\Trace Analyzer and Collector\9.1.2.024\dll</value>
+        </item>
+       </search_directories>
+       <context>
+        <contextValue>
+         <id>allowMultipleRuns</id>
+         <value type="bool">false</value>
+        </contextValue>
+        <contextValue>
+         <id>analyzeSystemWide</id>
+         <value type="bool">false</value>
+        </contextValue>
+        <contextValue>
+         <id>cpuMask</id>
+         <value></value>
+        </contextValue>
+        <contextValue>
+         <id>customCollector</id>
+         <value></value>
+        </contextValue>
+        <contextValue>
+         <id>dataLimit</id>
+         <value type="s32_t">500</value>
+        </contextValue>
+        <contextValue>
+         <id>enableRing</id>
+         <value type="bool">false</value>
+        </contextValue>
+        <contextValue>
+         <id>followChild</id>
+         <value type="bool">true</value>
+        </contextValue>
+        <contextValue>
+         <id>followChildStrategy</id>
+         <value></value>
+        </contextValue>
+        <contextValue>
+         <id>mrteMode</id>
+         <value>auto</value>
+        </contextValue>
+        <contextValue>
+         <id>targetDurationType</id>
+         <value>short</value>
+        </contextValue>
+        <contextValue>
+         <id>targetRingBuffer</id>
+         <value type="s32_t">0</value>
+        </contextValue>
+        <contextValue>
+         <id>targetType</id>
+         <value>attach</value>
+        </contextValue>
+        <contextValue>
+         <id>tracingMode</id>
+         <value type="null"></value>
+        </contextValue>
+       </context>
+      </workload>
+     </attach>
+     <launch type="pointer" type_id="dasID_cctrl2::ApplicationWorkload" ptr_type="dasID_cctrl2::IWorkload">
+      <workload>
+       <targetName>launch</targetName>
+       <launch_app.inherit_sys_environment type="bool">true</launch_app.inherit_sys_environment>
+       <launch_app.app_to_launch>C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\Debug\HydroNet_Temperature.exe</launch_app.app_to_launch>
+       <launch_app.working_folder>C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature</launch_app.working_folder>
+       <launch_app.app_parameters></launch_app.app_parameters>
+       <launch_app.environment></launch_app.environment>
+       <launch_app.environment_prepend>PATH=</launch_app.environment_prepend>
+       <use_app_dir_as_work_dir type="bool">false</use_app_dir_as_work_dir>
+       <result_directory.path>C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\My Amplifier XE Results - HydroNet_Temperature\r@@@{at}</result_directory.path>
+       <search_directories>
+        <item>
+         <value>sym=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\Debug</value>
+        </item>
+        <item>
+         <value>sym=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature</value>
+        </item>
+        <item>
+         <value>sym=srv*C:\Users\Jaime\AppData\Local\Temp\SymbolCache</value>
+        </item>
+        <item>
+         <value>sym=srv*https://msdl.microsoft.com/download/symbols</value>
+        </item>
+        <item>
+         <value>bin=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\Debug</value>
+        </item>
+        <item>
+         <value>bin=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(VC_ExecutablePath_x86)</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(WindowsSDK_ExecutablePath)</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(VS_ExecutablePath)</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(MSBuild_ExecutablePath)</value>
+        </item>
+        <item>
+         <value>bin=C:\WINDOWS\SysWow64</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\FxCop</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\NativeBinaries\x86</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\IntelSWTools\Trace Analyzer and Collector\9.1.2.024\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2016.3.207\windows\mpi\intel64\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\mpirt</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32_win\mpirt</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\compiler</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32_win\compiler</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows\system32</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows\System32\Wbem</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows\System32\WindowsPowerShell\v1.0</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common</value>
+        </item>
+        <item>
+         <value>bin=C:\adb</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\runtime\win64</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\polyspace\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SQL Server\130\Tools\Binn</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SQL Server\110\Tools\Binn</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SQL Server\120\Tools\Binn</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft\Web Platform Installer</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\dotnet</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Microsoft SDKs\Azure\CLI\wbin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\IntelSWTools\Trace Analyzer and Collector\9.1.2.024\dll</value>
+        </item>
+       </search_directories>
+       <context>
+        <contextValue>
+         <id>allowMultipleRuns</id>
+         <value type="bool">false</value>
+        </contextValue>
+        <contextValue>
+         <id>analyzeSystemWide</id>
+         <value type="bool">false</value>
+        </contextValue>
+        <contextValue>
+         <id>cpuMask</id>
+         <value></value>
+        </contextValue>
+        <contextValue>
+         <id>customCollector</id>
+         <value></value>
+        </contextValue>
+        <contextValue>
+         <id>dataLimit</id>
+         <value type="s32_t">500</value>
+        </contextValue>
+        <contextValue>
+         <id>enableRing</id>
+         <value type="bool">false</value>
+        </contextValue>
+        <contextValue>
+         <id>followChild</id>
+         <value type="bool">true</value>
+        </contextValue>
+        <contextValue>
+         <id>followChildStrategy</id>
+         <value></value>
+        </contextValue>
+        <contextValue>
+         <id>mrteMode</id>
+         <value>native</value>
+        </contextValue>
+        <contextValue>
+         <id>targetDurationType</id>
+         <value>short</value>
+        </contextValue>
+        <contextValue>
+         <id>targetRingBuffer</id>
+         <value type="s32_t">0</value>
+        </contextValue>
+        <contextValue>
+         <id>targetType</id>
+         <value>launch</value>
+        </contextValue>
+        <contextValue>
+         <id>traceMpi</id>
+         <value type="bool">false</value>
+        </contextValue>
+        <contextValue>
+         <id>tracingMode</id>
+         <value type="null"></value>
+        </contextValue>
+       </context>
+      </workload>
+     </launch>
+     <system type="pointer" type_id="dasID_cctrl2::SystemWideWorkload" ptr_type="dasID_cctrl2::IWorkload">
+      <workload>
+       <targetName>system</targetName>
+       <use_app_dir_as_work_dir type="bool">false</use_app_dir_as_work_dir>
+       <result_directory.path>C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\My Amplifier XE Results - HydroNet_Temperature\r@@@{at}</result_directory.path>
+       <search_directories>
+        <item>
+         <value>sym=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\Debug</value>
+        </item>
+        <item>
+         <value>sym=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature</value>
+        </item>
+        <item>
+         <value>sym=srv*C:\Users\Jaime\AppData\Local\Temp\SymbolCache</value>
+        </item>
+        <item>
+         <value>sym=srv*https://msdl.microsoft.com/download/symbols</value>
+        </item>
+        <item>
+         <value>bin=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\Debug</value>
+        </item>
+        <item>
+         <value>bin=C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(VC_ExecutablePath_x86)</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(WindowsSDK_ExecutablePath)</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(VS_ExecutablePath)</value>
+        </item>
+        <item>
+         <value>bin=C:/Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet _Temperature\HydroNet_Temperature\HydroNet_Temperature\$(MSBuild_ExecutablePath)</value>
+        </item>
+        <item>
+         <value>bin=C:\WINDOWS\SysWow64</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\FxCop</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\NativeBinaries\x86</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\IntelSWTools\Trace Analyzer and Collector\9.1.2.024\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2016.3.207\windows\mpi\intel64\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\mpirt</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32_win\mpirt</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\compiler</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32_win\compiler</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows\system32</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows\System32\Wbem</value>
+        </item>
+        <item>
+         <value>bin=C:\Windows\System32\WindowsPowerShell\v1.0</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common</value>
+        </item>
+        <item>
+         <value>bin=C:\adb</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\runtime\win64</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\MATLAB\MATLAB Production Server\R2015a\polyspace\bin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SQL Server\130\Tools\Binn</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SQL Server\110\Tools\Binn</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SQL Server\120\Tools\Binn</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft\Web Platform Installer</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\dotnet</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\Microsoft SDKs\Azure\CLI\wbin</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager</value>
+        </item>
+        <item>
+         <value>bin=C:\Program Files (x86)\IntelSWTools\Trace Analyzer and Collector\9.1.2.024\dll</value>
+        </item>
+       </search_directories>
+       <context>
+        <contextValue>
+         <id>allowMultipleRuns</id>
+         <value type="bool">false</value>
+        </contextValue>
+        <contextValue>
+         <id>cpuMask</id>
+         <value></value>
+        </contextValue>
+        <contextValue>
+         <id>customCollector</id>
+         <value></value>
+        </contextValue>
+        <contextValue>
+         <id>dataLimit</id>
+         <value type="s32_t">500</value>
+        </contextValue>
+        <contextValue>
+         <id>enableRing</id>
+         <value type="bool">false</value>
+        </contextValue>
+        <contextValue>
+         <id>followChild</id>
+         <value type="bool">true</value>
+        </contextValue>
+        <contextValue>
+         <id>mrteMode</id>
+         <value>native</value>
+        </contextValue>
+        <contextValue>
+         <id>targetDurationType</id>
+         <value>short</value>
+        </contextValue>
+        <contextValue>
+         <id>targetRingBuffer</id>
+         <value type="s32_t">0</value>
+        </contextValue>
+        <contextValue>
+         <id>targetType</id>
+         <value>system</value>
+        </contextValue>
+        <contextValue>
+         <id>tracingMode</id>
+         <value type="null"></value>
+        </contextValue>
+       </context>
+      </workload>
+     </system>
+    </localhost>
+   </workloads>
+   <result_pattern>
+    <localhost>r@@@{at}</localhost>
+   </result_pattern>
+  </target_settings>
+  <analysis_type_settings>
+   <selected_analysis_type_path>C:\Program Files (x86)\IntelSWTools\VTune Amplifier XE 2016\config\analysis_type\basic_hotspots.cfg</selected_analysis_type_path>
+  </analysis_type_settings>
+ </All_Configurations-All_Platforms>
+ <contextValues type="bag"/>
+</root>

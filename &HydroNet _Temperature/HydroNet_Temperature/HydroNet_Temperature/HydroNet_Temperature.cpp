@@ -617,7 +617,7 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 					start_pos = obj_inlet_pos.at(ind_aux).at(0); // object's inlet position
 					end_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position
 					temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
-					value = heat_exch_fix.at(branch_htx_fix.at(count_branch).at(count_obj_htx)).heat; // heat to add
+					value = heat_exch_fix.at(branch_htx_fix.at(count_branch).at(count_obj_htx)).heat*dt; // heat to add
 
 					temp_and_pos_aux = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch));
 					new_pos.at(count_branch) = temp_and_pos_aux.at(1);
@@ -728,14 +728,14 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 					// index of the heat exchanger in the table objects
 
 					temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
-					value = heat_exch_fix.at(count_obj_htx).heat;
+					value = heat_exch_fix.at(count_obj_htx).heat*dt;
 
 					start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
 					end_pos = start_pos + delta_pos;
 
 					if (end_pos > 100) {
 
-						value = heat_exch_fix.at(count_obj_htx).heat * (end_pos - 100) / (end_pos - start_pos);
+						value = heat_exch_fix.at(count_obj_htx).heat *dt* (end_pos - 100) / (end_pos - start_pos);
 						// heat to add averaged for the volume that goes out of the branch
 
 						start_pos = 100;
@@ -747,7 +747,7 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 						// For the volume inside the branch
 						start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
 						end_pos = 100;
-						value = heat_exch_fix.at(count_obj_htx).heat * (100 - start_pos) / (end_pos - start_pos);
+						value = heat_exch_fix.at(count_obj_htx).heat*dt * (100 - start_pos) / (end_pos - start_pos);
 						// heat to add averaged for the volume that stays inside the branch
 					}
 
@@ -1249,8 +1249,9 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 				for (int count = 0, count_branch; count < overflow.size(); count++) { // loop of branches with overflow
 					if (overflow.at(count) > 0) {
 						count_branch = count;
-
-						node_aux = branches_id.at(count_branch).at(1); // node at the start of the branch
+						for (int aux = 0; aux<nodes_id.size(); aux++)
+							if (branches_id.at(count_branch).at(1)==nodes_id.at(aux))
+								node_aux = aux; // node at the start of the branch
 						flow_sum = vec_sum_elements(flows, node_outlet_branches.at(node_count)); // sum of flows going into the branch
 
 						for (int aux = 0; aux < node_outlet_branches.at(node_count).size(); aux++)

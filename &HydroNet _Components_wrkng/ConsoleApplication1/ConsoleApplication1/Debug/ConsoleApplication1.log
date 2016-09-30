@@ -1,0 +1,6 @@
+﻿  ConsoleApplication1.cpp
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet _components_wrkng\consoleapplication1\consoleapplication1\consoleapplication1.cpp(316): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet _components_wrkng\consoleapplication1\consoleapplication1\consoleapplication1.cpp(317): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet _components_wrkng\consoleapplication1\consoleapplication1\consoleapplication1.cpp(318): warning C4018: '<': signed/unsigned mismatch
+  ConsoleApplication1.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Components_wrkng\ConsoleApplication1\Debug\ConsoleApplication1.exe
+  ConsoleApplication1.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Components_wrkng\ConsoleApplication1\Debug\ConsoleApplication1.pdb (Full PDB)

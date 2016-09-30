@@ -1,4 +1,5 @@
-﻿  HydroNet_Temperature.cpp
+﻿  stdafx.cpp
+  HydroNet_Temperature.cpp
 c:\users\jaime\documents\& pfc-cmt\program\&hydronet _temperature\hydronet_temperature\hydronet_temperature\hydronet_temperature.cpp(210): warning C4018: '<': signed/unsigned mismatch
 c:\users\jaime\documents\& pfc-cmt\program\&hydronet _temperature\hydronet_temperature\hydronet_temperature\hydronet_temperature.cpp(225): warning C4018: '<': signed/unsigned mismatch
 c:\users\jaime\documents\& pfc-cmt\program\&hydronet _temperature\hydronet_temperature\hydronet_temperature\hydronet_temperature.cpp(387): warning C4018: '<': signed/unsigned mismatch
@@ -67,3 +68,4 @@ c:\users\jaime\documents\& pfc-cmt\program\&hydronet _temperature\hydronet_tempe
 c:\users\jaime\documents\& pfc-cmt\program\&hydronet _temperature\hydronet_temperature\hydronet_temperature\hydronet_temperature.cpp(1304): warning C4018: '<': signed/unsigned mismatch
   HydroNet_Temperature.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature\Debug\HydroNet_Temperature.exe
   HydroNet_Temperature.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet _Temperature\HydroNet_Temperature\Debug\HydroNet_Temperature.pdb (Full PDB)
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet _temperature\hydronet_temperature\hydronet_temperature\hydronet_temperature.cpp(1199): warning C6001: Using uninitialized memory 'branch_aux'.

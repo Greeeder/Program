@@ -164,7 +164,7 @@ void HeatExchanger_model::calculate_heat_exchange()
 				}
 				break;
 			case 3:	// Shell and tube
-				_efficiency = 1 / (2 * (1 + _Cr + sqrt(1 + _Cr * _Cr) * (1 + exp(-_NTU * sqrt(1 + _Cr * _Cr)) / (1 - exp(-_NTU * sqrt(1 + _Cr * _Cr))))));
+				_efficiency = 2 /  (1 + _Cr + sqrt(1 + _Cr * _Cr) * (1 + exp(-_NTU * sqrt(1 + _Cr * _Cr)) / (1 - exp(-_NTU * sqrt(1 + _Cr * _Cr)))));
 				if (n_shell_passes > 1) {	// multiple passes through shell (for 1, the previous expression is obtained)
 					_efficiency = (pow(((1 - _efficiency * _Cr) / (1 - _efficiency)), n_shell_passes) - 1)
 						/ (pow(((1 - _efficiency * _Cr) / (1 - _efficiency)), n_shell_passes) - _Cr);

@@ -8,8 +8,8 @@ pump_volum		class
 0.001			volume [m3]
 0				pump speed [rad/d]
 1000000			max_head [meter column fluid]
-0.001			coefficient_order_0	[m3/s]
-0				coefficient_order_1	[m3 / rad]
+0			coefficient_order_0	[m3/s]
+0.000002				coefficient_order_1	[m3 / rad]
 0				coefficient_order_2	[m3 * s / rad^2]
 0				coefficient_order_3	[m3 * s^2 / rad^3]
 0				pump head [m.c.f.] (initialization)

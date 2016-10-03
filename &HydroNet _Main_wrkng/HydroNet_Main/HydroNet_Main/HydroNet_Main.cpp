@@ -54,7 +54,7 @@ struct strThermostat
 	double coef_h_1;					// Coefficent order 1 [m.c.f. / m3/s]
 	double coef_h_2;					// Coefficent order 2 [m.c.f. / (m3/s)^2]
 	double coef_h_3;					// Coefficent order 3 [m.c.f. / (m3/s)^3]
-	double opening						// Thermostat valv's opening
+	double opening;						// Thermostat valv's opening
 };
 
 struct strPump_turbo
@@ -98,7 +98,7 @@ struct strHeat_exch_fix
 	std::string name;				// Heat Exchanger name
 	int inlet_object;				// Heat Exchanger's inlet object identifier
 	int outlet_object;				// Heat Exchanger's outlet object identifier
-	double heat;					// Heat Exchanged
+	double heat;					// Heat Energy Exchanged [J]
 	double T_in;					// Intlet temperaure [K]
 	double hydr_resist;				// Hydraulic resistance = head loss / flow^2 [m.c.f. / m^6*s^2]
 };

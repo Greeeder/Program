@@ -88,14 +88,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet_FlowSolver_wrkng\HydroNet_FlowSolver\HydroNet_FlowSolver\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet_FlowSolver\HydroNet_FlowSolver\HydroNet_FlowSolver\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet_FlowSolver_wrkng\HydroNet_FlowSolver\HydroNet_FlowSolver\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Jaime\Documents\&amp; PFC-CMT\Program\&amp;HydroNet_FlowSolver\HydroNet_FlowSolver\HydroNet_FlowSolver\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AddModuleNamesToAssembly>%(AddModuleNamesToAssembly)</AddModuleNamesToAssembly>
       <AssemblyLinkResource>
       </AssemblyLinkResource>

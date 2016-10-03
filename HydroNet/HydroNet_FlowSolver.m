@@ -290,8 +290,8 @@ flows_ind_aux = not(volpump_ind_aux);
 % Number of node equations = number of unsolved nodes - 1
 % Exception: there are tanks in the network.
 
-% Set first unsolved node as solved. Unsolved nodes will be included in the
-% system of equations.
+%Set first unsolved node as solved. Unsolved nodes will be included in the
+%system of equations.
 if n_tanks == 0
     for count = 1 : n_nodes
         if not(solv_nodes(count)) % node not solved
@@ -302,27 +302,33 @@ if n_tanks == 0
 end
 
 % Formulates node equations
-for count = 1 : sum(not(solv_nodes)) % unsolved nodes loop
-    
+last_row=0;
+for count = find(transpose(not(solv_nodes))) % unsolved nodes loop
+    last_row=last_row+1;
     % Continuity equation: sum of flows in a node = 0
     for count1 = node_branches{count} % branches connected to node (branch index)
+        change_sign = false;
+        if branches_id{count1}(1) ~= nodes_id(count)
+            change_sign=true;
+        end
         
         % Flow may be solved or not
         if solved(count1) % the flow in this branch has been solved
-            const_vec(count) = flows(count1);
+            const_mat(last_row, (count1))  = flows(count1)*(1)*(-2*change_sign+1);
         else % flow is unknown
-            coef1_mat(count, (unk_ind_aux==count1)) = 1;
+            coef1_mat(last_row, (unk_ind_aux==count1)) = 1*(-2*change_sign+1);
         end
+       
         
         % Node can be at the end or at the begining of the branch
         % Criterium: positive branch direction --> enters node (node is at the end of the branch)
-        if nodes_id(count) == branches_id{count1}(1) % node is at the beginning of the branch,
-            % branch exits node, change sign
-        	const_vec(count) = - const_vec(count);
-        end
+%         if nodes_id(count)  ~= branches_id{count1}(1) % node is at the beginning of the branch,
+%             % branch exits node, change sign
+%         	const_mat(last_row, (unk_ind_aux==count1)) = - const_mat(last_row, (unk_ind_aux==count1));
+%         end
     end
 end
-last_row = count; % save row to continue entering the equations
+%last_row = count; % save row to continue entering the equations
 
 
 % MESH EQUATIONS
@@ -395,7 +401,7 @@ x0 = ones(n_unknown, 1) *.0001; % size equal to number of unknowns
 
     
 % Formulates mesh equations
-
+% flag_changed=false;
 for count = 1 : n_idp_mesh % independent mesh loop
 
     % II Kirchhoff's Law: sum of head increments in a mesh = 0
@@ -409,21 +415,53 @@ for count = 1 : n_idp_mesh % independent mesh loop
 
         % Check whether the branch has the same direction as the mesh flow
         change_sign = false;
-        if or(last_id == 0, branches_id{count1}(1) == last_id)
-            % it is the first branch in the mesh OR the branch is in the same direction as the mesh flow
-            last_id = branches_id{count1}(end); % refresh other end of branch
-        else % it is not the first branch in the mesh AND the branch is in the opposite direction
-            change_sign = true; % invert sign
-            last_id = branches_id{count1}(1); % refresh other end of branch
+        
+        if last_id == 0 % is the first branch in the mesh
+            last_id = branches_id{count1}(end); % initialization: assume that the last aboject according to mesh direction is the object at the end of the branch
+        %if count1 < numel(idp_mesh_branches{count}) % is is not the last branch in the mesh
+            next_branch_aux = idp_mesh_branches{count}(2); % determines next branch in the mesh
+
+            if and(branches_id{count1}(end) ~= branches_id{next_branch_aux}(1), branches_id{count1}(end) ~= branches_id{next_branch_aux}(end))
+                % last element of the present branch is not in the next branch (at the ends)
+                change_sign = true; % invert sign
+                last_id = branches_id{count1}(1);   % object at the end of the branch according to the mesh direction
+
+%                 const_vec = - const_vec;
+
+                
+            end
+        
+        else % is not the first branch in the mesh
+            if last_id == branches_id{count1}(end)
+                change_sign = true; % invert sign
+                last_id = branches_id{count1}(1); % object at the end of the branch according to the mesh direction
+            else
+                last_id = branches_id{count1}(end); % object at the end of the branch according to the mesh direction
+            end
+            
+            
         end
+        
+        
+        
+%         
+%         if or(last_id == 0, branches_id{count1}(1) == last_id)
+%             % it is the first branch in the mesh OR the branch is in the same direction as the mesh flow
+%             last_id = branches_id{count1}(end); % refresh other end of branch
+%         else % it is not the first branch in the mesh AND the branch is in the opposite direction
+%             change_sign = true; % invert sign
+%             last_id = branches_id{count1}(end); % refresh other end of branch
+%         end
 
 
         if solved(count1) % the flow in this branch has been solved
-            if flows(count1) < 0 % flow direction is opposite to branch direction
+            if flows(count1) <= 0 % flow direction is opposite to branch direction
                 change_sign = not(change_sign); % invert sign
             end
+%             const_mat(last_row + count, (unk_ind_aux==count1)) = const_vec(last_row + count) + (head_loss(count1) + hydr_resist1(count1) ...
+%                 * abs(flows(count1)) + hydr_resist2(count1) * flows(count1)^2) * (-2 * change_sign + 1);
             const_vec(last_row + count) = const_vec(last_row + count) + (head_loss(count1) + hydr_resist1(count1) ...
-                * abs(flows(count1)) + hydr_resist2(count1) * flows(count1)^2) * (-2 * change_sign + 1);
+                 * abs(flows(count1)) + hydr_resist2(count1) * flows(count1)^2) * (-2 * change_sign + 1);
                 % add head if change_sign = false; subtract if change_sign = true
             if volum_pump(count1) % if there is a volumetric pump, include pump head as an unknown variable of the system
                 coef1_mat(last_row + count, (unk_ind_aux==count1)) = - (-2 * change_sign + 1) * 10000; % include pump head
@@ -433,9 +471,10 @@ for count = 1 : n_idp_mesh % independent mesh loop
 
         else % flow is unknown
             % assume flow mesh and branch flow have the same direction
-            const_mat(last_row + count, (unk_ind_aux==count1)) = head_loss(count1) * (-2 * change_sign + 1);
-            coef1_mat(last_row + count, (unk_ind_aux==count1)) = hydr_resist1(count1) * (-2 * change_sign + 1);
-            coef2_mat(last_row + count, (unk_ind_aux==count1)) = hydr_resist2(count1) * (-2 * change_sign + 1);
+          
+            const_mat(last_row + count, (unk_ind_aux==count1)) =  head_loss(count1) *  (-2 * change_sign + 1);
+            coef1_mat(last_row + count, (unk_ind_aux==count1)) =  hydr_resist1(count1) * (-2 * change_sign + 1);
+            coef2_mat(last_row + count, (unk_ind_aux==count1)) =  hydr_resist2(count1) * (-2 * change_sign + 1);
         end
     end
 end
@@ -443,8 +482,7 @@ end
 
 
 % Non-linear solver
-
-f = @(x) coef2_mat*(x.*abs(x)) + coef1_mat*x + const_mat*(x./abs(x)) + const_vec;
+f = @(x) coef2_mat*(x.*abs(x)) + coef1_mat*x + const_mat*(x./(x)) + const_vec;
 % oldopts = optimoptions('fsolve');
 % opts = optimoptions(oldopts,'MaxFunEvals',1000000), 'Display','off');
 Y = fsolve(f,x0); %,opts);

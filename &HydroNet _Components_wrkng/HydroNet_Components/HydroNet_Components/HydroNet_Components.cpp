@@ -5,6 +5,14 @@
 #include <vector>
 #include <string>
 
+struct strObject {
+	int ID;							// Object's idintificator
+	std::string name;				// Object's name
+	std::string Class;				// Object's clas
+	double volume;					// Objects volume
+	std::vector<int> adjacent;		// Adjacent objects
+};
+
 struct strPipe
 {
 	int pipe_id;					// Identifier
@@ -96,7 +104,7 @@ struct strHeat_exch_fix
 	std::string name;				// Heat Exchanger name
 	int inlet_object;				// Heat Exchanger's inlet object identifier
 	int outlet_object;				// Heat Exchanger's outlet object identifier
-	double heat;					// Heat Exchanged
+	double heat;					// Heat Energy Exchanged [J]
 	double T_in;					// Intlet temperaure [K]
 	double hydr_resist;				// Hydraulic resistance = head loss / flow^2 [m.c.f. / m^6*s^2]
 };
@@ -183,7 +191,7 @@ std::vector<int> flip(std::vector<int> A) {
 
 }
 
-void  HydroNet_Components(/*std::vector<strBranches> branches,*/ int n_obj, std::vector<int> nodes_id, std::vector<strPump_volum> pump_volum, std::vector<strPump_turbo> pump_turbo, std::vector<strHeat_exch_Tout> heat_exch_Tout/*, std::vector<strTank> tank*/) {
+void  HydroNet_Components(/*std::vector<strBranches> branches,*/ std:: vector <strObject> objects,int n_obj, std::vector<int> nodes_id, std::vector<strPump_volum> pump_volum, std::vector<strPump_turbo> pump_turbo, std::vector<strHeat_exch_Tout> heat_exch_Tout/*, std::vector<strTank> tank*/) {
 
 	int edge_count, start_obj, path_count, obj_count, row_aux, column, prev_row, n_paths, branch_count, n_mesh, n_new_paths;
 	std::vector<std::vector<bool>> edges, mat_aux;
@@ -191,8 +199,8 @@ void  HydroNet_Components(/*std::vector<strBranches> branches,*/ int n_obj, std:
 	std::vector<std::vector<int>>paths_ind, mesh_ind, branches_ind, branch_mesh, node_branches, mesh_branches, objects_branches, branches_id, ind_outlet_aux;
 	bool flag_path,first;
 	std::vector<bool>path_cycle, to_remove, vec_aux, branch_cycle;
-	std::vector<strObjects> objects;
 	std::string node = "node", tank = "tank";
+	std::vector<strBranches> branches;
 
 	/*std::vector<int> tanks_id = {};
 	for (int count=0;count<tank.size();count++)
@@ -266,10 +274,10 @@ void  HydroNet_Components(/*std::vector<strBranches> branches,*/ int n_obj, std:
 
 	//edges = mirror(edges); // full symmetrical matrix(false OR true = true)
 
-	for (int brnch = 0; brnch < n_obj; brnch++)
-		for (int obj = 0; obj < n_obj; obj++)
-			for (int adj = 0; adj < branches.at(brnch).objects.at(obj).adjacent.size(); adj++) 
-				edges.at(branches.at(brnch).objects.at(obj).ID).at(branches.at(brnch).objects.at(obj).adjacent.at(adj)) = true;
+	
+	for (int obj = 0; obj < n_obj; obj++)
+		for (int adj = 0; adj <objects.at(obj).adjacent.size(); adj++) 
+			edges.at(objects.at(obj).ID).at(objects.at(obj).adjacent.at(adj)) = true;
 				
 	for (int row = 0; row < edges.size(); row++)
 		for (int col = 0; col < edges.at(row).size(); col++)
@@ -818,10 +826,10 @@ void  HydroNet_Components(/*std::vector<strBranches> branches,*/ int n_obj, std:
 	branches_id.resize(branch_count); // store all branches(id)
 	for (int count = 0; count < branch_count; count++)
 		branches_id.at(count) = {};
-	//for (int count = 0; count < branch_count;count++) // branch loop
-	//	for (int count1 = 0; count1 < branches_ind.at(count).size();count1++) // objects in a branch
-	//		branches_id.at(count).push_back(objects.at(branches_ind.at( count ).at(count1)).ID); // assign id
-	branches_id = branches_ind;
+	for (int count = 0; count < branch_count;count++) // branch loop
+		for (int count1 = 0; count1 < branches_ind.at(count).size();count1++) // objects in a branch
+			branches_id.at(count).push_back(objects.at(branches_ind.at( count ).at(count1)).ID); // assign id
+	//branches_id = branches_ind;
 
 	// Inverts branches that are in the wrong direction
 	// Flow direction is determined in some objects(and their branches) :
@@ -864,13 +872,40 @@ void  HydroNet_Components(/*std::vector<strBranches> branches,*/ int n_obj, std:
 			for (int aux = 0; aux < branches_id.at(branch_aux.at(0)).size(); aux++)
 				vec_vec_aux.push_back(branches_id.at(branch_aux.at(0)).at(branches_id.at(branch_aux.at(0)).size()-1 - aux));
 			branches_id.at( branch_aux.at(0) ) = vec_vec_aux; // invert branch
+			vec_vec_aux.clear();
+			vec_vec_aux.shrink_to_fit();
+			vec_vec_aux = {};
 			for (int aux = 0; aux < branches_ind.at(branch_aux.at(0)).size(); aux++)
 				vec_vec_aux.push_back(branches_ind.at(branch_aux.at(0)).at(branches_ind.at(branch_aux.at(0)).size()-1 - aux));
-				branches_ind.at(branch_aux.at(0) )= vec_vec_aux;
+			branches_ind.at(branch_aux.at(0) )= vec_vec_aux;
+			vec_vec_aux.clear();
+			vec_vec_aux.shrink_to_fit();
+			vec_vec_aux = {};
 		}
 	}
 	
-	// branches contruction
+	// branches vector contruction
+
+	branches.resize(branches_id.size());
+
+	for (int count = 0; count < branches.size(); count++) {
+		branches.at(count).branch_ind = count;
+		branches.at(count).objects.resize(branches_id.at(count).size());
+		for (int count1 = 0; count1 < branches.at(count).objects.size(); count1++) {
+			branches.at(count).objects.at(count1).ID = branches_id.at(count).at(count1);
+			for (int aux = 0; aux < objects.size(); aux++) {
+				if (objects.at(aux).ID == branches.at(count).objects.at(count1).ID) {
+					branches.at(count).objects.at(count1).Class = objects.at(aux).Class;
+					branches.at(count).objects.at(count1).volume = objects.at(aux).volume;
+					branches.at(count).objects.at(count1).name = objects.at(aux).name;
+					branches.at(count).objects.at(count1).adjacent = objects.at(aux).adjacent;
+					
+				}
+			}
+		}
+	}
+
+
 
 
 }
@@ -885,6 +920,7 @@ int main()
 	std::vector<strPump_turbo> pump_turbo;
 	std::vector<strHeat_exch_Tout> heat_exch_Tout;
 	/* std::vector<strTank> tank;*/
+	std::vector <strObject> objects;
 
 	n_obj = 15;
 
@@ -1060,9 +1096,103 @@ int main()
 	branches.at(5).objects.at(2).ID = 6;
 	branches.at(5).objects.at(2).adjacent = { 5,7,8 };
 
+	objects.resize(15);
+
+	objects.at(0).ID = 0;
+	objects.at(0).name = "Main_Pump";
+	objects.at(0).Class = "pump_volum";
+	objects.at(0).volume = 10E-3;
+	objects.at(0).adjacent = { 12,1 };
+
+	objects.at(1).ID = 1;
+	objects.at(1).name = "Engine_Inlet";
+	objects.at(1).Class = "pipe";
+	objects.at(1).volume = 8.8235E-5;
+	objects.at(1).adjacent = { 0,2 };
+
+	objects.at(2).ID = 2;
+	objects.at(2).name = "Splitter_Engine";
+	objects.at(2).Class = "node";
+	objects.at(2).volume = 0;
+	objects.at(2).adjacent = { 1,3,4 };
+
+	objects.at(3).ID = 3;
+	objects.at(3).name = "Block_cyl1";
+	objects.at(3).Class = "heat_exch_fix";
+	objects.at(3).volume = 5E-4;
+	objects.at(3).adjacent = { 2,5 };
+
+	objects.at(4).ID = 4;
+	objects.at(4).name = "Head_cyl1";
+	objects.at(4).Class = "heat_exch_fix";
+	objects.at(4).volume = 5E-4;
+	objects.at(4).adjacent = { 2,13 };
+
+	objects.at(5).ID = 5;
+	objects.at(5).name = "Mixer_Engine";
+	objects.at(5).Class = "node";
+	objects.at(5).volume = 0;
+	objects.at(5).adjacent = { 3,13,6 };
+
+	objects.at(6).ID = 6;
+	objects.at(6).name = "Splitter_Thermo";
+	objects.at(6).Class = "node";
+	objects.at(6).volume = 0;
+	objects.at(6).adjacent = { 5,7,8 };
+
+	objects.at(7).ID = 7;
+	objects.at(7).name = "Thermostat_rad";
+	objects.at(7).Class = "thermostat";
+	objects.at(7).volume = 0;
+	objects.at(7).adjacent = { 6,9 };
+
+	objects.at(8).ID = 8;
+	objects.at(8).name = "Thermostat_byp";
+	objects.at(8).Class = "thermostat";
+	objects.at(8).volume = 0;
+	objects.at(8).adjacent = { 6,14 };
+
+	objects.at(9).ID = 9;
+	objects.at(9).name = "Radiator";
+	objects.at(9).Class = "heat_exch_fix";
+	objects.at(9).volume = 5E-4;
+	objects.at(9).adjacent = { 7,10 };
+
+	objects.at(10).ID = 10;
+	objects.at(10).name = "Radiator_Outlet";
+	objects.at(10).Class = "pump_volum";
+	objects.at(10).volume = 3.1416E-4;
+	objects.at(10).adjacent = { 9,11 };
+
+	objects.at(11).ID = 11;
+	objects.at(11).name = "Mixer_Thermostat";
+	objects.at(11).Class = "node";
+	objects.at(11).volume = 0;
+	objects.at(11).adjacent = { 14,10,12 };
+
+	objects.at(12).ID = 12;
+	objects.at(12).name = "Return_pipe";
+	objects.at(12).Class = "pipe";
+	objects.at(12).volume = 6.2834E-4;
+	objects.at(12).adjacent = { 11,0 };
+
+	objects.at(13).ID = 13;
+	objects.at(13).name = "Head_cyl2";
+	objects.at(13).Class = "heat_exch_fix";
+	objects.at(13).volume = 5E-4;
+	objects.at(13).adjacent = { 4,5 };
+
+	objects.at(14).ID = 14;
+	objects.at(14).name = "Bypass_Pipe";
+	objects.at(14).Class = "pipe";
+	objects.at(14).volume = 3.1416E-4;
+	objects.at(14).adjacent = { 8,11 };
 
 
-	HydroNet_Components(branches, n_obj,  nodes_id,  pump_volum,  pump_turbo, heat_exch_Tout/*,tank*/);
+
+
+
+	HydroNet_Components(/*branches,*/objects, n_obj,  nodes_id,  pump_volum,  pump_turbo, heat_exch_Tout/*,tank*/);
     return 0;
 }
 

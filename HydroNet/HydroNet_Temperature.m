@@ -66,7 +66,7 @@ for count_branch = transpose(find(branch_volume > 0))
             start_pos = obj_inlet_pos{ind_aux}; % object's inlet position
             end_pos = obj_outlet_pos{ind_aux}; % object's outlet position
             temp_action = 1; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
-            value = heat_exch_fix.heat(count_obj_htx); % heat to add
+            value = heat_exch_fix.heat(count_obj_htx)*dt; % heat to add
             
             [new_pos{count_branch}, new_temp{count_branch}] = HydroNet_InsertVolume(new_pos{count_branch}, ...
                 new_temp{count_branch}, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch));
@@ -162,14 +162,14 @@ for count_branch = transpose(find(branch_volume > 0))
                 % index of the heat exchanger in the table objects
             
             temp_action = 1; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature            
-            value = heat_exch_fix.heat(count_obj_htx);
+            value = heat_exch_fix.heat(count_obj_htx)*dt;
             
             start_pos = obj_outlet_pos{ind_aux}; % object's outlet position is the start position
             end_pos = start_pos + delta_pos;
             
             if end_pos > 100
                 
-                value = heat_exch_fix.heat(count_obj_htx) * (end_pos - 100)/(end_pos - start_pos);
+                value = heat_exch_fix.heat(count_obj_htx)*dt * (end_pos - 100)/(end_pos - start_pos);
                     % heat to add averaged for the volume that goes out of the branch
                 
                 start_pos = 100;
@@ -180,7 +180,7 @@ for count_branch = transpose(find(branch_volume > 0))
                 % For the volume inside the branch
                 start_pos = obj_outlet_pos{ind_aux}; % object's outlet position is the start position
                 end_pos = 100;     
-                value = heat_exch_fix.heat(count_obj_htx) * (100 - start_pos)/(end_pos - start_pos);
+                value = heat_exch_fix.heat(count_obj_htx)*dt * (100 - start_pos)/(end_pos - start_pos);
                     % heat to add averaged for the volume that stays inside the branch
             end
             
@@ -390,18 +390,18 @@ for count_branch = 1 : n_branch
         new_pos_aux = new_pos{count_branch};
         
         % Finds smaller combination of adjacent volumes
-        pos_aux = min(new_pos_aux(3:end) - new_pos_aux(1:end-2));
+        [~, pos_aux] = min(new_pos_aux(3:end) - new_pos_aux(1:end-2));
         
         % Obtains temperature by means of an enthalpy balance
-        temp_aux = (new_temp(pos_aux) * density(fluid_type, new_temp(pos_aux)) * (new_pos(pos_aux + 1) - new_pos(pos_aux)) + ...
-            new_temp(pos_aux + 1) * density(fluid_type, new_temp(pos_aux + 1)) * (new_pos(pos_aux + 2) - new_pos(pos_aux + 1))) / ...
-            (density(fluid_type, new_temp(pos_aux)) * (new_pos_aux(pos_aux + 1) - new_pos_aux(pos_aux)) + ...
-            density(fluid_type, new_temp(pos_aux + 1)) * (new_pos_aux(pos_aux + 2) - new_pos_aux(pos_aux + 1))); 
+        temp_aux = (new_temp{count_branch}(pos_aux) * density(fluid_type, new_temp{count_branch}(pos_aux)) * (new_pos_aux(pos_aux + 1) - new_pos_aux(pos_aux)) + ...
+            new_temp{count_branch}(pos_aux + 1) * density(fluid_type, new_temp{count_branch}(pos_aux + 1)) * (new_pos_aux(pos_aux + 2) - new_pos_aux(pos_aux + 1))) / ...
+            (density(fluid_type, new_temp{count_branch}(pos_aux)) * (new_pos_aux(pos_aux + 1) - new_pos_aux(pos_aux)) + ...
+            density(fluid_type, new_temp{count_branch}(pos_aux + 1)) * (new_pos_aux(pos_aux + 2) - new_pos_aux(pos_aux + 1))); 
         
         % Merges volumes
-        new_pos{count_branch}(new_pos_aux + 1) = []; % remove position in the middle
-        new_temp{count_branch}(new_pos_aux + 1) = []; % remove second temperature
-        new_temp{count_branch}(new_pos_aux) = temp_aux; % enter temperature from balance
+        new_pos{count_branch}(pos_aux + 1) = []; % remove position in the middle
+        new_temp{count_branch}(pos_aux + 1) = []; % remove second temperature
+        new_temp{count_branch}(pos_aux) = temp_aux; % enter temperature from balance
         
         extra_div = extra_div - 1; % next division to merge
     end
@@ -588,7 +588,7 @@ for count_htx = 1 : size(heat_exch_fix, 1)
         % Loop to obtain temperatures of the incoming flows
         while any(overflow ~= 0) % while there are overflows
             for count_branch = transpose(find(overflow > 0)) % loop of branches with overflow
-                node_aux = branches_ind{count_branch}(1); % node at the start of the branch
+                node_aux = find(nodes_ind==branches_ind{count_branch}(1)); % node at the start of the branch
                 flow_sum = sum(flows(node_inlet_branches{node_aux})); % sum of flows going into the branch
                 volume_share = flows(node_inlet_branches{node_aux}) / flow_sum .* overflow(count_branch);
                     % volume that comes from every inlet branch (proportional to flow)

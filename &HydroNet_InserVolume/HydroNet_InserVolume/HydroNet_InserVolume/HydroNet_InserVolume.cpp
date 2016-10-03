@@ -3,7 +3,11 @@
 
 #include "stdafx.h"
 #include <vector>
-
+struct strSize
+{
+	int temperature;	//temperature's vector size
+	int position;		//position's vector size
+};
 double cp(std::string fluid_type, double temperature)
 {
 	// dummy fuction to be ignored when the model is integrated in VEMOD
@@ -31,7 +35,7 @@ double density(std::string fluid_type, double temperature)
 
 */
 
-void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> temperatures, double start_pos, double end_pos, int temp_action, std::string fluid_type, double value, double volume) {
+void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> temperatures, double start_pos, double end_pos, int temp_action, std::string fluid_type, double value, double volume, int max_div, strSize size) {
 
 
 	int start_pos_ind;
@@ -51,9 +55,13 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 	bool flag_inserted = false;
 	std::vector<double> _temperatures;
 	std::vector<double> _positions;
+	strSize _size;
 
-	_temperatures.resize(0);
-	_positions.resize(0);
+	_temperatures.resize(2*max_div);
+	_positions.resize(2 * max_div);
+
+	_size.position = 0;
+	_size.temperature = 0;
 
 	
 
@@ -68,7 +76,7 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 
 	// Finds start position inside positions vector
 
-	while ((count < positions.size()) && (start_pos > positions.at(count))) {
+	while ((count < size.position) && (start_pos > positions.at(count))) {
 
 		count++;
 	}
@@ -83,7 +91,7 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 
 	count = 0;
 
-	while ((count < positions.size()) && (end_pos > positions.at(count))) {
+	while ((count < size.position) && (end_pos > positions.at(count))) {
 
 		count++;
 	}
@@ -244,35 +252,39 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 		}
 	}
 	// Inserts calculated temperature and removes intermediate temperatures in the branch
-	for (int count = 0, aux = 0; flag_start_exists == false && flag_end_exists == false && count < temperatures.size() + 2
-		|| flag_start_exists == true && flag_end_exists == false && count < temperatures.size() + 1
-		|| flag_start_exists == false && flag_end_exists == true && count < temperatures.size() + 1
-		|| flag_start_exists == true && flag_end_exists == true && count < temperatures.size(); count++) {
+	for (int count = 0, aux = 0; flag_start_exists == false && flag_end_exists == false && count <  size.temperature + 2
+		|| flag_start_exists == true && flag_end_exists == false && count < size.temperature + 1
+		|| flag_start_exists == false && flag_end_exists == true && count <  size.temperature + 1
+		|| flag_start_exists == true && flag_end_exists == true && count <  size.temperature; count++) {
 
 		if (flag_start_exists == false && flag_end_exists == false && flag_inserted == true) {
 			count--;
 			aux--;
 		}
 		if (positions.at(count) < start_pos) {										// Saves values of temperatures until the new temperature
-			_temperatures.push_back(temperatures.at(aux));
+			_temperatures.at(_size.temperature)=temperatures.at(aux);
+			_size.temperature++;
 			aux++;
 		}
 
 		else if (flag_inserted == true ) {											// Saves values of temperatures after the new temperature
 
-
-			_temperatures.push_back(temperatures.at(aux));
+			_temperatures.at(_size.temperature) = temperatures.at(aux);
+			_size.temperature++;
 			aux++;
 		}
 
 		else {																//Saves value of new temperature betwin two previusly known
-			_temperatures.push_back(temp_to_insert);
+			_temperatures.at(_size.temperature) = temp_to_insert;
+			_size.temperature++; 
 			flag_inserted = true;
 			if (flag_start_exists == true && flag_end_exists == true)
 				aux++;
 
-			if (flag_start_exists == false && flag_end_exists == false)
-				_temperatures.push_back(temperatures.at(aux - 1));;
+			if (flag_start_exists == false && flag_end_exists == false) {
+				_temperatures.at(_size.temperature) = temperatures.at(aux - 1);
+				_size.temperature++;
+			}
 		}
 		if (flag_start_exists == false && flag_end_exists == false && flag_inserted == true) {
 			count++;
@@ -289,10 +301,10 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 
 	flag_inserted = false;
 
-	for (int count = 0, aux = 0; flag_start_exists == false && flag_end_exists == false && count < positions.size() + 2
-		|| flag_start_exists == true && flag_end_exists == false && count < positions.size()
-		|| flag_start_exists == false && flag_end_exists == true && count < positions.size()
-		|| flag_start_exists == true && flag_end_exists == true && count < positions.size(); count++) {
+	for (int count = 0, aux = 0; flag_start_exists == false && flag_end_exists == false && count <  size.position + 2
+		|| flag_start_exists == true && flag_end_exists == false && count <  size.position
+		|| flag_start_exists == false && flag_end_exists == true && count <  size.position
+		|| flag_start_exists == true && flag_end_exists == true && count <  size.position; count++) {
 
 		if (flag_start_exists == false && flag_end_exists == false && flag_inserted == true) {
 			count--;
@@ -300,22 +312,26 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 		}
 
 		if (flag_inserted != true && positions.at(count) < start_pos) {										// Saves values of positions until the new temperature
-			_positions.push_back(positions.at(aux));
+			_positions.at(_size.position) = positions.at(aux);
+			_size.position++;
 			aux++;
 		}
 
 		else if (flag_inserted == true) {											// Saves values of positions after the new temperature
 
 
-			_positions.push_back(positions.at(aux));
+			_positions.at(_size.position) = positions.at(aux) ;
+			_size.position++;
 			aux++;
 		}
 
 		else {																//Saves value of new temperature betwin two previusly known
 
 
-			_positions.push_back(start_pos);
-			_positions.push_back(end_pos);
+			_positions.at(_size.position) = start_pos;
+			_size.position++;
+			_positions.at(_size.position) = end_pos;
+			_size.position++;
 			flag_inserted = true;
 			if (flag_start_exists == true)
 				aux++;
@@ -343,15 +359,19 @@ int main()
 {
 	std::vector<double> positions = {0,20,35.2,100};
 	std::vector<double> temperatures = {10,-1,300};
-	double start_pos=20;
-	double end_pos=35.2;
+	double start_pos=25;
+	double end_pos=30;
 	int temp_action = 0;
 	std::string fluid_type= "water";
 	double value=900;
 	double volume=0.1;
+	int max_div = 20;
+	strSize size;
+	size.position = 4;
+	size.temperature = 3;
 
 
-HydroNet_InsertVolume(positions, temperatures, start_pos, end_pos, temp_action, fluid_type, value, volume);
+HydroNet_InsertVolume(positions, temperatures, start_pos, end_pos, temp_action, fluid_type, value, volume,max_div,size);
 	
 
     return 0;

@@ -1,6 +1,6 @@
 function ...
     [ flows, branches_ind, branches_id, branch_temp_pos, branch_temperature, branch_htx_fix, branch_htx_Tout, ...
-	heat_exch_Tout, heat_exch_fix, obj_inlet_pos, obj_outlet_pos ] = HydroNet_Executions ( fluid_type, objects, ...
+	heat_exch_Tout, heat_exch_fix, obj_inlet_pos, obj_outlet_pos,pump_volum, head_loss, hydr_resist1, hydr_resist2 ] = HydroNet_Executions ( fluid_type, objects, ...
 	pipe, valve_fix, valve_var, thermostat, pump_volum, pump_turbo, heat_exch_Tout, heat_exch_fix, tank, ...
 	nodes_ind, nodes_id, n_nodes, branches_ind, branches_id, branch_cycle, mesh_branches, node_branches, ...
 	n_mesh, n_branch, n_tanks, branch_volume, obj_inlet_pos, obj_outlet_pos, branch_htx_Tout, branch_htx_fix, ...
@@ -39,7 +39,7 @@ end
 for count = 1 : size(thermostat, 1)
     if thermostat.opening(count) == 0
         obj_aux = thermostat.obj_index;
-        branch_aux = objects.branch{obj_aux};
+        branch_aux = objects.branch{obj_aux(count)};
         bound_flows(branch_aux) = 0;
     end
 end
@@ -107,7 +107,7 @@ if flag_first_exec || flag_pump_speed_change || flag_valve_change || flag_thermo
             % temperature at the pump's middle
 
         pump_volum.pump_power(count) = density(fluid_type, temperature_aux) * gravity_acc * head_vol_pump(branch_aux) * ...
-            flows(branch_aux) * efficiency(head_vol_pump(branch_aux), flows(branch_aux));
+            flows(branch_aux) / efficiency(head_vol_pump(branch_aux), flows(branch_aux));
     end
 
     % Turbopumps
@@ -127,7 +127,7 @@ if flag_first_exec || flag_pump_speed_change || flag_valve_change || flag_thermo
             pump_turbo.pump_speed + pump_turbo.Q2_coef_N2(count) * pump_turbo.pump_speed^2);
 
         pump_turbo.pump_power(count) = density(fluid_type, temperature_aux) * gravity_acc * head_aux * ...
-            flows(branch_aux) * efficiency(head_vol_pump(branch_aux), flows(branch_aux));
+            flows(branch_aux) / efficiency(head_vol_pump(branch_aux), flows(branch_aux));
     end
 end
 

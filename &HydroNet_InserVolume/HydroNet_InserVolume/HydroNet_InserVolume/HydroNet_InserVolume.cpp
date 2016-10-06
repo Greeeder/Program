@@ -35,7 +35,7 @@ double density(std::string fluid_type, double temperature)
 
 */
 
-void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> temperatures, double start_pos, double end_pos, int temp_action, std::string fluid_type, double value, double volume, int max_div, strSize size) {
+void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> temperatures, double start_pos, double end_pos, int temp_action, std::string fluid_type, double value, double volume, int max_div, int size_position, int size_temperature) {
 
 
 	int start_pos_ind;
@@ -56,6 +56,9 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 	std::vector<double> _temperatures;
 	std::vector<double> _positions;
 	strSize _size;
+	strSize size;
+	size.position = size_position;
+	size.temperature = size_temperature;
 
 	_temperatures.resize(2*max_div);
 	_positions.resize(2 * max_div);
@@ -292,9 +295,9 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 		}
 
 	}
-	temperatures.clear();
+	/*temperatures.clear();
 
-	temperatures = _temperatures;
+	temperatures = _temperatures;*/
 
 
 	//Inserts specified positions and removes intermediate positions in the branch
@@ -348,11 +351,11 @@ void HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> te
 		}
 
 	}
-	positions.clear();
+	/*positions.clear();
 
-	positions = _positions;
+	positions = _positions;*/
 
-	return void(temperatures);
+	return void(_temperatures);
 }
 
 int main()

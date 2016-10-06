@@ -1,0 +1,23 @@
+add_library(
+  Engine
+  TBloqueMotor.cpp
+  TEngineBlock.cpp
+  TCilindro.cpp
+  TCilindro2T.cpp
+  TCilindro4T.cpp
+  TCylinder.cpp
+  TCombustion.cpp
+  TCombustionModel.cpp
+  TInjector.cpp
+  TInjectionSystem.cpp
+  TWiebe.cpp
+  TMultiWiebe.cpp
+  THRL.cpp
+  HeatTransfer.cpp
+  HeatTransferCombMECSwirl.cpp
+  TCrankMechanism.cpp
+)
+target_link_libraries(
+  Engine
+  Act
+)

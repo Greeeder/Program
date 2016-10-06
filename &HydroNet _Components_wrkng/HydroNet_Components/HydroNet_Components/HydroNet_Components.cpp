@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <vector>
 #include <string>
+//#include <Eigen/Dense>
 
 struct strObject {
 	int ID;							// Object's idintificator
@@ -145,28 +146,32 @@ struct strBranches
 	//int n_branch;				// Number of branches
 	std::vector<strObjects> objects;	// Objects in Brnach
 };
-std::vector<std::vector<bool>> mirror (std::vector<std::vector<bool>> A){
-	int n = A.size();
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
-			A.at(j).at(i) = A.at(i).at(j);
-	return A;
-
-}
+//std::vector<std::vector<bool>> mirror (std::vector<std::vector<bool>> A){
+//	int n = A.size();
+//	for (int i = 0; i < n; i++)
+//		for (int j = 0; j < n; j++)
+//			A.at(j).at(i) = A.at(i).at(j);
+//	return A;
+//
+//}
 
 bool all(std::vector<bool> A) {
 	bool all = true;
 	for (int i = 0; i < A.size(); i++)
-		if (A.at(i) == false)
+		if (A.at(i) == false) {
 			all = false;
+			break;
+		}
 	return all;
 }
 
 bool any(std::vector<bool> A) {
 	bool any = false;
 	for (int i = 0; i < A.size(); i++)
-		if (A.at(i) == true)
+		if (A.at(i) == true) {
 			any = true;
+			break;
+		}
 	return any;
 }
 bool in(int a, std::vector<int> A) {
@@ -199,6 +204,7 @@ void  HydroNet_Components(/*std::vector<strBranches> branches,*/ std:: vector <s
 	std::vector<std::vector<int>>paths_ind, mesh_ind, branches_ind, branch_mesh, node_branches, mesh_branches, objects_branches, branches_id, ind_outlet_aux;
 	bool flag_path,first;
 	std::vector<bool>path_cycle, to_remove, vec_aux, branch_cycle;
+	//Eigen::RowVectorXi vec_aux;
 	std::string node = "node", tank = "tank";
 	std::vector<strBranches> branches;
 

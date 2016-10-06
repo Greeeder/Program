@@ -1,0 +1,1128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.openwam.com/VEMOD"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:ow="http://www.openwam.com/VEMOD">
+
+	<element name="OpenWAM">
+		<complexType>
+			<sequence>
+				<element ref="ow:GeneralData" maxOccurs="1"
+					minOccurs="1">
+				</element>
+				<element ref="ow:EngineBlock" maxOccurs="1"
+					minOccurs="0">
+				</element>
+				<element ref="ow:BlockOfPipes" maxOccurs="1"
+					minOccurs="1">
+				</element>
+
+				<element ref="ow:BlockOfTurbocharger" maxOccurs="1"
+					minOccurs="0">
+				</element>
+				<element ref="ow:BlockOfPlenums" minOccurs="0" maxOccurs="1"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+
+	<element name="NewEngineBlock" type="ow:EngineBlockType"></element>
+
+	<complexType name="EngineBlockType">
+		<sequence>
+			<element name="Cylinder" type="ow:CylinderType"
+				minOccurs="1" maxOccurs="unbounded">
+			</element>
+			<element name="Combustion" type="ow:CombustionType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Eng_Geometry" type="ow:Eng_GeometryType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+
+			<element ref="ow:Actuator" maxOccurs="unbounded"
+				minOccurs="0">
+			</element>
+			<element ref="ow:GasProperties" minOccurs="1"
+				maxOccurs="1">
+			</element>
+		</sequence>
+		<attribute name="Type">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="4Strokes"></enumeration>
+					<enumeration value="2Strokes"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="Speed" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="CylinderType">
+		<sequence>
+			<element name="Cyl_AvgOutput" type="ow:Cyl_AvgOutputType"></element>
+			<element name="Cyl_InsOutput" type="ow:CylInsOutputType"></element>
+		</sequence>
+		<attribute name="Cyl_ID" type="ID" use="required">
+			<annotation>
+				<documentation>
+					Use the following mask: cyl:XX where XX is the
+					number of the cylinder
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="Order" type="int" use="required"></attribute>
+	</complexType>
+
+	<complexType name="CombustionType">
+		<choice>
+			<element name="MultiWiebe" type="ow:MultiWiebeType"></element>
+			<element name="HRL" type="ow:HRLType"></element>
+			<element ref="ow:Wiebe"></element>
+			<element name="CombustionModel"
+				type="ow:CombustionModelType">
+			</element>
+		</choice>
+	</complexType>
+
+	<complexType name="MultiWiebeType">
+		<sequence>
+			<element name="SingleWiebe" type="ow:SingleWiebeType"
+				minOccurs="1" maxOccurs="unbounded">
+			</element>
+		</sequence>
+	</complexType>
+
+	<element name="Wiebe" type="ow:WiebeType"></element>
+
+	<complexType name="WiebeType">
+		<attribute name="Duration" type="double"></attribute>
+		<attribute name="SOC" type="double"></attribute>
+		<attribute name="m" type="double"></attribute>
+		<attribute name="C" type="double"></attribute>
+	</complexType>
+
+	<complexType name="HRLType">
+		<sequence>
+			<element name="HRLrow" type="ow:HRLrowType" minOccurs="1"
+				maxOccurs="unbounded">
+			</element>
+		</sequence>
+		<attribute name="SOC" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="CombustionModelType"></complexType>
+
+	<complexType name="HRLrowType">
+		<attribute name="Angle" type="double" use="required"></attribute>
+		<attribute name="HRLvalue" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="SingleWiebeType">
+		<sequence>
+			<element ref="ow:Wiebe"></element>
+		</sequence>
+		<attribute name="Beta" type="double" use="required"></attribute>
+	</complexType>
+
+	<element name="BlockOfPipes" type="ow:BlockOfPipesType"></element>
+
+	<complexType name="BlockOfPipesType">
+		<sequence>
+			<element name="Bop_NewPipe" type="ow:Bop_NewPipesType" maxOccurs="unbounded" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<element name="GeneralData" type="ow:GeneralDataType"></element>
+
+	<complexType name="GeneralDataType">
+		<sequence>
+			<element name="SpeciesModel" type="ow:SpeciesModelType"
+				minOccurs="1" maxOccurs="1">
+			</element>
+			<element name="Materials" type="ow:MaterialsType"
+				minOccurs="1" maxOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="SpeciesModelType">
+		<sequence>
+			<element name="Specie" type="ow:SpecieType" minOccurs="1"
+				maxOccurs="unbounded">
+			</element>
+		</sequence>
+		<attribute name="FuelType">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="GASOLINE"></enumeration>
+					<enumeration value="GASOIL"></enumeration>
+					<enumeration value="BLEND"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+
+	<complexType name="MaterialsType">
+		<sequence>
+			<element name="Material" type="ow:MaterialType"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="SpecieType">
+		<sequence>
+			<element name="Component" type="ow:ComponentType"
+				minOccurs="0" maxOccurs="unbounded">
+			</element>
+		</sequence>
+		<attribute name="Name">
+			<simpleType>
+				<restriction base="ID">
+					<enumeration value="AIR"></enumeration>
+					<enumeration value="FUEL"></enumeration>
+					<enumeration value="GAS"></enumeration>
+					<enumeration value="O2"></enumeration>
+					<enumeration value="N2"></enumeration>
+					<enumeration value="CO2"></enumeration>
+					<enumeration value="H2Ov"></enumeration>
+					<enumeration value="CO"></enumeration>
+					<enumeration value="C"></enumeration>
+					<enumeration value="NO"></enumeration>
+					<enumeration value="NO2"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="MolecularWeigth" type="double"></attribute>
+		<attribute name="O2_Mol_Fraction" type="double"></attribute>
+		<attribute name="Density" type="double"></attribute>
+		<attribute name="LowerCalorificValue" type="double"></attribute>
+		<attribute name="CAHFL" type="double"></attribute>
+		<attribute name="CBHFL" type="double"></attribute>
+		<attribute name="O_Content" type="double"></attribute>
+		<attribute name="Relation_HC" type="double"></attribute>
+	</complexType>
+
+	<complexType name="ComponentType">
+		<attribute name="Name">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="GASOLINA"></enumeration>
+					<enumeration value="GASOIL"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="MolecularWeight" type="double"></attribute>
+		<attribute name="Density" type="double"></attribute>
+		<attribute name="LowerCalorificValue" type="double"></attribute>
+		<attribute name="CAHFL" type="double"></attribute>
+		<attribute name="CBHFL" type="double"></attribute>
+		<attribute name="O_Content" type="double"></attribute>
+		<attribute name="Relation_HC" type="double"></attribute>
+		<attribute name="Y_Fraction" type="double"></attribute>
+	</complexType>
+
+	<complexType name="MaterialType">
+		<sequence>
+			<element name="Conductivity" type="ow:ConductivityType"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="HeatCapacity" type="ow:HeatCapacityType"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="Density" type="ow:DensityType" maxOccurs="1"
+				minOccurs="0">
+			</element>
+		</sequence>
+		<attribute name="Name" type="ID"></attribute>
+	</complexType>
+
+	<complexType name="ConductivityType">
+		<sequence>
+			<element name="ConductivityCoef"
+				type="ow:ConductivityCoefType" maxOccurs="unbounded"
+				minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="HeatCapacityType">
+		<sequence>
+			<element name="HeatCapacityCoef"
+				type="ow:HeatCapacityCoefType" maxOccurs="unbounded"
+				minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="DensityType">
+		<sequence>
+			<element name="DensityCoef" type="ow:DensityCoefType"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ConductivityCoefType">
+		<sequence></sequence>
+		<attribute name="ID" type="int"></attribute>
+		<attribute name="Value" type="double"></attribute>
+	</complexType>
+
+	<complexType name="HeatCapacityCoefType">
+		<attribute name="ID" type="int"></attribute>
+		<attribute name="Value" type="double"></attribute>
+	</complexType>
+
+	<complexType name="DensityCoefType">
+		<attribute name="ID" type="int"></attribute>
+		<attribute name="Value" type="double"></attribute>
+	</complexType>
+
+	<element name="BlockOfTurbocharger"
+		type="ow:BlockOfTurbochargersType">
+	</element>
+
+	<complexType name="BlockOfTurbochargersType">
+		<sequence>
+			<element name="Bot_Turbocharger"
+				type="ow:Bot_TurbochargerType" maxOccurs="unbounded"
+				minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Bot_TurbochargerType">
+		<sequence>
+			<element name="Tch_Compressor" type="ow:Tch_CompressorType"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+			<element name="Tch_Turbine" type="ow:Tch_TurbineType"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+			<element name="Tch_HTML" type="ow:Tch_HTMLType"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<element ref="ow:Actuator" maxOccurs="unbounded"
+				minOccurs="0">
+			</element>
+			<element name="Tch_AvgOutput" type="ow:Tch_AvgOutputType"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="Tch_InsOutput" type="ow:Tch_InsOutputType"
+				maxOccurs="1" minOccurs="0">
+			</element>
+		</sequence>
+		<attribute name="Turbocharger_ID" type="string"
+			use="required">
+		</attribute>
+		<attribute name="Speed" type="double" use="required"></attribute>
+		<attribute name="FixedSpeed" type="boolean" use="required"></attribute>
+		<attribute name="Inertia" type="double" use="optional"></attribute>
+	</complexType>
+
+	<complexType name="Tch_CompressorType">
+		<attribute name="Compressor_ID" type="int" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Tch_TurbineType">
+		<attribute name="Turbine_ID" type="int" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Tch_HTMLType">
+		<sequence>
+			<element name="Htm_Bearings" type="ow:Htm_BearingsType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Htm_Fluids" type="ow:Htm_FluidsType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Htm_MechLosses" type="ow:Htm_MechLossesType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Htm_Geometry" type="ow:Htm_GeometryType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Htm_HeatTransfer"
+				type="ow:Htm_HeatTransferType" maxOccurs="1" minOccurs="1">
+			</element>
+
+		</sequence>
+	</complexType>
+
+
+	<complexType name="Htm_BearingsType">
+		<attribute name="ShaftDiameter" type="double" use="required"></attribute>
+		<attribute name="JournalBearingLength" type="double"
+			use="required">
+			<annotation>
+				<documentation>
+					This is the total length of the journal bearings
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="Clearence" type="double" use="required"></attribute>
+		<attribute name="ThrustBearingMinR" type="double"
+			use="required">
+		</attribute>
+		<attribute name="ThrustBearingMaxR" type="double"
+			use="required">
+		</attribute>
+	</complexType>
+
+	<complexType name="Htm_FluidsType">
+		<sequence>
+			<element name="Flu_Oil" type="ow:Flu_OilType" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="Flu_Water" type="ow:Flu_WaterType"
+				maxOccurs="1" minOccurs="0">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Htm_MechLossesType">
+		<attribute name="JournalB_K" type="double" use="required"></attribute>
+		<attribute name="K_m" type="double" use="required"></attribute>
+		<attribute name="K_tb" type="double" use="required"></attribute>
+		<attribute name="CAC" type="double" use="required"></attribute>
+		<attribute name="CAT" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Htm_GeometryType">
+		<attribute name="CompWheelArea" type="double" use="required"></attribute>
+		<attribute name="TurbWheelArea" type="double" use="required"></attribute>
+		<attribute name="TurbExtDiameter" type="double"
+			use="required">
+		</attribute>
+		<attribute name="TurbExtLength" type="double" use="required"></attribute>
+		<attribute name="CompExtDiamter" type="double" use="required"></attribute>
+		<attribute name="CompExtLength" type="double" use="required"></attribute>
+		<attribute name="HousExtDiameter" type="double"
+			use="required">
+		</attribute>
+		<attribute name="housExtLength" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Htm_HeatTransferType">
+		<sequence>
+			<element name="Htr_Settings" type="ow:Htr_SettingsType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Htr_Conduction" type="ow:Htr_ConductionType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Htr_Capacity" type="ow:Htr_CapacityType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Htr_Convection" type="ow:Htr_ConvectionType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Htr_Radiation" type="ow:Htr_RadiationType"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="Htr_ConvectionExt"
+				type="ow:Htr_ConvectionExtType" maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="Htr_Temperatures"
+				type="ow:Ttr_TemperaturesType" maxOccurs="1" minOccurs="0">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Flu_OilType">
+		<attribute name="PortDiameter" type="double" use="required"></attribute>
+		<attribute name="MassFlow" type="double" use="required"></attribute>
+		<attribute name="Temperature" type="double" use="required"></attribute>
+		<attribute name="Pressure" type="double" use="required"></attribute>
+		<attribute name="VoeguelK1" type="double" use="required"></attribute>
+		<attribute name="VoeguelK2" type="double" use="required"></attribute>
+		<attribute name="VoeguelK3" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Flu_WaterType">
+		<attribute name="PortDiameter" type="double" use="required"></attribute>
+		<attribute name="MassFlow" type="double" use="required"></attribute>
+		<attribute name="Temperature" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Htr_SettingsType">
+		<attribute name="TimeStep" type="double" use="optional"></attribute>
+		<attribute name="MaxTime" type="double" use="optional"></attribute>
+		<attribute name="FastConvergence" type="boolean"
+			use="required">
+		</attribute>
+		<attribute name="WaterCooled" type="boolean"></attribute>
+	</complexType>
+
+	<complexType name="Htr_ConductionType">
+		<attribute name="T_H1" type="double" use="required"></attribute>
+		<attribute name="H1_H2" type="double"></attribute>
+		<attribute name="H2_H3" type="double" use="required"></attribute>
+		<attribute name="H3_C" type="double"></attribute>
+	</complexType>
+
+	<complexType name="Htr_CapacityType">
+		<attribute name="T" type="double" use="required"></attribute>
+		<attribute name="H1" type="double" use="required"></attribute>
+		<attribute name="H2" type="double" use="required"></attribute>
+		<attribute name="H3" type="double" use="required"></attribute>
+		<attribute name="C" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Htr_ConvectionType">
+		<sequence>
+			<element name="Cnv_Gas_T" type="ow:Cnv_Gas_TType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Cnv_Wat_H2" type="ow:Cnv_Wat_H2Type"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="Cnv_Oil_H1" type="ow:Cnv_Oil_H1Type"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Cnv_Oil_H2_C" type="ow:Cnv_Oil_H2_CType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Cnv_Oil_H2_H" type="ow:Cnv_Oil_H2_HType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Cnv_Air_C_C" type="ow:Cnv_Air_C_CType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Cnv_Air_C_H" type="ow:Cnv_Air_C_HType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Htr_RadiationType">
+		<attribute name="FitCoefficient" type="double" use="required"></attribute>
+		<attribute name="TurbineEmissivity" type="double"
+			use="required">
+		</attribute>
+		<attribute name="HousingEmissivity" type="double"
+			use="required">
+		</attribute>
+		<attribute name="CompressorEmissivity" type="double"
+			use="required">
+		</attribute>
+		<attribute name="ShieldEmissivity" type="double"
+			use="optional">
+		</attribute>
+	</complexType>
+
+	<complexType name="Htr_ConvectionExtType">
+		<choice>
+			<element name="Ecv_HeatCoefficients"
+				type="ow:Ecv_HeatCoefficientsType" maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="Ecv_Velocities" type="ow:Ecv_VelocitiesType"
+				maxOccurs="1" minOccurs="0">
+			</element>
+		</choice>
+		<attribute name="FitCoefficient" type="double" use="required"></attribute>
+		<attribute name="ExtVelocity" type="double" use="optional"></attribute>
+	</complexType>
+
+	<complexType name="Cnv_Gas_TType">
+		<attribute name="k1" type="double" use="required"></attribute>
+		<attribute name="k2" type="double" use="required"></attribute>
+		<attribute name="k3" type="double" use="required"></attribute>
+		<attribute name="k4" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Cnv_Wat_H2Type">
+		<attribute name="k1" type="double" use="required"></attribute>
+		<attribute name="k2" type="double" use="required"></attribute>
+		<attribute name="k3" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Cnv_Oil_H1Type">
+		<attribute name="k1" type="double" use="required"></attribute>
+		<attribute name="k2" type="double" use="required"></attribute>
+		<attribute name="k3" type="double" use="required"></attribute>
+		<attribute name="k4" type="double" use="required"></attribute>
+		<attribute name="k5" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Cnv_Oil_H2_CType">
+		<attribute name="k1" type="double" use="required"></attribute>
+		<attribute name="k2" type="double" use="required"></attribute>
+		<attribute name="k3" type="double" use="required"></attribute>
+		<attribute name="k4" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Cnv_Oil_H2_HType">
+		<attribute name="k1" type="double" use="required"></attribute>
+		<attribute name="k2" type="double" use="required"></attribute>
+		<attribute name="k3" type="double" use="required"></attribute>
+		<attribute name="k4" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Cnv_Air_C_CType">
+		<attribute name="k1" type="double" use="required"></attribute>
+		<attribute name="k2" type="double" use="required"></attribute>
+		<attribute name="k3" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Cnv_Air_C_HType">
+		<attribute name="k1" type="double" use="required"></attribute>
+		<attribute name="k2" type="double" use="required"></attribute>
+		<attribute name="k3" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Ttr_TemperaturesType">
+		<attribute name="T" type="double" use="required"></attribute>
+		<attribute name="H1" type="double" use="required"></attribute>
+		<attribute name="H2" type="double" use="required"></attribute>
+		<attribute name="H3" type="double" use="required"></attribute>
+		<attribute name="C" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Ecv_HeatCoefficientsType">
+		<sequence></sequence>
+		<attribute name="Turbine" type="double" use="required"></attribute>
+		<attribute name="Housing" type="double" use="required"></attribute>
+		<attribute name="Compressor" type="double" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Ecv_VelocitiesType">
+		<attribute name="Turbine" type="double" use="required"></attribute>
+		<attribute name="Housing" type="double" use="required"></attribute>
+		<attribute name="Compressor" type="double" use="required"></attribute>
+	</complexType>
+
+	<element name="Actuator" type="ow:ActuatorType"></element>
+
+	<complexType name="ActuatorType">
+		<attribute name="CtrlID" type="IDREF" use="required"></attribute>
+		<attribute name="Parameter" type="string" use="required"></attribute>
+	</complexType>
+
+	<complexType name="Tch_AvgOutputType">
+		<attribute name="Parameter" use="required">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="Speed"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+
+	<complexType name="Tch_InsOutputType">
+		<attribute name="Paramter">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="Speed"></enumeration>
+					<enumeration value="MechanicalLosses"></enumeration>
+					<enumeration value="MechanicalEfficiency"></enumeration>
+					<enumeration value="NodeTemperature"></enumeration>
+					<enumeration value="HeatFlow"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+
+	<complexType name="Eng_GeometryType">
+		<attribute name="Diameter" type="double" use="required"></attribute>
+		<attribute name="CrankRadius" type="double" use="required"></attribute>
+		<attribute name="ConnectingRodLength" type="double"
+			use="required">
+		</attribute>
+		<attribute name="Eccentricity" type="double" use="required"></attribute>
+		<attribute name="CompressionRatio" type="double"
+			use="required">
+		</attribute>
+		<attribute name="PressureCoefficient" type="double"
+			use="required">
+		</attribute>
+		<attribute name="InertiaCoefficient" type="double"
+			use="required">
+		</attribute>
+	</complexType>
+
+	<complexType name="Cyl_AvgOutputType">
+		<attribute name="Parameter">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="NetWork"></enumeration>
+					<enumeration value="NMEP"></enumeration>
+					<enumeration value="PumpingWork"></enumeration>
+					<enumeration value="CombustionHeat"></enumeration>
+					<enumeration value="LinerHeat"></enumeration>
+					<enumeration value="CylHeadHeat"></enumeration>
+					<enumeration value="PistonHeat"></enumeration>
+					<enumeration value="IMEP"></enumeration>
+					<enumeration value="TrappedMass"></enumeration>
+					<enumeration value="IntCylTemperature"></enumeration>
+					<enumeration value="MedCylTemperature"></enumeration>
+					<enumeration value="ExtCylTemperature"></enumeration>
+					<enumeration value="IntPistonTemperature"></enumeration>
+					<enumeration value="MedPistonTemperature"></enumeration>
+					<enumeration value="ExtPistonTemperature"></enumeration>
+					<enumeration value="IntCylHeadTemperature"></enumeration>
+					<enumeration value="MedCylHeadTemperature"></enumeration>
+					<enumeration value="ExtCylHeadTemperature"></enumeration>
+					<enumeration value="NIT"></enumeration>
+					<enumeration value="AFR"></enumeration>
+					<enumeration value="BlowByMass"></enumeration>
+					<enumeration value="IntakeMass"></enumeration>
+					<enumeration value="ExhaustMass"></enumeration>
+					<enumeration value="ShortCircuitMass"></enumeration>
+					<enumeration value="Temperature"></enumeration>
+					<enumeration value="Swirl"></enumeration>
+					<enumeration value="VolumetricEfficiency"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+
+	<complexType name="CylInsOutputType">
+		<attribute name="Parameter">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="Pressure"></enumeration>
+					<enumeration value="Temperture"></enumeration>
+					<enumeration value="ExhaustAngulaMomentum"></enumeration>
+					<enumeration value="IntakeAngulaMomentum"></enumeration>
+					<enumeration value="ExhaustMassFlow"></enumeration>
+					<enumeration value="IntakeMassFlow"></enumeration>
+					<enumeration value="ExhaustMach"></enumeration>
+					<enumeration value="IntakeMach"></enumeration>
+					<enumeration value="IntakeEffectiveSection"></enumeration>
+					<enumeration value="ExhaustEffectiveSection"></enumeration>
+					<enumeration value="Mass"></enumeration>
+					<enumeration value="Volume"></enumeration>
+					<enumeration value="FuelMass"></enumeration>
+					<enumeration value="HRL"></enumeration>
+					<enumeration value="WoschniCoef"></enumeration>
+					<enumeration value="IntCylinderTemperature"></enumeration>
+					<enumeration value="MedCylinderTemperature"></enumeration>
+					<enumeration value="ExtCylinderTemperature"></enumeration>
+					<enumeration value="IntPistonTemperature"></enumeration>
+					<enumeration value="MedPistonTemperature"></enumeration>
+					<enumeration value="ExtPistonTemperature"></enumeration>
+					<enumeration value="IntCylHeadTemperature"></enumeration>
+					<enumeration value="MedCylHeadTemperature"></enumeration>
+					<enumeration value="ExtCylHeadTemperature"></enumeration>
+					<enumeration value="NIT"></enumeration>
+					<enumeration value="Torque"></enumeration>
+					<enumeration value="ShortCircuitMassFlow"></enumeration>
+					<enumeration value="BlowByMasssFlow"></enumeration>
+					<enumeration value="MassFraction"></enumeration>
+					<enumeration value="SpecificHeatRatio"></enumeration>
+					<enumeration value="CylHeadHeat"></enumeration>
+					<enumeration value="CylinderHeat"></enumeration>
+					<enumeration value="PistonHeat"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+
+
+	<element name="Composition" type="ow:CompositionType"></element>
+
+	<complexType name="CompositionType">
+		<sequence>
+			<element name="Cmp_Component" type="ow:Cmp_ComponentType"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Cmp_ComponentType">
+		<attribute name="name" type="string"></attribute>
+		<attribute name="fraction" type="double"></attribute>
+	</complexType>
+
+	<complexType name="Bop_NewPipesType">
+		<sequence>
+			<element name="Pip_Geometry" type="ow:Pip_GeometryType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Pip_NumericalMethod"
+				type="ow:Pip_NumericalMethodType" maxOccurs="1" minOccurs="1">
+			</element>
+			<element ref="ow:GasProperties" maxOccurs="1"
+				minOccurs="1">
+			</element>
+			<element name="Pip_HeatTransfer"
+				type="ow:Pip_HeatTransferType" maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="Pip_Friction" type="ow:Pip_FrictionType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element ref="ow:Output"></element>
+		</sequence>
+		<attribute name="Name" type="string"></attribute>
+		<attribute name="NodeL_ID" type="IDREF"></attribute>
+		<attribute name="NodeR_ID" type="IDREF"></attribute>
+		<attribute name="ParallelPipes" type="int"></attribute>
+		<attribute name="Pipe_ID" type="ID"></attribute>
+	</complexType>
+
+	<complexType name="Pip_GeometryType">
+		<sequence>
+			<element name="GeoStretch" type="ow:Geo_StretchType" maxOccurs="unbounded" minOccurs="1"></element>
+		</sequence>
+		<attribute name="Diameter" type="string"></attribute>
+	</complexType>
+
+	<complexType name="Pip_NumericalMethodType">
+    	<attribute name="Scheme">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="Lax-Wendroff"></enumeration>
+    				<enumeration value="Godunov"></enumeration>
+    				<enumeration value="MUSCL"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute name="MeshSize" type="double"></attribute>
+    </complexType>
+
+    <complexType name="Geo_StretchType">
+    	<attribute name="Stretch_ID" type="int"></attribute>
+    	<attribute name="Length" type="double"></attribute>
+    	<attribute name="Diameter" type="double"></attribute>
+    </complexType>
+
+    <element name="GasProperties" type="ow:GasPropertiesType"></element>
+
+    <complexType name="GasPropertiesType">
+    	<sequence>
+    		<element ref="ow:Composition"></element>
+    	</sequence>
+    	<attribute name="Pressure" type="double"></attribute>
+    	<attribute name="Temperature" type="double"></attribute>
+    	<attribute name="Velocity" type="double"></attribute>
+    </complexType>
+
+    <element name="BlockOfConnections" type="ow:BlockOfConnectionsType"></element>
+
+    <complexType name="BlockOfConnectionsType">
+    	<sequence>
+    		<element name="Bob_Newconnection" type="ow:Bob_NewConnectionType" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Bob_NewConnectionType">
+    	<sequence>
+    		<element name="Con_PressureBC" type="ow:Con_PressureBCType"></element>
+    	</sequence>
+    	<attribute name="Boundary_ID" type="ID"></attribute>
+    	<attribute name="BoundaryType">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="ConstantCondition"></enumeration>
+    				<enumeration value="ClosedEnd"></enumeration>
+    				<enumeration value="Junction"></enumeration>
+    				<enumeration value="PressureBC"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    </complexType>
+
+    <complexType name="Pip_HeatTransferType">
+    	<sequence>
+    		<element name="Pht_Layer" type="ow:Pht_LayerType"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="Pht_External" type="ow:Pht_ExternalType" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    	<attribute name="IntMultiplier" type="double" use="required"></attribute>
+    	<attribute name="HT_Type" use="required">
+    		<simpleType>
+    			<restriction base="time">
+    				<enumeration value="IntakePipe"></enumeration>
+    				<enumeration value="ExhaustPipe"></enumeration>
+    				<enumeration value="IntakePort"></enumeration>
+    				<enumeration value="ExhaustPort"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute name="WallCalculation" use="required">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="Constant"></enumeration>
+    				<enumeration value="Transient"></enumeration>
+    				<enumeration value="Steady"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute name="WallTemperature" type="double" use="required"></attribute>
+    </complexType>
+    
+    <complexType name="Pht_LayerType">
+    	<attribute name="Material" type="string" use="required"></attribute>
+    	<attribute name="Thickness" type="double" use="required"></attribute>
+    	<attribute name="Fluid" type="boolean" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="Pht_ExternalType">
+    	<attribute name="Velocity" type="double" use="required"></attribute>
+    	<attribute name="ExtMultiplier" type="double" use="required"></attribute>
+    	<attribute name="Emissivity" type="double" use="required"></attribute>
+    	<attribute name="Type" use="required">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="AirCooled"></enumeration>
+    				<enumeration value="WaterCooled"></enumeration>
+    				<enumeration value="Port"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute name="WaterTemp" type="double"></attribute>
+    </complexType>
+
+    <complexType name="Pip_FrictionType">
+    	<attribute name="Multiplier" type="double" use="required"></attribute>
+    	<attribute name="Type">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="Colebrook"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute name="Rugosity" type="double" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="Con_PressureBCType">
+    	<sequence>
+    		<element ref="ow:GasProperties"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="BlockOfPlenums" type="ow:BlockOfPlenumsType"></element>
+
+    <complexType name="BlockOfPlenumsType">
+    	<sequence>
+    		<element name="Bod_NewPlenum" type="ow:Bod_NewPlenumType"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Bod_NewPlenumType">
+    	<sequence>
+    		<element ref="ow:GasProperties"></element>
+    	</sequence>
+    	<attribute name="ID" type="ID" use="required"></attribute>
+    	<attribute name="Type" use="required">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="Basic"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute name="Volume" type="double" use="required"></attribute>
+    </complexType>
+
+    <element name="BlockOfValves" type="ow:BlockOfValvesType"></element>
+
+    <complexType name="BlockOfValvesType">
+    	<sequence>
+    		<element name="Bov_Valve" type="ow:Bov_ValveType"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Bov_ValveType">
+    	<choice>
+    		<element name="Val_FixDC" type="ow:ValFixDCType"></element>
+    		<element name="Val_Valve4S" type="ow:Val_Valve4SType"></element>
+    		<element name="Val_Throttle" type="ow:Val_ThrottleType"></element>
+    	</choice>
+    	<attribute name="Valve_type" use="required">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="FixDC"></enumeration>
+    				<enumeration value="4SValve"></enumeration>
+    				<enumeration value="Throttle"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute name="Valve_ID" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="ValFixDCType">
+    	<attribute name="DC_in" type="double" use="required"></attribute>
+    	<attribute name="DC_out" type="double" use="required"></attribute>
+    	<attribute name="RefDiameter" type="double" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="Val_Valve4SType">
+    	<sequence>
+    		<element name="V4s_Profile" type="ow:V4s_ProfileType"></element>
+    		<element name="V4s_FlowCoef" type="ow:V4s_FlowCoefType"></element>
+    	</sequence>
+    	<attribute name="Diameter" type="double" use="required"></attribute>
+    	<attribute name="AngleInterval" type="double" use="required"></attribute>
+    	<attribute name="OpeningAngle" type="double" use="required"></attribute>
+    	<attribute name="RefDiameter" type="double" use="required"></attribute>
+    	<attribute name="MeanSwirlCoef" type="double"></attribute>
+    	<attribute name="LiftInterval" type="double" use="required"></attribute>
+    </complexType>
+
+    <complexType name="Val_ThrottleType">
+    	<sequence>
+    		<element name="Thr_Lift" type="ow:Thr_LiftType" minOccurs="2" maxOccurs="unbounded"></element>
+    	</sequence>
+    	<attribute name="Lift" type="double" use="required"></attribute>
+    	<attribute name="RefDiameter" type="double" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="Thr_LiftType">
+    	<attribute name="Lift" type="double" use="required"></attribute>
+    	<attribute name="DC_in" type="double" use="required"></attribute>
+    	<attribute name="DC_out" type="double" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="V4s_ProfileType">
+    	<attribute name="Lift" type="double" use="required"></attribute>
+    </complexType>
+    
+    <complexType name="V4s_FlowCoefType">
+    	<attribute name="SwirlCoef" type="double" use="required"></attribute>
+    	<attribute name="DC_in" type="double" use="required"></attribute>
+    	<attribute name="DC_out" type="double" use="required"></attribute>
+    </complexType>
+
+    <element name="Output" type="ow:OutputType"></element>
+    
+    <complexType name="OutputType">
+    	<sequence>
+    		<element name="Parameter" type="ow:ParameterType" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    	<attribute name="Location" type="double" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="ParameterType">
+        <annotation>
+        	<documentation></documentation>
+        </annotation>
+        <attribute name="Name" type="string" use="required">
+        	<annotation>
+        		<documentation>The parameter name is limited depending on the object
+For pipes:
+  - MassFlow
+  - Pressure
+  - Temperature
+  - TotalPressure
+  - TotalTemperature
+  - Velocity</documentation>
+        	</annotation></attribute>
+    	<attribute name="Average" type="boolean" use="required"></attribute>
+    </complexType>
+	
+	<element name="HeatExchangers"> <!-- Intercambiadores de calor -->
+        <complexType>
+            <sequence>
+                <element maxOccurs="unbounded" minOccurs="0" name="HeatExchanger"> <!-- Intercambiador de calor -->
+                    <complexType>
+						<attribute name="ID" type="unsignedInt"></attribute>
+							<!-- Identificador del intercambiador de calor (respecto a otros intercambiadores del motor) -->
+							<!-- valor por defecto: enumeración entre intercambiadores -->
+							<!-- Alternativa preferible: no mostrar el campo al usuario e imponerle el valor por defecto directamente -->
+						<attribute name="Name" type="string"></attribute> <!-- valor por defecto: "HT_x" con x = número de intercambiador -->
+                        <attribute name="Fluid type">  <!-- Tipo de fluidos en el intercambiador -->
+                            <simpleType>
+                                <restriction base="string" use="required">
+									<!-- El tipo de fluidos debe limitar las pantallas a las que el intercambiador puede ser copiado -->
+									<!-- Ejemplo: un intercambiador GAS-GAS no puede ser copiado a una ventana de circuito hidráulico (de líquidos) -->
+                                    <!-- Si el intercambiador ha sido creado en una pantalla incorrecta, mostrar advertencia -->
+									<enumeration value="GAS-GAS"/>
+                                    <enumeration value="GAS-LIQUID"/>
+									<enumeration value="GAS-AMBIENT"/>
+									<enumeration value="LIQUID-LIQUID"/>
+									<enumeration value="LIQUID-AMBIENT"/>
+                                </restriction>
+							</simpleType>
+                        </attribute>
+						<attribute name="Fluid 1">
+							<!-- De entre ambos fluidos, selecciona qué fluido es el 1 -->
+							<!-- El fluido del circuito actual (agua, aceite, refrigerante, aire, gas de escape...) lo debe haber seleccionado en la pantalla general del circuito -->
+							<!-- Cada fluido correspondera a un circuito diferente
+							<!-- Se puede elegir entre el ambiente, el fluido del circuito actual, el del otro circuito (si es posible) o dejarlo en blanco para agregar más tarde el fluido de otro circuito (en la pantalla de otro circuito) -->
+                            <!-- Cuando todo en el motor esté definido, este campo no puede quedar en blanco -->
+							<simpleType>
+                                <restriction base="string" use="required">
+									<enumeration value="Current circuit fluid"/> <!-- Fluido del circuito actual -->
+									<enumeration value="Fluid of circuit X"/> <!-- Fluido de otro circuito X (si es posible; si no, sólo se podría seleccionar el fluido de cada circuito en la pantalla de cada circuito) -->
+                                    <!-- (... resto de circuitos ...) -->
+									<enumeration value="Ambient"/> <!-- Ambiente (el ambiente a priori no tendrá una pantalla propia de circuito) -->
+                                </restriction>
+							</simpleType>
+                        </attribute>
+						<attribute name="Fluid 2"> <!-- Análogo a Fluid 1 -->
+							<simpleType>
+                                <restriction base="string" use="required">
+									<enumeration value="Current circuit fluid"/> <!-- Fluido del circuito actual -->
+									<enumeration value="Fluid of circuit X"/> <!-- Fluido de otro circuito X (si es posible; si no, sólo se podría seleccionar el fluido de cada circuito en la pantalla de cada circuito) -->
+                                    <!-- (... resto de circuitos ...) -->
+									<enumeration value="Ambient"/> <!-- Ambiente (el ambiente a priori no tendrá una pantalla propia de circuito) -->
+                                </restriction>
+							</simpleType>
+                        </attribute>
+						<attribute name="Volume" type="double" use="required"></attribute> <!-- Volumen [m^3] -->
+						<attribute name="Hydraulic resistance" type="double" use="required"></attribute> <!-- Resistencia hidráulica al flujo de fluido [m.c.f * m^(-6) * s^2)] -->
+						<attribute name="UA" type="double" use="required"></attribute> <!-- Coeficiente global de transmision de calor por el área de intercambio de calor (conductancia) [W/K] -->
+						
+						<!-- Cada intercambiador puede tener la eficiencia definida mediante una tabla o mediante las caracteristicas del itercambiador -->
+						<!-- Hay que seleccionar una de las dos opciones -->
+						<!-- Esto se puede hacer mediante una lista con dos opciones o con una casilla -->
+						<!-- Lo pongo como lista porque no sé cómo hacer casillas -->
+						<attribute name="Efficiency calculation method"> <!-- Método para el cálculo de la eficiencia -->
+							<simpleType>
+                                <restriction base="string" use="required">
+									<enumeration value="From heat exchanger type"/> <!-- A partir del tipo de intercambiador de calor -->
+									<enumeration value="From specified table"/> <!-- A partir de la tabla especificada -->
+                                </restriction>
+							</simpleType>
+                        </attribute>
+						
+						<!-- Según el método elegido, al usuario se le permitirá editar una serie de campos o rellenar una tabla -->
+						<!-- OPCIÓN TIPO DE INTERCAMBIADOR -->
+						<attribute name="Heat exchanger type"> <!-- Tipo de intercambiador de calor -->
+							<simpleType>
+                                <restriction base="string" use="required">
+									<enumeration value="Simple co-current"/> <!-- Simple equicorriente -->
+									<enumeration value="Simple counter-current"/> <!-- Simple contracorriente -->
+									<enumeration value="Shell and tube"/>
+										<!-- Carcasa y tubos -->
+										<!-- En el caso de elegir "Shell and tube" debe pedir un campo nuevo llamado "Number of passes through shell" (número de pasos por carcasa, ver más abajo)-->
+									<enumeration value="Crossed flows: simple pass, fluids not mixed"/> 
+									<enumeration value="Crossed flows: simple pass, fluid 1 mixed, fluid 2 not mixed"/>
+									<enumeration value="Crossed flows: simple pass, fluid 1 not mixed, fluid 2 mixed"/>
+									<enumeration value="Crossed flows: simple pass, both fluids mixed"/>
+								</restriction>
+							</simpleType>
+						</attribute>
+						<attribute name="Number of passes through shell" type="unsignedInt" use="required"></attribute>
+							<!-- Número de pasos por carcasa -->
+							<!-- Por defecto: 1 -->
+							<!-- Este campo sólo debe aparecer si se ha elegido "Shell and tube" en "Heat exchanger type" -->
+						
+						<!-- OPCIÓN TABLA -->
+						<sequence>
+							<element maxOccurs="1" minOccurs="0" name="Efficiency table">
+								<complexType>
+									<!-- Columnas de una tabla que contiene los valores de la eficiencia en función de los valores de NTU y Cr (adimensionales) -->
+									<!-- El resultado en el fichero XML podría ser algo así:
+									<Efficiency_table>
+										<EffTableHtx_Point NTU="0" Cr="0" Efficiency="1" />
+										<EffTableHtx_Point NTU="9999" Cr="1" Efficiency="1" />
+										-->
+									<!-- Por defecto: intercambiador ideal, eficiencia = 1 -->
+									<!-- Estaría bien que, como alternativa a rellenar la tabla manualmente, se permitiera la subida o copia de un fichero -->
+								   <attribute name="NTU" type="xsd:double"></attribute> <!-- 2 valores por defecto: 0 y 9999 -->
+								   <attribute name="Cr" type="xsd:double"></attribute> <!-- 2 valores por defecto: 0 y 1 -->
+								   <attribute name="Efficiency" type="xsd:double"></attribute> <!-- 2 valores por defecto: 1 y 1 -->
+								</complexType>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+            </sequence>
+        </complexType>
+    </element>
+	
+</schema>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="OpenWAM" xmlns:ow="OpenWAM" attributeFormDefault="unqualified">
+    <xs:element name="OpenWAM">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ow:BlockOfPipes" maxOccurs="1" minOccurs="1"/>
+                <xs:element maxOccurs="1" minOccurs="1" ref="ow:GeneralData"/>
+                <xs:element ref="ow:EngineBlock"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GeneralData">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ow:SpeciesModel" maxOccurs="1" minOccurs="1"/>
+                <xs:element ref="ow:Materials" maxOccurs="1" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="BlockOfPipes">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Pipe" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Pip_Geometry">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Geo_Stretch">
+                                            <xs:complexType>
+                                                <xs:attribute name="Stretch_ID"/>
+                                                <xs:attribute name="Length"/>
+                                                <xs:attribute name="Diameter"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="MeshSize"/>
+                                    <xs:attribute name="Diameter"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="GasProperties">
+                                <xs:complexType>
+                                    <xs:attribute name="Pressure" type="xs:double"/>
+                                    <xs:attribute name="Temperature" type="xs:double"/>
+                                    <xs:attribute name="Velocity" type="xs:double"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Pip_HeatTransfer" form="qualified" maxOccurs="1"
+                                minOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element minOccurs="0" name="Pht_External">
+                                            <xs:complexType>
+                                                <xs:attribute name="Type" use="required">
+                                                  <xs:simpleType>
+                                                  <xs:restriction base="xs:string">
+                                                  <xs:enumeration value="AirCooled"/>
+                                                  <xs:enumeration value="WaterCooled"/>
+                                                  <xs:enumeration value="Port"/>
+                                                  </xs:restriction>
+                                                  </xs:simpleType>
+                                                </xs:attribute>
+                                                <xs:attribute name="Velocity" type="xs:double"/>
+                                                <xs:attribute name="ExtMultiplier" type="xs:double"
+                                                  use="required"/>
+                                                <xs:attribute name="Emisivity" type="xs:double"/>
+                                                <xs:attribute name="WaterTemp" type="xs:string"
+                                                  use="optional"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element maxOccurs="unbounded" minOccurs="0"
+                                            name="Pht_Layer">
+                                            <xs:complexType>
+                                                <xs:attribute name="Thickness" type="xs:double"/>
+                                                <xs:attribute name="Material" type="xs:string"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="IntMultiplier" type="xs:double"/>
+                                    <xs:attribute name="HT_Type">
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="IntakePipe"/>
+                                                <xs:enumeration value="ExhaustPipe"/>
+                                                <xs:enumeration value="IntakePort"/>
+                                                <xs:enumeration value="ExhaustPort"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="WallCalculation">
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="Constant"/>
+                                                <xs:enumeration value="Transient"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="WallTemperature" type="xs:double"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="NodeL_ID"/>
+                        <xs:attribute name="NodeR_ID"/>
+                        <xs:attribute name="ParallelPipes"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SpeciesModel">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" name="Specie">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Component">
+                                <xs:complexType>
+                                    <xs:attribute name="Name"/>
+                                    <xs:attribute name="MolecularWeight"/>
+                                    <xs:attribute name="Density"/>
+                                    <xs:attribute name="LowerCalorificValue"/>
+                                    <xs:attribute name="CAHFL"/>
+                                    <xs:attribute name="CBHFL"/>
+                                    <xs:attribute name="O_Content"/>
+                                    <xs:attribute name="Relation_HC"/>
+                                    <xs:attribute name="Y_Fraction"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="Name">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="BLEND"/>
+                                    <xs:enumeration value="DIESEL"/>
+                                    <xs:enumeration value="GASOLINA"/>
+                                    <xs:enumeration value="AIR"/>
+                                    <xs:enumeration value="GAS"/>
+                                    <xs:enumeration value="O2"/>
+                                    <xs:enumeration value="N2"/>
+                                    <xs:enumeration value="CO2"/>
+                                    <xs:enumeration value="CO"/>
+                                    <xs:enumeration value="H2Ov"/>
+                                    <xs:enumeration value="C"/>
+                                    <xs:enumeration value="NO"/>
+                                    <xs:enumeration value="NOx"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="MolecularWeigth"/>
+                        <xs:attribute name="O2_Mol_Fraction"/>
+                        <xs:attribute name="Density"/>
+                        <xs:attribute name="LowerCalorificValue" use="optional"/>
+                        <xs:attribute name="CAHFL"/>
+                        <xs:attribute name="CBHFL"/>
+                        <xs:attribute name="O_Content"/>
+                        <xs:attribute name="Relation_HC"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="FuelType" use="optional">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="BLEND"/>
+                        <xs:enumeration value="DIESEL"/>
+                        <xs:enumeration value="GASOLINA"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Materials">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="Material">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="1" minOccurs="0" name="Conductivity">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element maxOccurs="unbounded" name="ConductivityCoef">
+                                            <xs:complexType>
+                                                <xs:attribute name="ID" type="xs:unsignedInt"
+                                                  use="required"/>
+                                                <xs:attribute name="Value" type="xs:double"
+                                                  use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element maxOccurs="1" minOccurs="0" name="HeatCapacity">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element maxOccurs="unbounded" name="HeatCapacityCoef">
+                                            <xs:complexType>
+                                                <xs:attribute name="ID" type="xs:unsignedInt"/>
+                                                <xs:attribute name="Value" type="xs:double"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element maxOccurs="1" minOccurs="0" name="Density">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element maxOccurs="unbounded" name="DensityCoef">
+                                            <xs:complexType>
+                                                <xs:attribute name="ID" type="xs:unsignedInt"
+                                                  use="required"/>
+                                                <xs:attribute name="Value" type="xs:double"
+                                                  use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="Name" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="EngineBlock">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" name="Cilinder"/>
+                <xs:element maxOccurs="1" minOccurs="1" name="Combustion">
+                    <xs:complexType mixed="false">
+                        <xs:choice>
+                            <xs:element name="CombustionModel"/>
+                            <xs:element name="HRL">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element form="qualified" maxOccurs="unbounded"
+                                            minOccurs="1" name="HRLrow">
+                                            <xs:complexType>
+                                                <xs:attribute name="Angle" type="xs:double"/>
+                                                <xs:attribute name="HRLvalue" type="xs:double"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="SOC" type="xs:double"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="MultiWiebe">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element maxOccurs="unbounded" minOccurs="1"
+                                            name="SingleLaw">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element ref="ow:Wiebe"/>
+                                                </xs:sequence>
+                                                <xs:attribute name="Beta" type="xs:double"
+                                                  use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element ref="ow:Wiebe"/>
+                        </xs:choice>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Wiebe">
+        <xs:complexType>
+            <xs:attribute name="Duration" type="xs:double" use="required"/>
+            <xs:attribute name="SOC" type="xs:double" use="required"/>
+            <xs:attribute name="m" type="xs:double" use="required"/>
+            <xs:attribute name="C" type="xs:double" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

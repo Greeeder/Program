@@ -1,0 +1,86 @@
+TOpenWAM::ReadInputData
+	TOpenWAM::ReadPlenums
+		TTurbina::LeeTurbina - Lee datos generales de la turbina.
+			TTurbineMap::LoadTurbineMap - Lee datos generales del mapa.
+				TTurbPosition::ReadTurbinePosition - Leelos datos del mapa.
+					TIsoSpeedLine::AsignaValores - Asigna los valores del mapa a cada isolinea.
+				#TTurbPosition::EffectiveArea - Si no hay que extrapolar.
+					TIsoSpeedLine::EffectiveSection - Determina la seccion efectiva de la turbina para cada punto de la isolinea
+					TIsoSpeedLine::Adimensionaliza - Adimensionaliza las lineas de régimen.
+				#TTurbPosition::SearchMapLimits - Si no hay que extrapolar.
+TOpenWAM::InizializeParameters
+	TEjeTurbogrupo::InitizlizeHTM
+		TTurbina::PreprocessMap
+			TTurbineMap::CalculateAdiabaticEfficiency
+				TTurbPosition::AdiabaticEfficiency
+					TIsoSpeedLine::GetAdiabaticEfficiency
+						TTC_HTM::CorrectTurbineMap
+				TTurbineMap::SearchMaximumEfficiency
+				TTurbPosition::ExtrapolateTurbinePosition
+					TAeffFunction::fit
+						TIsoSpeedLine::AsignEfficiencyData
+						TIsoSpeedLine::Fit_Efficiency
+							TEffTFunction::fit
+							TEffTFunction::fit2
+			TTurbineMap::SearchMaximumEfficiency
+			
+NUEVO
+
+TOpenWAM::ReadInputData
+{
+	TOpenWAM::ReadPlenums
+	{
+		TTurbina::LeeTurbina
+		//Lee datos generales de la turbina.
+		{		
+			TTurbineMap::LoadTurbineMap
+			// Lee datos generales del mapa. Coloca el mapa completo en una estructura denominada FMapData
+			{
+				TTurbPosition::LoadTurbinePosition
+				//Distribuye los valores del mapa en las diferentes posiciones de turbina.
+			}
+		}
+	}
+}
+TOpenWAM::InizializeParameters
+{
+	TEjeTurbogrupo::InitizlizeTurbocharger
+	// NO LLAMA A PREPROCESSMAP!!!!!!
+	{
+		TTurbina::PreprocessMap
+		{
+			TTurbineMap::CalculateAdiabaticEfficiency
+			{
+				TTurbPosition::AdiabaticEfficiency
+				{
+					MaximumEfficiency
+					TIsoSpeedLine::GetAdiabaticEfficiency
+					{
+						TTC_HTM::PutEffTurbMax
+						TTC_HTM::CorrectTurbineMap
+						{
+							AdiabaticEff(Turb)
+						}
+					}
+				}
+				SearchMaximumEfficiency
+			}
+			TTurbineMap::ProcessTurbineMap
+			{
+				ExtrapolateTurbineMap()
+				
+				TTurbPosition::ExtrapolateTurbinePosition
+				//Si hay que extrapolar la turbina
+				TTurbPosition::EffectiveArea
+				//Si no hay que extrapolar.
+				{
+					TIsoSpeedLine::EffectiveSection
+					//Determina la seccion efectiva de la turbina para cada punto de la isolinea
+					TIsoSpeedLine::Adimensionaliza
+					//Adimensionaliza las lineas de régimen.
+			}
+		}
+	}
+}				
+			
+	

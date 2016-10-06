@@ -1,0 +1,16 @@
+add_library(
+  Turbocompressor
+  turbo_bearings.cpp
+  TTCHTM2.cpp
+  TAcousticCompressor.cpp
+  TCompresor.cpp
+  TCompresorDep.cpp
+  TCompressorMap.cpp
+  TCompTubDep.cpp
+  TCompTubos.cpp
+  TEjeTurbogrupo.cpp
+  TMapaComp.cpp
+  TMapaComp2Tub.cpp
+  TSAEMap.cpp
+  TTurbocharger.cpp
+  )

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenWAM xmlns="OpenWAM"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="OpenWAM file:/D:/OpenWAM/Repository/Source/Fluids/SpeciesModelSchema.xsd">
+    <BlockOfPipes>
+        <Pipe NodeL_ID="NodeL_ID1" NodeR_ID="NodeR_ID1" ParallelPipes="ParallelPipes1">
+            <Pip_Geometry MeshSize="MeshSize1" Diameter="Diameter1">
+                <Geo_Stretch Stretch_ID="Stretch_ID1" Length="Length1" Diameter="Diameter3"/>
+            </Pip_Geometry>
+            <GasProperties Pressure="0" Temperature="0" Velocity="0"/>
+            <Pip_HeatTransfer IntMultiplier="0" HT_Type="IntakePipe" WallCalculation="Constant" WallTemperature="0">
+                <Pht_External Type="AirCooled" Velocity="0" ExtMultiplier="0" Emisivity="0" WaterTemp="WaterTemp1"/>
+                <Pht_Layer Thickness="0" Material="Material1"/>
+                <Pht_Layer Thickness="0" Material="Material3"/>
+            </Pip_HeatTransfer>
+        </Pipe>
+        <Pipe NodeL_ID="NodeL_ID3" NodeR_ID="NodeR_ID3" ParallelPipes="ParallelPipes3">
+            <Pip_Geometry MeshSize="MeshSize3" Diameter="Diameter5">
+                <Geo_Stretch Stretch_ID="Stretch_ID3" Length="Length3" Diameter="Diameter7"/>
+            </Pip_Geometry>
+            <GasProperties Pressure="0" Temperature="0" Velocity="0"/>
+            <Pip_HeatTransfer IntMultiplier="0" HT_Type="IntakePipe" WallCalculation="Constant" WallTemperature="0">
+                <Pht_External Type="AirCooled" Velocity="0" ExtMultiplier="0" Emisivity="0" WaterTemp="WaterTemp3"/>
+                <Pht_Layer Thickness="0" Material="Material5"/>
+                <Pht_Layer Thickness="0" Material="Material7"/>
+            </Pip_HeatTransfer>
+        </Pipe>
+    </BlockOfPipes>
+    <GeneralData>
+        <SpeciesModel FuelType="BLEND">
+            <Specie Name="BLEND" MolecularWeigth="MolecularWeigth1" O2_Mol_Fraction="O2_Mol_Fraction1" Density="Density1"
+                 LowerCalorificValue="LowerCalorificValue1" CAHFL="CAHFL1" CBHFL="CBHFL1" O_Content="O_Content1"
+                 Relation_HC="Relation_HC1">
+                <Component Name="Name3" MolecularWeight="MolecularWeight1" Density="Density3" LowerCalorificValue="LowerCalorificValue3"
+                     CAHFL="CAHFL3" CBHFL="CBHFL3" O_Content="O_Content3" Relation_HC="Relation_HC3"
+                     Y_Fraction="Y_Fraction1"/>
+            </Specie>
+            <Specie Name="BLEND" MolecularWeigth="MolecularWeigth3" O2_Mol_Fraction="O2_Mol_Fraction3" Density="Density5"
+                 LowerCalorificValue="LowerCalorificValue5" CAHFL="CAHFL5" CBHFL="CBHFL5" O_Content="O_Content5"
+                 Relation_HC="Relation_HC5">
+                <Component Name="Name7" MolecularWeight="MolecularWeight3" Density="Density7" LowerCalorificValue="LowerCalorificValue7"
+                     CAHFL="CAHFL7" CBHFL="CBHFL7" O_Content="O_Content7" Relation_HC="Relation_HC7"
+                     Y_Fraction="Y_Fraction3"/>
+            </Specie>
+        </SpeciesModel>
+        <Materials>
+            <Material Name="Name9">
+                <Conductivity>
+                    <ConductivityCoef ID="214748364" Value="0"/>
+                    <ConductivityCoef ID="214748364" Value="0"/>
+                </Conductivity>
+                <HeatCapacity>
+                    <HeatCapacityCoef ID="214748364" Value="0"/>
+                    <HeatCapacityCoef ID="214748364" Value="0"/>
+                </HeatCapacity>
+                <Density>
+                    <DensityCoef ID="214748364" Value="0"/>
+                    <DensityCoef ID="214748364" Value="0"/>
+                </Density>
+            </Material>
+            <Material Name="Name11">
+                <Conductivity>
+                    <ConductivityCoef ID="214748364" Value="0"/>
+                    <ConductivityCoef ID="214748364" Value="0"/>
+                </Conductivity>
+                <HeatCapacity>
+                    <HeatCapacityCoef ID="214748364" Value="0"/>
+                    <HeatCapacityCoef ID="214748364" Value="0"/>
+                </HeatCapacity>
+                <Density>
+                    <DensityCoef ID="214748364" Value="0"/>
+                    <DensityCoef ID="214748364" Value="0"/>
+                </Density>
+            </Material>
+        </Materials>
+    </GeneralData>
+    <EngineBlock>
+        <Cilinder>
+        </Cilinder>
+        <Cilinder>
+        </Cilinder>
+        <Combustion>
+<!--            <CombustionModel>
+            </CombustionModel>-->
+<!--            <HRL SOC="0">
+                <HRLrow Angle="0" HRLvalue="0"/>
+                <HRLrow Angle="0" HRLvalue="0"/>
+            </HRL>-->
+<!--            <MultiWiebe>
+                <SingleLaw Beta="0">
+                    <Wiebe Duration="0" SOC="0" m="0" C="0"/>
+                </SingleLaw>
+                <SingleLaw Beta="0">
+                    <Wiebe Duration="0" SOC="0" m="0" C="0"/>
+                </SingleLaw>
+            </MultiWiebe>-->
+            <Wiebe Duration="0" SOC="0" m="0" C="0"/>
+        </Combustion>
+    </EngineBlock>
+</OpenWAM>

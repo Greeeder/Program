@@ -1,0 +1,93 @@
+include_directories(../submodules/eigen)
+include_directories(../submodules/pugixml/src)
+include_directories(Units)
+include_directories(CheckXML)
+include_directories(DataIO)
+include_directories(Fluids)
+include_directories(Solids)
+include_directories(1DPipes)
+include_directories(Act)
+include_directories(Boundaries)
+include_directories("Concentric Pipe")
+include_directories(Connections)
+include_directories(Control)
+include_directories(DPF)
+include_directories(Engine)
+include_directories(Extern)
+include_directories(Heat_Exchanger)
+include_directories(Includes)
+include_directories(Integrable)
+include_directories(Labels)
+include_directories(Math_wam)
+include_directories(ODModels)
+include_directories(Output)
+include_directories(Q2DTurbo)
+include_directories(Turbocompressor)
+include_directories(Wrappers)
+add_subdirectory(Units)
+add_subdirectory(CheckXML)
+add_subdirectory(Fluids)
+add_subdirectory(Solids)
+add_subdirectory(1DPipes)
+add_subdirectory(Act)
+add_subdirectory(Boundaries)
+add_subdirectory("Concentric Pipe")
+add_subdirectory(Connections)
+add_subdirectory(Control)
+add_subdirectory(DataIO)
+add_subdirectory(Labels)
+add_subdirectory(Integrable)
+add_subdirectory(Math_wam)
+add_subdirectory(DPF)
+add_subdirectory(Engine)
+add_subdirectory(Extern)
+add_subdirectory(ODModels)
+add_subdirectory(Output)
+add_subdirectory(Q2DTurbo)
+add_subdirectory(Turbocompressor)
+add_subdirectory(Wrappers)
+add_library(pugixml
+  ../submodules/pugixml/src/pugixml.cpp
+)
+add_library(VEMOD SHARED
+  VEMOD.cpp
+  TOpenWAM.cpp
+  TTimeControl.cpp
+  VEMOD.rc
+)
+target_link_libraries(
+  VEMOD
+  Fluids
+  1DPipes
+  Act
+  1DPipes
+  Boundaries
+  ConcentricPipe
+  Control
+  DataIO
+  DPF
+  Extern
+  Labels
+  Math_wam 
+  Engine
+  ODModels
+  Output
+  Q2DTurbine
+  CheckXML
+  pugixml
+  Turbocompressor
+  Integrable
+  1DPipes
+  Connections
+  Fluids
+  Solids
+  Units
+  Wrappers
+  1DPipes
+  ${CMAKE_THREAD_LIBS_INIT}
+)
+
+
+
+
+

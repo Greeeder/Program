@@ -42,13 +42,6 @@ struct strBranches
 	std::vector<strObjects> objects;	// Objects in Brnach
 };
 
-int sum(std::vector<bool> vector) {
-	int x = 0;
-	for (int c = 0; c < vector.size(); c++)
-		x = x + vector.at(c);
-	return x;
-}
-
 std::vector<double> roots(double a, double b, double c) {			//Roots a*x^2+b*x+c=0
 	double r1, r2;
 	std::vector<double> r(2);
@@ -212,15 +205,20 @@ struct strSize
 void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_volum> pump_volum, std::vector<std::vector<int>>branches_id, std::vector<double> bound_flows, std::vector<int> nodes_id, std::vector<std::vector<int>> mesh_branches, std::vector<std::vector<int>> node_branches, int n_mesh, int n_branch, std::vector<double> head_loss, std::vector<double> hydr_resist1, std::vector<double> hydr_resist2, int n_tanks) {
 	
 	std::vector<double> flows;
-	std::vector<bool> solved;
+	//std::vector<bool> solved;
+	Eigen::RowVectorXi solved(n_branch);
 	std::vector<bool> trues;
-	std::vector<bool> volum_pump;
+	//std::vector<bool> volum_pump;
+	Eigen::RowVectorXi volum_pump(n_branch);
 	std::vector<double> head_vol_pump;
 	int n_nodes;
-	std::vector<bool> solv_nodes;
+	//std::vector<bool> solv_nodes;
+	Eigen::RowVectorXi solv_nodes(nodes_id.size());
 	bool while_flag;
-	std::vector<bool> solv_prev1;
-	std::vector<bool> solv_prev2;
+	//std::vector<bool> solv_prev1;
+	//std::vector<bool> solv_prev2;
+	Eigen::RowVectorXi solv_prev1(n_branch);
+	Eigen::RowVectorXi solv_prev2(n_branch);
 	int count_uns;
 	int ind_aux;
 	double flow_sum;
@@ -279,7 +277,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 		// Creates result vectors
 
 	flows.assign(n_branch, 0);						// stores flow values
-	solved.assign(n_branch, false);					// stores solving status
+	solved.setConstant(false);					// stores solving status
 	unk_ind_aux.resize(n_branch);
 	remain_branch.resize(n_branch);
 	size.remain_branch = 0;
@@ -293,32 +291,32 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 	for (int count=0; count < n_branch; count++)
 		if (0 == isnan(bound_flows.at(count))) {
 			flows.at(count) = bound_flows.at(count);
-			solved.at(count) = true;
+			solved(count) = true;
 		}
 
 
-	if (solved == trues)																// all branches are solved
+	if (solved.isOnes())																// all branches are solved
 		return;																			// end function
 
 
 	// Solves closed branches containing VOLUMETRIC PUMPS
 
-	volum_pump.assign(n_branch, false);													// marks where are there volumetric pumps for later use
+	volum_pump.setConstant(false);													// marks where are there volumetric pumps for later use
 
 	for (int branch_aux = 0; branch_aux < branches.size(); branch_aux++)																// Enter every branch
 		for (int object_aux = 0, aux = 0; object_aux < branches.at(branch_aux).objects.size(); object_aux++) {		 //Looks objects in branch
 	//	branch_aux = objects.branch{ pump_volum.obj_index(branch_auxbranch_aux) };			
 	// pump branch
 			p = "pump_volum";
-			if ((branches.at(branch_aux).objects.at(object_aux).Class == p) && (solved.at(branch_aux) == false) ){		//Enters when the object is a pump_volum										// the branch is not solved yet
-				volum_pump.at(branch_aux) = true;																										// there is a volumetric pump
+			if ((branches.at(branch_aux).objects.at(object_aux).Class == p) && (solved(branch_aux) == false) ){		//Enters when the object is a pump_volum										// the branch is not solved yet
+				volum_pump(branch_aux) = true;																										// there is a volumetric pump
 				aux = 0;
 				while ((aux+1 < pump_volum.size())&&(branches.at(branch_aux).objects.at(object_aux).ID != pump_volum.at(aux).Pump_volum))				// Looks up for the pump at the branch in the pump_volum vector
 					aux++;
 				//calculates flow
 
 				flows.at(branch_aux) = (pump_volum.at(aux).coef0 + pump_volum.at(aux).coef1 * pump_volum.at(aux).pump_speed + pump_volum.at(aux).coef2 * pump_volum.at(aux).pump_speed * pump_volum.at(aux).pump_speed + pump_volum.at(aux).coef3 * pump_volum.at(aux).pump_speed * pump_volum.at(aux).pump_speed * pump_volum.at(aux).pump_speed)*1E-3;
-				solved.at(branch_aux) = true; // set as solved
+				solved(branch_aux) = true; // set as solved
 			}
 		}
 
@@ -328,7 +326,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 // 2. LOOP FOR NODES WITH ONE UNKNOWN FLOW
 
 	n_nodes = nodes_id.size();
-	solv_nodes.assign(n_nodes, false);														// vector to mark nodes whose all connected branches are solved
+	solv_nodes.setConstant(false);														// vector to mark nodes whose all connected branches are solved
 
 	// Loop for solving NODES and MESHES that have only one unknown flow.
 	// At the moment the MESH sub - loop is not finished since its implementation is very complex and it seems that solving a system of equations will be faster
@@ -348,7 +346,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 			for (int count = 0; count < n_nodes; count++) {
 				count_uns = 0;																	 // counter of unsolved branches
 				for (int count1 = 0; count1 < node_branches.at(count).size(); count1++) {			// branches connected to node
-					if (solved.at(node_branches.at(count).at(count1)) == false) {								// branch unsolved
+					if (solved(node_branches.at(count).at(count1)) == false) {								// branch unsolved
 						ind_aux = count1;														// save index of unsolved branch
 						count_uns = count_uns + 1;													// counter of unsolved branches
 						if (count_uns == 2) {													 // too many unknowns
@@ -358,7 +356,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 				}
 
 				if (count_uns == 0)													// all connected branches are solved
-					solv_nodes.at(count) = true;												// set as solved
+					solv_nodes(count) = true;												// set as solved
 
 				else if (count_uns == 1) {									// one unknown; node can be solved directly
 
@@ -387,12 +385,12 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 					else
 						flows.at(ind_aux) = -flow_sum;															// change sign
 
-					solved.at(ind_aux) = true;																// set branch as solved
+					solved(ind_aux) = true;																// set branch as solved
 
-					if (solved == trues && volum_pump != trues)														// all branches are solved(flows and volumetric pump head)
+					if (solved.isOnes() && volum_pump.isOnes())														// all branches are solved(flows and volumetric pump head)
 						return;
 
-					solv_nodes.at(count) = true;																 // set node as solved
+					solv_nodes(count) = 1/*true*/;																 // set node as solved
 				}
 			}
 		} // while for nodes
@@ -416,7 +414,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 			for (int count = 1; count < n_mesh; count++) {														 // meshes
 				count_uns = 0;																				// counter of unsolved branches
 				for (int count1 = 0; count1 < mesh_branches.at(count).size(); count1++) {										 // branches that form the mesh
-					if (solved.at(count1) != true || volum_pump.at(count1)) {
+					if (solved(count1) != true || volum_pump(count1)) {
 						// branch unsolved or contains volumetric pump(pump head must be calculated)
 						ind_aux = count1;																				// save unsolved branch
 						count_uns = count_uns + 1;																			// counter of unsolved branches
@@ -448,7 +446,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 							last_id = branches_id.at(count1).at(1);																// refresh other end of branch
 						}
 
-						if (count1 != ind_aux || volum_pump.at(count1) == true) {									// flow in the branch is known
+						if (count1 != ind_aux || volum_pump(count1) == true) {									// flow in the branch is known
 							if (flows.at(count1) < 0)																 // flow direction is opposite to branch direction
 								change_sign = ~change_sign;																			// invert sign
 
@@ -462,12 +460,12 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 
 
 						// Solve unknown
-						if (volum_pump.at(ind_aux) == true) {																	// the unknown branch has a volumetric pump
+						if (volum_pump(ind_aux) == true) {																	// the unknown branch has a volumetric pump
 							// Solve unknown head increment
 							head_vol_pump.at(ind_aux) = abs(total_head);												 // calculate pump head
 							head_loss.at(ind_aux) = head_loss.at(ind_aux) - abs(total_head);
 							// consider pump head as a negative head loss in the branch
-							volum_pump.at(ind_aux) = false;																			// remove branch from branches with volumetric pumps
+							volum_pump(ind_aux) = false;																			// remove branch from branches with volumetric pumps
 						}
 						else {																						// the unknown is a flow; solve it
 							if (total_head < 0)																	// branch flow is in the opposite direction of the mesh flow
@@ -488,11 +486,11 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 
 							// Save result
 							flows.at(ind_aux) = sol_aux * sign_aux*(-1);																		 // add sign now
-							solved.at(ind_aux) = true;																			// set as solved
+							solved(ind_aux) = true;																			// set as solved
 						}
 					}
 
-					if (solved == trues && volum_pump != trues)															 // all branches are solved(flows and volumetric pump head)
+					if (solved.isOnes() && volum_pump.isOnes())															 // all branches are solved(flows and volumetric pump head)
 						return;
 				}
 			}
@@ -511,7 +509,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 		// A * X* | X | +B * X + C * X / | X | +D = 0 --> A = coef2_mat, B = coef1_mat, C = const_mat, D = const_vec
 		// C is for constant head loss whose sign is unknown
 	
-	n_unknown = n_branch - sum(solved)+ sum(volum_pump); // number of unknown variables :
+	n_unknown = n_branch - solved.sum()+ volum_pump.sum(); // number of unknown variables :
 // flows - solved flows + volumetric pump head
 	// in branches with volumetric pumps, pump head is unknown
 
@@ -535,7 +533,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 
 	// Auxiliary vector that contains the indices of the unsolved branches
 	for (int count = 0; count < solved.size(); count++) {
-		if (volum_pump.at(count) == true || solved.at(count) == false) {
+		if (volum_pump(count) == true || solved(count) == false) {
 			unk_ind_aux.at(size.unk_ind_aux) = (count);
 			size.unk_ind_aux++;
 		}
@@ -548,7 +546,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 	volpump_ind_aux.assign(size.unk_ind_aux, false);
 	flows_ind_aux.assign(size.unk_ind_aux, true);
 	for (int count = 0; count < size.unk_ind_aux; count++) {
-		if ((volum_pump.at(unk_ind_aux.at(count)) == true)) {
+		if ((volum_pump(unk_ind_aux.at(count)) == true)) {
 			volpump_ind_aux.at(count) = true;
 			flows_ind_aux.at(count) = false;
 		}
@@ -576,15 +574,15 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 		// system of equations.
 	if (n_tanks == 0)
 		for (int count = 0; count < n_nodes; count++) {
-			if (solv_nodes.at(count) != true) // node not solved
-				solv_nodes.at(count) = true; // set node as solved
+			if (solv_nodes(count) != true) // node not solved
+				solv_nodes(count) = true; // set node as solved
 			break; // done; exit
 
 		}
 
 	// Formulates node equations
-	solv_nodes.flip();
-	for (int count = 0; count < sum( solv_nodes ); count++) { // unsolved nodes loop
+	//solv_nodes.flip();
+	for (int count = 0; count < (solv_nodes.size() - solv_nodes.sum()); count++) { // unsolved nodes loop
 	
 
 		// Continuity equation : sum of flows in a node = 0
@@ -593,7 +591,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 			aux = node_branches.at(count).at(count1);
 
 			// Flow may be solved or not
-			if (solved.at(aux) == true) // the flow in this branch has been solved
+			if (solved(aux) == true) // the flow in this branch has been solved
 				const_vec.at(count) = flows.at(aux);
 			else if (unk_ind_aux.at(count1) == aux)// flow is unknown
 				coef1_mat.at(count).at(count1) = 1;
@@ -608,16 +606,16 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 		}
 		last_row = count+1; // save row to continue entering the equations
 	}
-	solv_nodes.flip();
+	//solv_nodes.flip();
 
 	// MESH EQUATIONS
 	
 		// Number of independent meshes : branches to solve - nodes to solve + 1 = branches to solve - independent nodes to solve
-	solv_nodes.flip();
-	solved.flip();
-	n_idp_mesh = sum(solved) - sum(solv_nodes) + sum(volum_pump) - n_tanks;
-	solved.flip();
-	solv_nodes.flip();
+	//solv_nodes.flip();
+	//solved.flip();
+	n_idp_mesh = (solved.size() - solved.sum()) - (solv_nodes.size() - solv_nodes.sum()) + volum_pump.sum() - n_tanks;
+	//solved.flip();
+	//solv_nodes.flip();
 
 	// head of volumetric pumps must be solved as well
 		// additionaly for every tank, there is a fake branch and two known pressure nodes : -1 mesh per tank
@@ -633,12 +631,12 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 
 	// Vector that marks the branches that are not covered by the current
 		// selection of mesh equations.Remaining branches to be added to the system.
-	solved.flip();
+	//solved.flip();
 	for (int count = 0; count < solved.size(); count++) {
-		remain_branch.at(size.remain_branch) = (solved.at(count) || volum_pump.at(count));
+		remain_branch.at(size.remain_branch) = (!solved(count) || volum_pump(count));
 		size.remain_branch++;
 	}
-	solved.flip();
+	//solved.flip();
 
 
 	if (n_mesh > n_idp_mesh) { // there are more meshes than necessary->selection
@@ -735,13 +733,13 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 			}
 
 
-			if (solved.at(aux) == true) {// the flow in this branch has been solved
+			if (solved(aux) == true) {// the flow in this branch has been solved
 				if (flows.at(aux) < 0.0)// flow direction is opposite to branch direction
 					change_sign = ~change_sign; // invert sign
 
 				const_vec.at(last_row + count) = const_vec.at(last_row + count) + (head_loss.at(aux) + hydr_resist1.at(aux) * abs(flows.at(aux)) + hydr_resist2.at(aux) * flows.at(aux)* flows.at(aux)) * (double)(-2 * change_sign + 1);
 				// add head if change_sign = false; subtract if change_sign = true
-				if (volum_pump.at(aux) == true)   //&& (unk_ind_aux.at(count) == aux)) // if there is a volumetric pump, include pump head as an unknown variable of the system
+				if (volum_pump(aux) == true)   //&& (unk_ind_aux.at(count) == aux)) // if there is a volumetric pump, include pump head as an unknown variable of the system
 					coef1_mat.at(last_row + count).at(pos) = -(-2 * change_sign + 1) * 10000; // include pump head
 					//unk_ind_aux.at(count) = aux;
 					// change sign since head losses are positive and pump head must be positive too
@@ -778,7 +776,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 	// Save 
 	for (int count = 0; count < solved.size(); count++) {
 		for (int count1 = 0; count1 < Y.size(); count1++) {
-			if (solved.at(count) == false && count== unk_ind_aux.at(count1))
+			if (solved(count) == false && count== unk_ind_aux.at(count1))
 				flows.at( count) = Y.at(count1);
 		}
 	}
@@ -788,7 +786,7 @@ void HydroNet_FlowSolver(std::vector<strBranches> branches, std::vector<strPump_
 	// Save head in volumetric pumps 
 	for (int count = 0; count < volum_pump.size(); count++) {
 		for (int count1 = 0; count1 < Y.size(); count1++) {
-			if (volum_pump.at(count) == true && volpump_ind_aux.at(count1) == true)
+			if (volum_pump(count) == true && volpump_ind_aux.at(count1) == true)
 				head_vol_pump.at(count) = Y.at(count1) * 10000;
 		}
 	}

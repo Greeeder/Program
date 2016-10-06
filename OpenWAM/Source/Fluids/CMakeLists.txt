@@ -1,0 +1,27 @@
+add_library(
+  Fluids
+  TChemicalComponent.cpp
+  TChAir.cpp
+  TChBlend.cpp
+  TChBurntBlend.cpp
+  TChBurntGasoil.cpp
+  TChBurntGasolina.cpp
+  TChGasoil.cpp
+  TChGasolina.cpp
+  TChIdealAir.cpp
+  TChO2.cpp
+  TChN2.cpp
+  TChH2Ov.cpp
+  TChH2Ol.cpp
+  TChOil.cpp
+  TChCO2.cpp
+  TChCO.cpp
+  TChC.cpp
+  TChNO.cpp
+  TChNO2.cpp
+  TFluid.cpp 
+  TFluidAir.cpp 
+  TFluidIdealAir.cpp
+  TFluidWater.cpp
+  TFluidOil.cpp
+)

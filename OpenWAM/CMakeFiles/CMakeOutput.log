@@ -1,0 +1,344 @@
+The system is: Windows - 6.1.7601 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler:  
+Build flags: 
+Id flags: 
+
+The output was:
+0
+Microsoft (R) Build Engine, versi¢n 12.0.21005.1
+[Microsoft .NET Framework, versi¢n 4.0.30319.34209]
+Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+
+Compilaci¢n iniciada a las 25/07/2016 18:09:00.
+Proyecto "D:\JOSEP\OpenWAM\CMakeFiles\3.6.1\CompilerIdC\CompilerIdC.vcxproj" en nodo 1 (destinos predeterminados).
+PrepareForBuild:
+  Creando directorio "Debug\".
+  Creando directorio "Debug\CompilerIdC.tlog\".
+InitializeBuildStatus:
+  Se crear  "Debug\CompilerIdC.tlog\unsuccessfulbuild" porque se especific¢ "AlwaysCreate".
+ClCompile:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /nologo /W0 /WX- /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TC /errorReport:queue CMakeCCompilerId.c
+  CMakeCCompilerId.c
+Link:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:QUEUE /OUT:".\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\CompilerIdC.lib" /MACHINE:X64 Debug\CMakeCCompilerId.obj
+  CompilerIdC.vcxproj -> D:\JOSEP\OpenWAM\CMakeFiles\3.6.1\CompilerIdC\.\CompilerIdC.exe
+PostBuildEvent:
+  for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+  :VCEnd
+  CMAKE_C_COMPILER=D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe
+FinalizeBuildStatus:
+  Se eliminar  el archivo "Debug\CompilerIdC.tlog\unsuccessfulbuild".
+  Aplicando tarea Touch a "Debug\CompilerIdC.tlog\CompilerIdC.lastbuildstate".
+Compilaci¢n del proyecto terminada "D:\JOSEP\OpenWAM\CMakeFiles\3.6.1\CompilerIdC\CompilerIdC.vcxproj" (destinos predeterminados).
+
+Compilaci¢n correcta.
+    0 Advertencia(s)
+    0 Errores
+
+Tiempo transcurrido 00:00:07.43
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+
+The C compiler identification is MSVC, found in "D:/JOSEP/OpenWAM/CMakeFiles/3.6.1/CompilerIdC/CompilerIdC.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler:  
+Build flags: 
+Id flags: 
+
+The output was:
+0
+Microsoft (R) Build Engine, versi¢n 12.0.21005.1
+[Microsoft .NET Framework, versi¢n 4.0.30319.34209]
+Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+
+Compilaci¢n iniciada a las 25/07/2016 18:09:08.
+Proyecto "D:\JOSEP\OpenWAM\CMakeFiles\3.6.1\CompilerIdCXX\CompilerIdCXX.vcxproj" en nodo 1 (destinos predeterminados).
+PrepareForBuild:
+  Creando directorio "Debug\".
+  Creando directorio "Debug\CompilerIdCXX.tlog\".
+InitializeBuildStatus:
+  Se crear  "Debug\CompilerIdCXX.tlog\unsuccessfulbuild" porque se especific¢ "AlwaysCreate".
+ClCompile:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /nologo /W0 /WX- /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /errorReport:queue CMakeCXXCompilerId.cpp
+  CMakeCXXCompilerId.cpp
+Link:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:QUEUE /OUT:".\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\CompilerIdCXX.lib" /MACHINE:X64 Debug\CMakeCXXCompilerId.obj
+  CompilerIdCXX.vcxproj -> D:\JOSEP\OpenWAM\CMakeFiles\3.6.1\CompilerIdCXX\.\CompilerIdCXX.exe
+PostBuildEvent:
+  for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+  :VCEnd
+  CMAKE_CXX_COMPILER=D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe
+FinalizeBuildStatus:
+  Se eliminar  el archivo "Debug\CompilerIdCXX.tlog\unsuccessfulbuild".
+  Aplicando tarea Touch a "Debug\CompilerIdCXX.tlog\CompilerIdCXX.lastbuildstate".
+Compilaci¢n del proyecto terminada "D:\JOSEP\OpenWAM\CMakeFiles\3.6.1\CompilerIdCXX\CompilerIdCXX.vcxproj" (destinos predeterminados).
+
+Compilaci¢n correcta.
+    0 Advertencia(s)
+    0 Errores
+
+Tiempo transcurrido 00:00:01.96
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
+
+The CXX compiler identification is MSVC, found in "D:/JOSEP/OpenWAM/CMakeFiles/3.6.1/CompilerIdCXX/CompilerIdCXX.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/MSBuild/12.0/bin/MSBuild.exe" "cmTC_fc628.vcxproj" "/p:Configuration=Debug" "/p:VisualStudioVersion=12.0"
+Microsoft (R) Build Engine, versi¢n 12.0.21005.1
+[Microsoft .NET Framework, versi¢n 4.0.30319.34209]
+Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+
+Compilaci¢n iniciada a las 25/07/2016 18:09:11.
+Proyecto "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\cmTC_fc628.vcxproj" en nodo 1 (destinos predeterminados).
+PrepareForBuild:
+  Creando directorio "cmTC_fc628.dir\Debug\".
+  Creando directorio "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\".
+  Creando directorio "cmTC_fc628.dir\Debug\cmTC_fc628.tlog\".
+InitializeBuildStatus:
+  Se crear  "cmTC_fc628.dir\Debug\cmTC_fc628.tlog\unsuccessfulbuild" porque se especific¢ "AlwaysCreate".
+ClCompile:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTC_fc628.dir\Debug\\" /Fd"cmTC_fc628.dir\Debug\vc120.pdb" /Gd /TC /errorReport:queue D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\testCCompiler.c
+  Compilador de optimizaci¢n de C/C++ de Microsoft (R) versi¢n 18.00.21005.1 para x64
+  (C) Microsoft Corporation. Reservados todos los derechos.
+  
+  cl /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTC_fc628.dir\Debug\\" /Fd"cmTC_fc628.dir\Debug\vc120.pdb" /Gd /TC /errorReport:queue D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\testCCompiler.c
+  testCCompiler.c
+  
+Link:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:QUEUE /OUT:"D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\cmTC_fc628.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp/Debug/cmTC_fc628.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp/Debug/cmTC_fc628.lib" /MACHINE:X64  /machine:x64 cmTC_fc628.dir\Debug\testCCompiler.obj
+  cmTC_fc628.vcxproj -> D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\cmTC_fc628.exe
+FinalizeBuildStatus:
+  Se eliminar  el archivo "cmTC_fc628.dir\Debug\cmTC_fc628.tlog\unsuccessfulbuild".
+  Aplicando tarea Touch a "cmTC_fc628.dir\Debug\cmTC_fc628.tlog\cmTC_fc628.lastbuildstate".
+Compilaci¢n del proyecto terminada "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\cmTC_fc628.vcxproj" (destinos predeterminados).
+
+Compilaci¢n correcta.
+    0 Advertencia(s)
+    0 Errores
+
+Tiempo transcurrido 00:00:01.62
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/MSBuild/12.0/bin/MSBuild.exe" "cmTC_e1d6b.vcxproj" "/p:Configuration=Debug" "/p:VisualStudioVersion=12.0"
+Microsoft (R) Build Engine, versi¢n 12.0.21005.1
+[Microsoft .NET Framework, versi¢n 4.0.30319.34209]
+Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+
+Compilaci¢n iniciada a las 25/07/2016 18:09:13.
+Proyecto "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\cmTC_e1d6b.vcxproj" en nodo 1 (destinos predeterminados).
+PrepareForBuild:
+  Creando directorio "cmTC_e1d6b.dir\Debug\".
+  Creando directorio "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\".
+  Creando directorio "cmTC_e1d6b.dir\Debug\cmTC_e1d6b.tlog\".
+InitializeBuildStatus:
+  Se crear  "cmTC_e1d6b.dir\Debug\cmTC_e1d6b.tlog\unsuccessfulbuild" porque se especific¢ "AlwaysCreate".
+ClCompile:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTC_e1d6b.dir\Debug\\" /Fd"cmTC_e1d6b.dir\Debug\vc120.pdb" /Gd /TC /errorReport:queue "D:\CMake\share\cmake-3.6\Modules\CMakeCCompilerABI.c"
+  Compilador de optimizaci¢n de C/C++ de Microsoft (R) versi¢n 18.00.21005.1 para x64
+  (C) Microsoft Corporation. Reservados todos los derechos.
+  
+  cl /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTC_e1d6b.dir\Debug\\" /Fd"cmTC_e1d6b.dir\Debug\vc120.pdb" /Gd /TC /errorReport:queue "D:\CMake\share\cmake-3.6\Modules\CMakeCCompilerABI.c"
+  
+  CMakeCCompilerABI.c
+Link:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:QUEUE /OUT:"D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\cmTC_e1d6b.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp/Debug/cmTC_e1d6b.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp/Debug/cmTC_e1d6b.lib" /MACHINE:X64  /machine:x64 cmTC_e1d6b.dir\Debug\CMakeCCompilerABI.obj
+  cmTC_e1d6b.vcxproj -> D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\cmTC_e1d6b.exe
+FinalizeBuildStatus:
+  Se eliminar  el archivo "cmTC_e1d6b.dir\Debug\cmTC_e1d6b.tlog\unsuccessfulbuild".
+  Aplicando tarea Touch a "cmTC_e1d6b.dir\Debug\cmTC_e1d6b.tlog\cmTC_e1d6b.lastbuildstate".
+Compilaci¢n del proyecto terminada "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\cmTC_e1d6b.vcxproj" (destinos predeterminados).
+
+Compilaci¢n correcta.
+    0 Advertencia(s)
+    0 Errores
+
+Tiempo transcurrido 00:00:01.16
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/MSBuild/12.0/bin/MSBuild.exe" "cmTC_52448.vcxproj" "/p:Configuration=Debug" "/p:VisualStudioVersion=12.0"
+Microsoft (R) Build Engine, versi¢n 12.0.21005.1
+[Microsoft .NET Framework, versi¢n 4.0.30319.34209]
+Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+
+Compilaci¢n iniciada a las 25/07/2016 18:09:15.
+Proyecto "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\cmTC_52448.vcxproj" en nodo 1 (destinos predeterminados).
+PrepareForBuild:
+  Creando directorio "cmTC_52448.dir\Debug\".
+  Creando directorio "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\".
+  Creando directorio "cmTC_52448.dir\Debug\cmTC_52448.tlog\".
+InitializeBuildStatus:
+  Se crear  "cmTC_52448.dir\Debug\cmTC_52448.tlog\unsuccessfulbuild" porque se especific¢ "AlwaysCreate".
+ClCompile:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"cmTC_52448.dir\Debug\\" /Fd"cmTC_52448.dir\Debug\vc120.pdb" /Gd /TP /errorReport:queue D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\testCXXCompiler.cxx
+  Compilador de optimizaci¢n de C/C++ de Microsoft (R) versi¢n 18.00.21005.1 para x64
+  (C) Microsoft Corporation. Reservados todos los derechos.
+  
+  cl /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"cmTC_52448.dir\Debug\\" /Fd"cmTC_52448.dir\Debug\vc120.pdb" /Gd /TP /errorReport:queue D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\testCXXCompiler.cxx
+  
+  testCXXCompiler.cxx
+Link:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:QUEUE /OUT:"D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\cmTC_52448.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp/Debug/cmTC_52448.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp/Debug/cmTC_52448.lib" /MACHINE:X64  /machine:x64 cmTC_52448.dir\Debug\testCXXCompiler.obj
+  cmTC_52448.vcxproj -> D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\cmTC_52448.exe
+FinalizeBuildStatus:
+  Se eliminar  el archivo "cmTC_52448.dir\Debug\cmTC_52448.tlog\unsuccessfulbuild".
+  Aplicando tarea Touch a "cmTC_52448.dir\Debug\cmTC_52448.tlog\cmTC_52448.lastbuildstate".
+Compilaci¢n del proyecto terminada "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\cmTC_52448.vcxproj" (destinos predeterminados).
+
+Compilaci¢n correcta.
+    0 Advertencia(s)
+    0 Errores
+
+Tiempo transcurrido 00:00:01.25
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/MSBuild/12.0/bin/MSBuild.exe" "cmTC_01277.vcxproj" "/p:Configuration=Debug" "/p:VisualStudioVersion=12.0"
+Microsoft (R) Build Engine, versi¢n 12.0.21005.1
+[Microsoft .NET Framework, versi¢n 4.0.30319.34209]
+Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+
+Compilaci¢n iniciada a las 25/07/2016 18:09:16.
+Proyecto "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\cmTC_01277.vcxproj" en nodo 1 (destinos predeterminados).
+PrepareForBuild:
+  Creando directorio "cmTC_01277.dir\Debug\".
+  Creando directorio "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\".
+  Creando directorio "cmTC_01277.dir\Debug\cmTC_01277.tlog\".
+InitializeBuildStatus:
+  Se crear  "cmTC_01277.dir\Debug\cmTC_01277.tlog\unsuccessfulbuild" porque se especific¢ "AlwaysCreate".
+ClCompile:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"cmTC_01277.dir\Debug\\" /Fd"cmTC_01277.dir\Debug\vc120.pdb" /Gd /TP /errorReport:queue "D:\CMake\share\cmake-3.6\Modules\CMakeCXXCompilerABI.cpp"
+  Compilador de optimizaci¢n de C/C++ de Microsoft (R) versi¢n 18.00.21005.1 para x64
+  (C) Microsoft Corporation. Reservados todos los derechos.
+  
+  cl /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"cmTC_01277.dir\Debug\\" /Fd"cmTC_01277.dir\Debug\vc120.pdb" /Gd /TP /errorReport:queue "D:\CMake\share\cmake-3.6\Modules\CMakeCXXCompilerABI.cpp"
+  
+  CMakeCXXCompilerABI.cpp
+Link:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:QUEUE /OUT:"D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\cmTC_01277.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp/Debug/cmTC_01277.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp/Debug/cmTC_01277.lib" /MACHINE:X64  /machine:x64 cmTC_01277.dir\Debug\CMakeCXXCompilerABI.obj
+  cmTC_01277.vcxproj -> D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\cmTC_01277.exe
+FinalizeBuildStatus:
+  Se eliminar  el archivo "cmTC_01277.dir\Debug\cmTC_01277.tlog\unsuccessfulbuild".
+  Aplicando tarea Touch a "cmTC_01277.dir\Debug\cmTC_01277.tlog\cmTC_01277.lastbuildstate".
+Compilaci¢n del proyecto terminada "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\cmTC_01277.vcxproj" (destinos predeterminados).
+
+Compilaci¢n correcta.
+    0 Advertencia(s)
+    0 Errores
+
+Tiempo transcurrido 00:00:01.40
+
+
+
+
+Detecting CXX [] compiler features compiled with the following output:
+Change Dir: D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/MSBuild/12.0/bin/MSBuild.exe" "cmTC_55207.vcxproj" "/p:Configuration=Debug" "/p:VisualStudioVersion=12.0"
+Microsoft (R) Build Engine, versi¢n 12.0.21005.1
+[Microsoft .NET Framework, versi¢n 4.0.30319.34209]
+Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+
+Compilaci¢n iniciada a las 25/07/2016 18:09:18.
+Proyecto "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\cmTC_55207.vcxproj" en nodo 1 (destinos predeterminados).
+PrepareForBuild:
+  Creando directorio "cmTC_55207.dir\Debug\".
+  Creando directorio "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\".
+  Creando directorio "cmTC_55207.dir\Debug\cmTC_55207.tlog\".
+InitializeBuildStatus:
+  Se crear  "cmTC_55207.dir\Debug\cmTC_55207.tlog\unsuccessfulbuild" porque se especific¢ "AlwaysCreate".
+ClCompile:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"cmTC_55207.dir\Debug\\" /Fd"cmTC_55207.dir\Debug\vc120.pdb" /Gd /TP /errorReport:queue D:\JOSEP\OpenWAM\CMakeFiles\feature_tests.cxx
+  Compilador de optimizaci¢n de C/C++ de Microsoft (R) versi¢n 18.00.21005.1 para x64
+  (C) Microsoft Corporation. Reservados todos los derechos.
+  
+  cl /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"cmTC_55207.dir\Debug\\" /Fd"cmTC_55207.dir\Debug\vc120.pdb" /Gd /TP /errorReport:queue D:\JOSEP\OpenWAM\CMakeFiles\feature_tests.cxx
+  
+  feature_tests.cxx
+Link:
+  D:\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:QUEUE /OUT:"D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\cmTC_55207.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp/Debug/cmTC_55207.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/JOSEP/OpenWAM/CMakeFiles/CMakeTmp/Debug/cmTC_55207.lib" /MACHINE:X64  /machine:x64 cmTC_55207.dir\Debug\feature_tests.obj
+  cmTC_55207.vcxproj -> D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\Debug\cmTC_55207.exe
+FinalizeBuildStatus:
+  Se eliminar  el archivo "cmTC_55207.dir\Debug\cmTC_55207.tlog\unsuccessfulbuild".
+  Aplicando tarea Touch a "cmTC_55207.dir\Debug\cmTC_55207.tlog\cmTC_55207.lastbuildstate".
+Compilaci¢n del proyecto terminada "D:\JOSEP\OpenWAM\CMakeFiles\CMakeTmp\cmTC_55207.vcxproj" (destinos predeterminados).
+
+Compilaci¢n correcta.
+    0 Advertencia(s)
+    0 Errores
+
+Tiempo transcurrido 00:00:01.20
+
+
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:0cxx_alignas
+    Feature record: CXX_FEATURE:0cxx_alignof
+    Feature record: CXX_FEATURE:0cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:0cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:0cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:0cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:0cxx_func_identifier
+    Feature record: CXX_FEATURE:0cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:0cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:0cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:0cxx_noexcept
+    Feature record: CXX_FEATURE:0cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:0cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:0cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:0cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:0cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:0cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:0cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates

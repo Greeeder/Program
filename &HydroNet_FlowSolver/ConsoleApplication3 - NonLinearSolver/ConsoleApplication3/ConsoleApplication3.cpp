@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <unsupported/Eigen/NonLinearOptimization>
 #include <Eigen/Dense>
+#include <iostream>
 
 
 template<typename _Scalar, int NX = Eigen::Dynamic, int NY = Eigen::Dynamic>
@@ -110,6 +111,15 @@ void tests()
 
 int main()
 {
+	int a = 8;
+	Eigen::RowVectorXi A (a);
+	double x;
+	A << true, true, true, false, true, true, true, true;
+	//A << a;
+	//A.setConstant(false);
+	A(3) << true;
+	std::cout << true;
+	x = A.size() - (A).sum();
 	tests();
 
     return 0;

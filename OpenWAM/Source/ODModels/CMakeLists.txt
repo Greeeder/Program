@@ -1,0 +1,22 @@
+add_library(
+  ODModels
+  Correlations.cpp
+  TAcousticTurbine.cpp
+  TAeffFunction.cpp
+  TEffTFunction.cpp
+  TDeposito.cpp
+  TDepVolCte.cpp
+  TDepVolCteBase.cpp
+  TDepVolVariable.cpp
+  TIsoSpeedLine.cpp
+  TTurbina.cpp
+  TTurbinaSimple.cpp
+  TTurbinaTwin.cpp
+  TTurbineMap.cpp
+  TTurbPosition.cpp
+  TUnionDireccional.cpp
+  TVenturi.cpp
+  TBasicPlenum.cpp
+  T0DModel.cpp
+  BasicHeatTransfer.cpp
+)

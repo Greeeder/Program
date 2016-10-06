@@ -1,0 +1,26 @@
+D:/JOSEP/OpenWAM/CMakeFiles/pugixml.dir
+D:/JOSEP/OpenWAM/CMakeFiles/VEMOD.dir
+D:/JOSEP/OpenWAM/CMakeFiles/ALL_BUILD.dir
+D:/JOSEP/OpenWAM/CMakeFiles/ZERO_CHECK.dir
+D:/JOSEP/OpenWAM/Units/CMakeFiles/Units.dir
+D:/JOSEP/OpenWAM/CheckXML/CMakeFiles/CheckXML.dir
+D:/JOSEP/OpenWAM/Fluids/CMakeFiles/Fluids.dir
+D:/JOSEP/OpenWAM/Solids/CMakeFiles/Solids.dir
+D:/JOSEP/OpenWAM/1DPipes/CMakeFiles/1DPipes.dir
+D:/JOSEP/OpenWAM/Act/CMakeFiles/Act.dir
+D:/JOSEP/OpenWAM/Boundaries/CMakeFiles/Boundaries.dir
+D:/JOSEP/OpenWAM/Concentric Pipe/CMakeFiles/ConcentricPipe.dir
+D:/JOSEP/OpenWAM/Connections/CMakeFiles/Connections.dir
+D:/JOSEP/OpenWAM/Control/CMakeFiles/Control.dir
+D:/JOSEP/OpenWAM/DataIO/CMakeFiles/DataIO.dir
+D:/JOSEP/OpenWAM/Labels/CMakeFiles/Labels.dir
+D:/JOSEP/OpenWAM/Integrable/CMakeFiles/Integrable.dir
+D:/JOSEP/OpenWAM/Math_wam/CMakeFiles/Math_wam.dir
+D:/JOSEP/OpenWAM/DPF/CMakeFiles/DPF.dir
+D:/JOSEP/OpenWAM/Engine/CMakeFiles/Engine.dir
+D:/JOSEP/OpenWAM/Extern/CMakeFiles/Extern.dir
+D:/JOSEP/OpenWAM/ODModels/CMakeFiles/ODModels.dir
+D:/JOSEP/OpenWAM/Output/CMakeFiles/Output.dir
+D:/JOSEP/OpenWAM/Q2DTurbo/CMakeFiles/Q2DTurbine.dir
+D:/JOSEP/OpenWAM/Turbocompressor/CMakeFiles/Turbocompressor.dir
+D:/JOSEP/OpenWAM/Wrappers/CMakeFiles/Wrappers.dir

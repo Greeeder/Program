@@ -6,8 +6,8 @@ function [ ] = HydroNet_Main( )
 % All valves and thermostats are assumed open.
 
 %circuit_file='Cyl&pump.txt';
-circuit_file ='Coolant_basic_nodes - copia.txt';
-%circuit_file = 'Coolant_basic_nodes.txt';
+%circuit_file ='Coolant_basic_nodes - copia.txt';
+circuit_file = 'Coolant_basic_nodes.txt';
 %circuit_file = 'Circuit_test_1.txt';
 %circuit_file = 'Cyl&pump&rad-valves.txt';
 

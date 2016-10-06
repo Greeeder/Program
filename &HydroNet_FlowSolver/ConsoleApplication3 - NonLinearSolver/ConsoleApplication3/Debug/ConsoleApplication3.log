@@ -1,3 +1,5 @@
 ﻿  ConsoleApplication3.cpp
-  ConsoleApplication3.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet_FlowSolver_wrkng\ConsoleApplication3 - NonLinearSolver\Debug\ConsoleApplication3.exe
-  ConsoleApplication3.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet_FlowSolver_wrkng\ConsoleApplication3 - NonLinearSolver\Debug\ConsoleApplication3.pdb (Full PDB)
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver\consoleapplication3 - nonlinearsolver\consoleapplication3\consoleapplication3.cpp(120): warning C4804: '<<': unsafe use of type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_flowsolver\consoleapplication3 - nonlinearsolver\consoleapplication3\consoleapplication3.cpp(120): warning C4552: '<<': operator has no effect; expected operator with side-effect
+  ConsoleApplication3.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet_FlowSolver\ConsoleApplication3 - NonLinearSolver\Debug\ConsoleApplication3.exe
+  ConsoleApplication3.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet_FlowSolver\ConsoleApplication3 - NonLinearSolver\Debug\ConsoleApplication3.pdb (Full PDB)

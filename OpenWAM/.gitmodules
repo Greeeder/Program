@@ -1,0 +1,6 @@
+[submodule "submodules/pugixml"]
+	path = submodules/pugixml
+	url = https://github.com/zeux/pugixml.git
+[submodule "submodules/eigen"]
+	path = submodules/eigen
+	url = https://github.com/RLovelett/eigen

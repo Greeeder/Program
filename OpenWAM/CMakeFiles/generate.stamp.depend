@@ -1,0 +1,23 @@
+# CMake generation dependency list for this directory.
+D:/JOSEP/OpenWAM/Source/CMakeLists.txt
+D:/JOSEP/OpenWAM/CMakeFiles/3.6.1/CMakeSystem.cmake
+D:/CMake/share/cmake-3.6/Modules/CMakeSystemSpecificInitialize.cmake
+D:/JOSEP/OpenWAM/CMakeFiles/3.6.1/CMakeCCompiler.cmake
+D:/JOSEP/OpenWAM/CMakeFiles/3.6.1/CMakeCXXCompiler.cmake
+D:/CMake/share/cmake-3.6/Modules/CMakeSystemSpecificInformation.cmake
+D:/CMake/share/cmake-3.6/Modules/CMakeGenericSystem.cmake
+D:/CMake/share/cmake-3.6/Modules/Platform/Windows.cmake
+D:/CMake/share/cmake-3.6/Modules/Platform/WindowsPaths.cmake
+D:/CMake/share/cmake-3.6/Modules/CMakeCInformation.cmake
+D:/CMake/share/cmake-3.6/Modules/CMakeLanguageInformation.cmake
+D:/CMake/share/cmake-3.6/Modules/Platform/Windows-MSVC-C.cmake
+D:/CMake/share/cmake-3.6/Modules/Platform/Windows-MSVC.cmake
+D:/JOSEP/OpenWAM/CMakeFiles/3.6.1/CMakeRCCompiler.cmake
+D:/CMake/share/cmake-3.6/Modules/CMakeRCInformation.cmake
+D:/CMake/share/cmake-3.6/Modules/CMakeCommonLanguageInclude.cmake
+D:/CMake/share/cmake-3.6/Modules/CMakeCXXInformation.cmake
+D:/CMake/share/cmake-3.6/Modules/CMakeLanguageInformation.cmake
+D:/CMake/share/cmake-3.6/Modules/Compiler/MSVC-CXX.cmake
+D:/CMake/share/cmake-3.6/Modules/Platform/Windows-MSVC-CXX.cmake
+D:/CMake/share/cmake-3.6/Modules/Platform/Windows-MSVC.cmake
+D:/CMake/share/cmake-3.6/Modules/CMakeCommonLanguageInclude.cmake

@@ -80,6 +80,8 @@ struct strPump_turbo
 	double Q2_coef_N2;				//coefficient order 2 N2 [m.c.f. / m^6*s^2 / (rad/s)^2]
 	double pump_speed;				// Pump speed [rad/s]
 	double head_max;				// Max head preassure
+	double heat;					// Heat Energy Exchanged [J]
+	double T_in;					// Intlet temperaure [K]
 
 };
 
@@ -95,6 +97,8 @@ struct strPump_volum
 	double coef3;					//coefficient order 3 [m^3/s / (rad/s)^3]
 	double pump_speed;				// Pump speed [rad/s]
 	double head_max;				// Max head preassure
+	double heat;					// Heat Energy Exchanged [J]
+	double T_in;					// Intlet temperaure [K]
 
 };
 
@@ -564,7 +568,7 @@ double vec_sum_elements(std::vector<double> in,std::vector<int> elem, int elem_s
 	return sum;
 }
 
-void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branches, std::vector<std::vector<double>> obj_inlet_pos, std::vector<std::vector<double>> obj_outlet_pos, std::vector<strHeat_exch_Tout> heat_exch_Tout, std::vector<strHeat_exch_fix>heat_exch_fix, std::vector<int> nodes_id, std::vector<std::vector<int>>branches_id, std::vector<std::vector<int>> node_branches, int n_nodes, int n_branch, std::vector<double> branch_volume, std::vector<std::vector<double>>branch_temp_pos, std::vector<std::vector<double>>branch_temperature, std::vector<std::vector<int>>branch_htx_Tout, std::vector<std::vector<int>>branch_htx_fix, std::vector<double> flows, double dt) {
+void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branches, std::vector<std::vector<double>> obj_inlet_pos, std::vector<std::vector<double>> obj_outlet_pos, std::vector<strHeat_exch_Tout> heat_exch_Tout, std::vector<strHeat_exch_fix>heat_exch_fix, std::vector<strPump_volum> pump_volum, std::vector<strPump_turbo> pump_turbo, std::vector<int> nodes_id, std::vector<std::vector<int>>branches_id, std::vector<std::vector<int>> node_branches, int n_nodes, int n_branch, std::vector<double> branch_volume, std::vector<std::vector<double>>branch_temp_pos, std::vector<std::vector<double>>branch_temperature, std::vector<std::vector<int>>branch_htx_Tout, std::vector<std::vector<int>>branch_htx_fix, std::vector<std::vector<int>>branch_pump_volum, std::vector<std::vector<int>>branch_pump_turbo, std::vector<double> flows, double dt) {
 
 	// Finds positions where temperature changes and temperatures in those ranges.
 	// Moves positions and temperatures according to flows and, simultaneously,
@@ -670,7 +674,7 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 				for ( int count = 0 ; count< branch_temperature.at(count_branch).size();count++)
 					new_temp.at(count_branch).at(count) = branch_temperature.at(count_branch).at(count);
 				size.new_temp.at(count_branch) = branch_temperature.at(count_branch).size();
-				// If there are heat exchangers, inserts volume for it and refreshes temperature
+				// If there are heat exchangers or pumps, inserts volume for it and refreshes temperature
 				// Heat exchanger of type T_out
 				for (int count_obj_htx = 0, ind_aux; count_obj_htx < branch_htx_Tout.at(count_branch).size(); count_obj_htx++) {//count_obj_htx = branch_htx_Tout{ count_branch }
 
@@ -690,6 +694,7 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
 					size.new_temp.at(count_branch) = InsertVolum.temp_size;
 				}
+
 				// Heat exchanger of type fixed heat
 				for (int count_obj_htx = 0, ind_aux; count_obj_htx < branch_htx_fix.at(count_branch).size(); count_obj_htx++) {//count_obj_htx = branch_htx_fix{ count_branch }
 
@@ -700,6 +705,46 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 					end_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position
 					temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
 					value = heat_exch_fix.at(branch_htx_fix.at(count_branch).at(count_obj_htx)).heat; // heat to add
+
+					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
+					for (int count = 0; count< InsertVolum.position.size(); count++)
+						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
+					size.new_pos.at(count_branch) = InsertVolum.pos_size;
+					for (int count = 0; count< InsertVolum.temperature.size(); count++)
+						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
+					size.new_temp.at(count_branch) = InsertVolum.temp_size;
+				}
+				
+				// Voluimetric Pump
+				for (int count_obj_pump = 0, ind_aux; count_obj_pump < branch_pump_volum.at(count_branch).size(); count_obj_pump++) {//count_obj_htx = branch_htx_fix{ count_branch }
+
+					ind_aux = pump_volum.at(branch_pump_volum.at(count_branch).at(count_obj_pump)).Pump_volum;
+					// index of the heat exchanger in the table objects
+
+					start_pos = obj_inlet_pos.at(ind_aux).at(0); // object's inlet position
+					end_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position
+					temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+					value = pump_volum.at(branch_pump_volum.at(count_branch).at(count_obj_pump)).heat; // heat to add
+
+					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
+					for (int count = 0; count< InsertVolum.position.size(); count++)
+						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
+					size.new_pos.at(count_branch) = InsertVolum.pos_size;
+					for (int count = 0; count< InsertVolum.temperature.size(); count++)
+						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
+					size.new_temp.at(count_branch) = InsertVolum.temp_size;
+				}
+				
+				// Turbo pump
+				for (int count_obj_pump = 0, ind_aux; count_obj_pump < branch_pump_turbo.at(count_branch).size(); count_obj_pump++) {//count_obj_htx = branch_htx_fix{ count_branch }
+
+					ind_aux = pump_turbo.at(branch_pump_turbo.at(count_branch).at(count_obj_pump)).Pump_turbo;
+					// index of the heat exchanger in the table objects
+
+					start_pos = obj_inlet_pos.at(ind_aux).at(0); // object's inlet position
+					end_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position
+					temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+					value = pump_turbo.at(branch_pump_turbo.at(count_branch).at(count_obj_pump)).heat; // heat to add
 
 					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
 					for (int count = 0; count< InsertVolum.position.size(); count++)
@@ -788,8 +833,8 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 
 
 				////////////////////////////////////
-				// HEAT EXCHANGERS
-				// If there are heat exchangers, checks whether the volume out of them remains inside the branch or it
+				// HEAT EXCHANGERS & PUMPS
+				// If there are heat exchangers or pumps, checks whether the volume out of them remains inside the branch or it
 				// goes out, inserts volume for it, refreshes temperature inside the branch and stores overflowed volume.
 				// There can only be heat exchangers if branch volume is > 0.
 				// Second step to find the temperature of the buffer volume
@@ -874,6 +919,90 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 					size.new_temp.at(count_branch) = InsertVolum.temp_size;
 				}
 
+				// Volumetric pumps
+				for (int count = 0, count_obj_pmp, ind_aux; count < branch_pump_volum.at(count_branch).size(); count++) { // loop starting from the closest exchanger to the branch's end
+					count_obj_pmp = branch_pump_volum.at(count_branch).at(count);
+					ind_aux = pump_volum.at(count_obj_pmp).Pump_volum;
+					// index of the heat exchanger in the table objects
+
+					temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+					value = pump_volum.at(count_obj_pmp).heat;
+
+					start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
+					end_pos = start_pos + delta_pos;
+
+					if (end_pos > 100) {
+
+						value = pump_volum.at(count_obj_pmp).heat* (end_pos - 100) / (end_pos - start_pos);
+						// heat to add averaged for the volume that goes out of the branch
+
+						start_pos = 100;
+
+						InsertVolum = HydroNet_InsertVolume(overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.overflow_temp_volpos_aux, size.overflow_temperature_aux);
+						for (int count = 0; count< InsertVolum.position.size(); count++)
+							overflow_temp_volpos_aux.at(count) = InsertVolum.position.at(count);
+						size.overflow_temp_volpos_aux = InsertVolum.pos_size;
+						for (int count = 0; count< InsertVolum.temperature.size(); count++)
+							overflow_temperature_aux.at(count) = InsertVolum.temperature.at(count);
+						size.overflow_temperature_aux = InsertVolum.temp_size;
+
+						// For the volume inside the branch
+						start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
+						end_pos = 100;
+						value = pump_volum.at(count_obj_pmp).heat* (100 - start_pos) / (end_pos - start_pos);
+						// heat to add averaged for the volume that stays inside the branch
+					}
+
+					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
+					for (int count = 0; count< InsertVolum.pos_size; count++)
+						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
+					size.new_pos.at(count_branch) = InsertVolum.pos_size;
+					for (int count = 0; count< InsertVolum.temp_size; count++)
+						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
+					size.new_temp.at(count_branch) = InsertVolum.temp_size;
+				}
+				// Turbo pump
+				for (int count = 0, count_obj_pmp, ind_aux; count < branch_pump_turbo.at(count_branch).size(); count++) { // loop starting from the closest exchanger to the branch's end
+					count_obj_pmp = branch_pump_turbo.at(count_branch).at(count);
+					ind_aux = pump_turbo.at(count_obj_pmp).Pump_turbo;
+					// index of the heat exchanger in the table objects
+
+					temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+					value = pump_turbo.at(count_obj_pmp).heat;
+
+					start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
+					end_pos = start_pos + delta_pos;
+
+					if (end_pos > 100) {
+
+						value = pump_turbo.at(count_obj_pmp).heat* (end_pos - 100) / (end_pos - start_pos);
+						// heat to add averaged for the volume that goes out of the branch
+
+						start_pos = 100;
+
+						InsertVolum = HydroNet_InsertVolume(overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.overflow_temp_volpos_aux, size.overflow_temperature_aux);
+						for (int count = 0; count< InsertVolum.position.size(); count++)
+							overflow_temp_volpos_aux.at(count) = InsertVolum.position.at(count);
+						size.overflow_temp_volpos_aux = InsertVolum.pos_size;
+						for (int count = 0; count< InsertVolum.temperature.size(); count++)
+							overflow_temperature_aux.at(count) = InsertVolum.temperature.at(count);
+						size.overflow_temperature_aux = InsertVolum.temp_size;
+
+						// For the volume inside the branch
+						start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
+						end_pos = 100;
+						value = pump_volum.at(count_obj_pmp).heat* (100 - start_pos) / (end_pos - start_pos);
+						// heat to add averaged for the volume that stays inside the branch
+					}
+
+					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
+					for (int count = 0; count< InsertVolum.pos_size; count++)
+						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
+					size.new_pos.at(count_branch) = InsertVolum.pos_size;
+					for (int count = 0; count< InsertVolum.temp_size; count++)
+						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
+					size.new_temp.at(count_branch) = InsertVolum.temp_size;
+				}
 
 				////////////////////////////////////
 				// TEMPERATURE OF THE BUFFER VOLUME (OVERFLOW)
@@ -1238,12 +1367,12 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 
 
 
-	//// CALCULATES INLET TEMPERATURE TO HEAT EXCHANGERS
-	// Asumption: the flow that will pass through the heat exchanger in the next
+	//// CALCULATES INLET TEMPERATURE TO HEAT EXCHANGERS & PUMPS
+	// Asumption: the flow that will pass through the heat exchanger and pumps in the next
 	// instant is equal to the branch flow in the current instant.
 	// Exception: if flow = 0 in the current instant, inserts a volume for the
-	// heat exchanger and obtains its temperature.
-	// Backwards direction from the outlet of the heat exchanger.
+	// heat exchanger or pump and obtains its temperature.
+	// Backwards direction from the outlet of the heat exchanger or pump.
 
 	// Heat exchangers of type Tout
 	for (int count_htx = 0, obj_aux, branch_aux; count_htx < heat_exch_Tout.size(); count_htx++) {
@@ -1496,6 +1625,261 @@ void HydroNet_Temperature(std::string fluid_type, std::vector<strBranches> branc
 
 		}
 	}
+
+	// Volumetric pump
+	for (int count_pmp = 0, branch_aux, obj_aux; count_pmp < pump_volum.size(); count_pmp++) {
+
+
+		obj_aux = pump_volum.at(count_pmp).Pump_volum; // index of the heat exchanger in objects table
+		for (int count = 0; count < branches.size(); count++)
+			for (int count1 = 0; count1 < branches.at(count).objects.size(); count1++)
+				if (obj_aux == branches.at(count).objects.at(count1).ID) {
+					branch_aux = count;
+					break;
+				}// branch that contains the heat exchanger
+
+		if (flows.at(branch_aux) == 0) { // no movement in the branch
+
+										 // Inserts a volume for the heat exchanger and obtains its temperature
+			start_pos = obj_inlet_pos.at(obj_aux).at(0);
+			end_pos = obj_outlet_pos.at(obj_aux).at(0);
+			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
+
+			// Reads and stores the temperature in the middle of the heat exchanger
+			obj_pos = (start_pos + end_pos) / 2;
+			pump_volum.at(count_pmp).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);//branch_temp_pos_aux, branch_temp_aux);
+		}
+
+		else if ((flows.at(branch_aux) * dt) <= (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux))) {
+			// there is movement in the branch and the affected volume is inside the branch
+
+			// Inserts a volume for the affected area and obtains its temperature
+			start_pos = obj_outlet_pos.at(obj_aux).at(0) - flows.at(branch_aux) * dt / branch_volume.at(branch_aux) * 100;
+			end_pos = obj_outlet_pos.at(obj_aux).at(0);
+			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
+
+			// Reads and stores the temperature in the middle of the affected volume
+			obj_pos = (start_pos + end_pos) / 2;
+			pump_volum.at(count_pmp).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);// branch_temp_pos_aux, branch_temp_aux);
+		}
+
+		else {// there is movement in the branch and the affected volume reaches the previous branches
+
+			  // First, obtains temperature of the volume between the start of the
+			  // branch and the heat exchanger outlet, inserting a volume
+			start_pos = 0;
+			end_pos = obj_outlet_pos.at(obj_aux).at(0);
+			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
+
+			// Reads and stores the temperature in the middle of the affected volume
+			obj_pos = (start_pos + end_pos) / 2;
+			temp_aux = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature); //branch_temp_pos_aux, branch_temp_aux);
+			pump_volum.at(count_pmp).T_in = temp_aux;
+
+			// Initializes enthalpy balance
+			sum_mass = density(fluid_type, temp_aux) * (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux));
+			sum_temp_mass = temp_aux * sum_mass; // sum of temperature times mass
+
+												 // Stores volume that will come from previous branches
+			overflow(branch_aux) = (flows.at(branch_aux) * dt) - (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux));
+
+			// Loop to obtain temperatures of the incoming flows
+			while (overflow.isZero()) {// while there are overflows
+				for (int count = 0, count_branch; count < overflow.size(); count++) { // loop of branches with overflow
+					if (overflow(count) > 0) {
+						count_branch = count;
+						for (int aux = 0; aux<nodes_id.size(); aux++)
+							if (branches_id.at(count_branch).at(1) == nodes_id.at(aux))
+								node_aux = aux; // node at the start of the branch
+						flow_sum = vec_sum_elements(flows, node_outlet_branches.at(node_count), size.node_outlet_branches.at(node_count)); // sum of flows going into the branch
+
+						for (int aux = 0; aux < size.node_outlet_branches.at(node_count); aux++)
+							volume_share.at(aux) = flows.at(node_outlet_branches.at(node_count).at(aux)) / flow_sum*node_volume_in.at(node_count);
+						// volume that comes from every inlet branch (proportional to flow)
+						for (int count_branch1 = 0, branch_aux1; count_branch1 < size.node_inlet_branches.at(node_aux); count_branch1++) { // loop of inlet branches
+							branch_aux1 = node_inlet_branches.at(node_aux).at(count_branch1); // branch index
+							if (volume_share.at(count_branch1) < branch_volume.at(branch_aux1)) {
+								// volume in the branch is bigger than outcoming volume
+								// also avoids dividing by zero
+
+								// Inserts a volume for the affected area and obtains its temperature
+								start_pos = (1 - volume_share.at(count_branch1) / branch_volume.at(branch_aux1)) * 100;
+								end_pos = 100;
+								temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+								InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux1), new_temp.at(branch_aux1), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux1), max_divisions, size.new_pos.at(branch_aux1), size.new_temp.at(branch_aux1));
+
+								// Reads the temperature in the middle of the affected volume
+								obj_pos = (start_pos + end_pos) / 2;
+								temp_aux = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature); //branch_temp_pos_aux, branch_temp_aux);
+
+																															   // Enters temperature and mass in the enthalpy balance
+								sum_mass = sum_mass + density(fluid_type, temp_aux) * volume_share.at(count_branch1);
+								sum_temp_mass = sum_temp_mass + temp_aux * density(fluid_type, temp_aux) * volume_share.at(count_branch1);
+							}
+
+							else {// volume in the branch is smaller than outcoming volume
+
+								  // Inserts a volume for the entire branch and obtains its temperature
+								start_pos = 0;
+								end_pos = 100;
+								temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+								InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux1), new_temp.at(branch_aux1), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux1), max_divisions, size.new_pos.at(branch_aux1), size.new_temp.at(branch_aux1));
+
+								// Reads the temperature in the middle of the branch
+								obj_pos = (start_pos + end_pos) / 2;
+								temp_aux = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);// branch_temp_pos_aux, branch_temp_aux);
+
+																															  // Enters temperature and mass in the enthalpy balance
+								sum_mass = sum_mass + density(fluid_type, temp_aux) * volume_share.at(count_branch);
+								sum_temp_mass = sum_temp_mass + temp_aux * density(fluid_type, temp_aux) * volume_share.at(count_branch1);
+
+								// Stores the excess volume
+								overflow(branch_aux1) = volume_share.at(count_branch1) - branch_volume.at(branch_aux1);
+							}
+						}
+					}
+				}
+			}
+
+			for (int count = 0; count < overflow.size(); count++)
+				overflow(count) = 0;// leaves everything as found
+
+									// Stores resulting inlet temperature
+			pump_volum.at(count_pmp).T_in = sum_temp_mass / sum_mass;
+
+		}
+	}
+
+
+	// Turbo pump
+	for (int count_pmp = 0, branch_aux, obj_aux; count_pmp < pump_turbo.size(); count_pmp++) {
+
+
+		obj_aux = pump_turbo.at(count_pmp).Pump_turbo; // index of the heat exchanger in objects table
+		for (int count = 0; count < branches.size(); count++)
+			for (int count1 = 0; count1 < branches.at(count).objects.size(); count1++)
+				if (obj_aux == branches.at(count).objects.at(count1).ID) {
+					branch_aux = count;
+					break;
+				}// branch that contains the heat exchanger
+
+		if (flows.at(branch_aux) == 0) { // no movement in the branch
+
+										 // Inserts a volume for the heat exchanger and obtains its temperature
+			start_pos = obj_inlet_pos.at(obj_aux).at(0);
+			end_pos = obj_outlet_pos.at(obj_aux).at(0);
+			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
+
+			// Reads and stores the temperature in the middle of the heat exchanger
+			obj_pos = (start_pos + end_pos) / 2;
+			pump_turbo.at(count_pmp).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);//branch_temp_pos_aux, branch_temp_aux);
+		}
+
+		else if ((flows.at(branch_aux) * dt) <= (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux))) {
+			// there is movement in the branch and the affected volume is inside the branch
+
+			// Inserts a volume for the affected area and obtains its temperature
+			start_pos = obj_outlet_pos.at(obj_aux).at(0) - flows.at(branch_aux) * dt / branch_volume.at(branch_aux) * 100;
+			end_pos = obj_outlet_pos.at(obj_aux).at(0);
+			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
+
+			// Reads and stores the temperature in the middle of the affected volume
+			obj_pos = (start_pos + end_pos) / 2;
+			pump_turbo.at(count_pmp).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);// branch_temp_pos_aux, branch_temp_aux);
+		}
+
+		else {// there is movement in the branch and the affected volume reaches the previous branches
+
+			  // First, obtains temperature of the volume between the start of the
+			  // branch and the heat exchanger outlet, inserting a volume
+			start_pos = 0;
+			end_pos = obj_outlet_pos.at(obj_aux).at(0);
+			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
+
+			// Reads and stores the temperature in the middle of the affected volume
+			obj_pos = (start_pos + end_pos) / 2;
+			temp_aux = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature); //branch_temp_pos_aux, branch_temp_aux);
+			pump_turbo.at(count_pmp).T_in = temp_aux;
+
+			// Initializes enthalpy balance
+			sum_mass = density(fluid_type, temp_aux) * (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux));
+			sum_temp_mass = temp_aux * sum_mass; // sum of temperature times mass
+
+												 // Stores volume that will come from previous branches
+			overflow(branch_aux) = (flows.at(branch_aux) * dt) - (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux));
+
+			// Loop to obtain temperatures of the incoming flows
+			while (overflow.isZero()) {// while there are overflows
+				for (int count = 0, count_branch; count < overflow.size(); count++) { // loop of branches with overflow
+					if (overflow(count) > 0) {
+						count_branch = count;
+						for (int aux = 0; aux<nodes_id.size(); aux++)
+							if (branches_id.at(count_branch).at(1) == nodes_id.at(aux))
+								node_aux = aux; // node at the start of the branch
+						flow_sum = vec_sum_elements(flows, node_outlet_branches.at(node_count), size.node_outlet_branches.at(node_count)); // sum of flows going into the branch
+
+						for (int aux = 0; aux < size.node_outlet_branches.at(node_count); aux++)
+							volume_share.at(aux) = flows.at(node_outlet_branches.at(node_count).at(aux)) / flow_sum*node_volume_in.at(node_count);
+						// volume that comes from every inlet branch (proportional to flow)
+						for (int count_branch1 = 0, branch_aux1; count_branch1 < size.node_inlet_branches.at(node_aux); count_branch1++) { // loop of inlet branches
+							branch_aux1 = node_inlet_branches.at(node_aux).at(count_branch1); // branch index
+							if (volume_share.at(count_branch1) < branch_volume.at(branch_aux1)) {
+								// volume in the branch is bigger than outcoming volume
+								// also avoids dividing by zero
+
+								// Inserts a volume for the affected area and obtains its temperature
+								start_pos = (1 - volume_share.at(count_branch1) / branch_volume.at(branch_aux1)) * 100;
+								end_pos = 100;
+								temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+								InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux1), new_temp.at(branch_aux1), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux1), max_divisions, size.new_pos.at(branch_aux1), size.new_temp.at(branch_aux1));
+
+								// Reads the temperature in the middle of the affected volume
+								obj_pos = (start_pos + end_pos) / 2;
+								temp_aux = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature); //branch_temp_pos_aux, branch_temp_aux);
+
+																															   // Enters temperature and mass in the enthalpy balance
+								sum_mass = sum_mass + density(fluid_type, temp_aux) * volume_share.at(count_branch1);
+								sum_temp_mass = sum_temp_mass + temp_aux * density(fluid_type, temp_aux) * volume_share.at(count_branch1);
+							}
+
+							else {// volume in the branch is smaller than outcoming volume
+
+								  // Inserts a volume for the entire branch and obtains its temperature
+								start_pos = 0;
+								end_pos = 100;
+								temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+								InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux1), new_temp.at(branch_aux1), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux1), max_divisions, size.new_pos.at(branch_aux1), size.new_temp.at(branch_aux1));
+
+								// Reads the temperature in the middle of the branch
+								obj_pos = (start_pos + end_pos) / 2;
+								temp_aux = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);// branch_temp_pos_aux, branch_temp_aux);
+
+																															  // Enters temperature and mass in the enthalpy balance
+								sum_mass = sum_mass + density(fluid_type, temp_aux) * volume_share.at(count_branch);
+								sum_temp_mass = sum_temp_mass + temp_aux * density(fluid_type, temp_aux) * volume_share.at(count_branch1);
+
+								// Stores the excess volume
+								overflow(branch_aux1) = volume_share.at(count_branch1) - branch_volume.at(branch_aux1);
+							}
+						}
+					}
+				}
+			}
+
+			for (int count = 0; count < overflow.size(); count++)
+				overflow(count) = 0;// leaves everything as found
+
+									// Stores resulting inlet temperature
+			pump_turbo.at(count_pmp).T_in = sum_temp_mass / sum_mass;
+
+		}
+	}
 }
 
 
@@ -1503,6 +1887,7 @@ int main()
 {
 	std::vector<strBranches> branches;
 	std::vector<strPump_volum> pump_volum;
+	std::vector<strPump_turbo> pump_turbo;
 	std::vector<std::vector<int>>branches_id;
 	std::vector<double> bound_flows;
 	std::vector<int> nodes_id;
@@ -1520,11 +1905,13 @@ int main()
 	std::vector<double> branch_volume;
 	std::vector<std::vector<int>>branch_htx_Tout;
 	std::vector<std::vector<int>>branch_htx_fix;
+	std::vector<std::vector<int>> branch_pump_volum;
+	std::vector<std::vector<int>> branch_pump_turbo;
 	double dt;
 	std::vector<std::vector<double>> obj_inlet_pos;
 	std::vector<std::vector<double>> obj_outlet_pos;
 	std::vector<strHeat_exch_Tout> heat_exch_Tout;
-	std::vector<strHeat_exch_fix>heat_exch_fix;
+	std::vector<strHeat_exch_fix> heat_exch_fix;
 	std::vector<std::vector<double>> branch_temp_pos;
 	std::vector<std::vector<double>> branch_temperature;
 
@@ -1573,7 +1960,7 @@ int main()
 
 	n_tanks = 0;
 
-	pump_volum.resize(6);
+	pump_volum.resize(1);
 
 	pump_volum.at(0).Pump_volum = 1;
 	pump_volum.at(0).coef0 = 1;
@@ -1584,6 +1971,8 @@ int main()
 	pump_volum.at(0).inlet_object = 1;
 	pump_volum.at(0).outlet_oject = 2;
 	pump_volum.at(0).pump_speed = 105;
+	pump_volum.at(0).T_in = -999;
+	pump_volum.at(0).heat = 0;
 
 	branches.resize(6);
 
@@ -1785,6 +2174,25 @@ int main()
 	branch_htx_fix.at(4) = {1,3};
 	branch_htx_fix.at(5) = {};
 
+	branch_pump_turbo.resize(6);
+
+	branch_pump_turbo.at(0) = {};
+	branch_pump_turbo.at(1) = {};
+	branch_pump_turbo.at(2) = {};
+	branch_pump_turbo.at(3) = {};
+	branch_pump_turbo.at(4) = {};
+	branch_pump_turbo.at(5) = {};
+
+	branch_pump_volum.resize(6);
+
+	branch_pump_volum.at(0) = {0};
+	branch_pump_volum.at(1) = {};
+	branch_pump_volum.at(2) = {};
+	branch_pump_volum.at(3) = {};
+	branch_pump_volum.at(4) = {};
+	branch_pump_volum.at(5) = {};
+
+
 	flows.resize(6);
 
 	flows.at(0) = 0.00021;
@@ -1797,7 +2205,7 @@ int main()
 
 
 
-	HydroNet_Temperature(fluid_type, branches, obj_inlet_pos, obj_outlet_pos, heat_exch_Tout, heat_exch_fix, nodes_id, branches_id, node_branches, n_nodes, n_branch, branch_volume, branch_temp_pos, branch_temperature, branch_htx_Tout, branch_htx_fix, flows, dt);
+	HydroNet_Temperature(fluid_type, branches, obj_inlet_pos, obj_outlet_pos, heat_exch_Tout, heat_exch_fix, pump_volum, pump_turbo, nodes_id, branches_id, node_branches, n_nodes, n_branch, branch_volume, branch_temp_pos, branch_temperature, branch_htx_Tout, branch_htx_fix, branch_pump_volum, branch_pump_turbo, flows, dt);
 
 	return 0;
 }

@@ -62,7 +62,7 @@
 #include <limits>
 #define _USE_MATH_DEFINES
 #include <cmath>
-#include "Math_wam.h"
+#include "Math_wam/Math_wam.h"
 
 //---------------------------------------------------------------------------
 

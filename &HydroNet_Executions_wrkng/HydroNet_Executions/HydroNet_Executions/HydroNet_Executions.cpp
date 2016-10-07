@@ -142,9 +142,9 @@ struct strBranches
 	std::vector<strObjects> objects;	// Objects in Brnach
 };
 
-
-std::vector<double> flip(std::vector<double> A) {
-	std::vector<double> aux;
+template < class T>
+T flip(T A) {
+	T aux;
 	aux.resize(A.size());
 	for (int i = 0; i < A.size(); i++)
 		aux.at(i) = A.at(A.size() - i - 1);
@@ -242,15 +242,19 @@ void HydroNet_Executions(std::string fluid_type, std::vector<strBranches> branch
 
 
 		// When needed, branch directions are flipped so that flow and branch directions are the same
-		for (count_branch = transpose(find(flows < 0))) {
+		for (int count_branch = 0 ;count_branch< flows.size; count_branch++)
+			if (flows.at(count_branch) < 0) {
 			branches_ind.at(count_branch ) = flip(branches_ind.at(count_branch ));
 			branches_id.at(count_branch ) = flip(branches_id.at(count_branch ));
 			branch_temp_pos.at(count_branch ) = hundred - flip(branch_temp_pos.at(count_branch ));
 			branch_temperature.at(count_branch ) = flip(branch_temperature.at(count_branch ));
 			branch_htx_fix.at(count_branch ) = flip(branch_htx_fix.at(count_branch ));
-			branch_htx_Tout.at(count_branch ) = flip(branch_htx_Tout.at(count_branch ));
+			branch_htx_Tout.at(count_branch )
+				= flip(branch_htx_Tout.at(count_branch ));
 
-			for (count_obj = branches_ind.at(count_branch )){
+			for (int count = 0, count_obj; count < branches_ind.at(count_branch).size; count++) {
+				std::vector<double> obj_inlet_pos_aux;
+				count_obj = branches_ind.at(count_branch).at(count);
 				obj_inlet_pos_aux = obj_inlet_pos.at( count_obj ); // saves this vector before overwriting it
 				obj_inlet_pos.at(count_obj ) = 100 - obj_outlet_pos.at(count_obj ); // oulets are now inlets
 				obj_outlet_pos.at(count_obj ) = 100 - obj_inlet_pos_aux; // inlets are now outlets
@@ -267,22 +271,21 @@ void HydroNet_Executions(std::string fluid_type, std::vector<strBranches> branch
 	if (flag_first_exec || flag_pump_speed_change || flag_valve_change || flag_thermostat_changes){
 
 		// Volumetric pumps
-		for (count = 1 : size(pump_volum, 1)) { // counter of volumetric pumps
+		for (int count = 0, object_aux; count < pump_volum.size(); count++) { // counter of volumetric pumps
 		object_aux = pump_volum.obj_index(count); // index of pump in the object's list
-		branch_aux = objects.branch{object_aux}; // branch that contains the pump (only one)
-		pos_aux = obj_inlet_pos{object_aux} +obj_outlet_pos{object_aux} / 2;
-		temperature_aux = HydroNet_GetObjTemperature(pos_aux, branch_temp_pos{branch_aux}, branch_temperature{branch_aux});
+		branch_aux = objects.branch.at(object_aux); // branch that contains the pump (only one)
+		pos_aux = obj_inlet_pos.at(object_aux) +obj_outlet_pos.at(object_aux) / 2;
+		temperature_aux = HydroNet_GetObjTemperature(pos_aux, branch_temp_pos.at(branch_aux), branch_temperature.at(branch_aux));
 		// temperature at the pump's middle
 
-		pump_volum.pump_power(count) = density(fluid_type, temperature_aux) * gravity_acc * head_vol_pump(branch_aux) * ...
-		flows(branch_aux) / efficiency(head_vol_pump(branch_aux), flows(branch_aux));
+		pump_volum.at(count).pump_power = density(fluid_type, temperature_aux) * gravity_acc * head_vol_pump.at(branch_aux) * flows(branch_aux) / efficiency(head_vol_pump(branch_aux), flows(branch_aux));
 		}
 
 	// Turbopumps
 		for (int count = 0, object_aux, branch_aux; count < pump_turbo.size(); count++) { // counter of turbopumps
-		object_aux = pump_turbo.obj_index(count); // index of pump in the object's list
-		branch_aux = objects.branch{ object_aux }; // branch that contains the pump (only one)
-		pos_aux = obj_inlet_pos{ object_aux } +obj_outlet_pos{ object_aux } / 2;
+		object_aux = pump_turbo.at(count).Pump_turbo; // index of pump in the object's list
+		branch_aux = objects.branch.at( object_aux ); // branch that contains the pump (only one)
+		pos_aux = obj_inlet_pos.at( object_aux ) +obj_outlet_pos.at( object_aux ) / 2;
 		temperature_aux = HydroNet_GetObjTemperature(pos_aux, branch_temp_pos.at( branch_aux ), branch_temperature.at(branch_aux ));
 		// temperature at the pump's middle
 

@@ -2,8 +2,7 @@
 //
 
 #include "stdafx.h"
-#include <vector>
-#include <string>
+#include <fstream> 
 
 
 
@@ -20,7 +19,14 @@ void HydroNet_ReadObj(std::string circuit_file) {
 
 
 	//circuit_file = 'Coolant_basic_nodes.txt';
-	circuit_text = fileread(circuit_file); // read file
+	//circuit_text = fileread(circuit_file); // read file
+	std::ifstream circuit_text ( "data/Coolant_basic_nodes - copia.txt", std::ifstream::in);
+
+	circuit_text.get(fluid_type,)
+
+	while (circuit_text) {
+
+	}
 
 	circuit_obj = strsplit(circuit_text, '#'); // looks for objects and splits text
 	fluid_type = sscanf(circuit_obj{ 1 }, '%s %*'); // read fisrt string

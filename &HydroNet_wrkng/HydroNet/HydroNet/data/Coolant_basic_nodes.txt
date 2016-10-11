@@ -1,0 +1,157 @@
+water			circuit fluid
+
+#1				identifier
+Main_Pump		name
+pump_volum		class
+13				inlet_object
+2				outlet_object
+0.001			volume [m3]
+0				pump speed [rad/d]
+1000000			max_head [meter column fluid]
+0			coefficient_order_0	[m3/s]
+0.000002				coefficient_order_1	[m3 / rad]
+0				coefficient_order_2	[m3 * s / rad^2]
+0				coefficient_order_3	[m3 * s^2 / rad^3]
+0				pump head [m.c.f.] (initialization)
+0				pump power [W] (initialization)
+
+#2				identifier
+Engine_Inlet	name
+pipe			class
+1				inlet_object
+3				outlet_object
+0.5				length [meter]
+0.015			diameter [meter]
+0.02			friction_coef []
+
+#3				identifier
+Splitter_Engine	name
+node			class
+3				number_connections
+2				connection_1
+4				connection_2
+5				connection_3
+
+#4				identifier
+Block_cyl1		name
+heat_exch_fix	class
+3				inlet_object
+6				outlet_object
+0.0005			volume [m3]
+100				heat [W]
+50000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+
+#5				identifier
+Head_cyl1		name
+heat_exch_fix	class
+3				inlet_object
+14				outlet_object
+0.0005			volume [m3]
+100				heat [W]
+50000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+
+#6				identifier
+Mixer_Engine	name
+node			class
+3				number_connections
+4				connection_1
+14				connection_2
+7				connection_3
+
+#7				identifier
+Splitter_Thermo	name
+node			class
+3				number_connections
+6				connection_1
+8				connection_2
+9				connection_3
+
+#8				identifier
+Thermostat_rad	name
+thermostat		class
+7				inlet_object
+10				outlet_object
+0				coefficient_order_0	[-]
+0			coefficient_order_1	[K^(-1)]
+0				coefficient_order_2	[K^(-2)]
+0				coefficient_order_3	[K^(-3)]
+0				opening (0:closed; 1:wide open) (initialization)
+0				coefficient_order_0	[-]
+1				coefficient_order_1	[m.c.f.]
+0				coefficient_order_2	[m.c.f.]
+0				coefficient_order_3	[m.c.f.]
+
+#9				identifier
+Thermostat_byp	name
+thermostat		class
+7				inlet_object
+15				outlet_object
+1				coefficient_order_0	[-]
+0				coefficient_order_1	[K^(-1)]
+0				coefficient_order_2	[K^(-2)]
+0				coefficient_order_3	[K^(-3)]
+0				opening (0:closed; 1:wide open) (initialization)
+0				coefficient_order_0	[-]
+1				coefficient_order_1	[m.c.f.]
+0				coefficient_order_2	[m.c.f.]
+0				coefficient_order_3	[m.c.f.]
+
+#10				identifier
+Radiator		name
+heat_exch_fix	class
+8				inlet_object
+11				outlet_object
+0.0005			volume [m3]
+-300			heat [W]
+500000			hydr_resist	[m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+
+#11				identifier
+Radiator_Outlet	name
+pipe			class
+10				inlet_object
+12				outlet_object
+1				length [meter]
+0.02			diameter [meter]
+0.02			friction_coef []
+
+#12				identifier
+Mixer_Thermo	name
+node			class
+3				number_connections
+15				connection_1
+11				connection_2
+13				connection_3
+
+#13				identifier
+Return_Pipe		name
+pipe			class
+12				inlet_object
+1				outlet_object
+2				length [meter]
+0.02			diameter [meter]
+0.02			friction_coef []
+
+#14
+Head_cyl2		name
+heat_exch_fix	class
+5				inlet_object
+6				outlet_object
+0.0005			volume [m3]
+100				heat [W]
+50000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+#15				identifier
+Bypass_Pipe		name
+pipe			class
+9				inlet_object
+12				outlet_object
+1				length [meter]
+0.02			diameter [meter]
+0.02			friction_coef []

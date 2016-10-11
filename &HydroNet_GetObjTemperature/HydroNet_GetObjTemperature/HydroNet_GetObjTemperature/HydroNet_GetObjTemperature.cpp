@@ -13,17 +13,21 @@ double HydroNet_GetObjTemperature(double obj_pos,std::vector<double> branch_temp
 	//Returns temperature at the specified position
 
 	// Index of the temperature position closest to the specified positionand the difference of position between them
-
-	if (obj_pos == branch_temp_pos.at(1))
-		temperature = branch_temperature.at(1);
-	else if (obj_pos == branch_temp_pos.at(branch_temp_pos.size()-1))
-		temperature = branch_temperature.at(branch_temperature.size()-1);
+	if(branch_temp_pos.size()==2)
+		temperature = branch_temperature.at(0);
 	else {
-		while (distance < 0.0) {
-			distance = branch_temp_pos.at(count+1) - obj_pos;		// count+1 because the fert positin is checked before
-			count++;
+
+		if (obj_pos == branch_temp_pos.at(1))
+			temperature = branch_temperature.at(1);
+		else if (obj_pos == branch_temp_pos.at(branch_temp_pos.size() - 1))
+			temperature = branch_temperature.at(branch_temperature.size() - 1);
+		else {
+			while (distance < 0.0) {
+				distance = branch_temp_pos.at(count + 1) - obj_pos;		// count+1 because the fert positin is checked before
+				count++;
+			}
+			temperature = branch_temperature.at(count - 1);				// -1 because vector estarts at 0
 		}
-		temperature = branch_temperature.at(count - 1);				// -1 because vector estarts at 0
 	}
 	return temperature;
 
@@ -34,8 +38,8 @@ int main()
 {
 	double obj_pos= 55;
 	double temperature;
-	std::vector<double> branch_temp_pos = {0,10,50,70,100,0,0,0,0,0};
-	std::vector<double> branch_temperature = { 0,100,-100,999,0,0,0,0,0 };
+	std::vector<double> branch_temp_pos = {0,100};
+	std::vector<double> branch_temperature = {1};
 
 	temperature = HydroNet_GetObjTemperature(obj_pos, branch_temp_pos, branch_temperature);
 	

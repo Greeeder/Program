@@ -1,0 +1,243 @@
+#1				identifier
+Main_Pump		name
+pump_volum		class
+21				inlet_object
+2				outlet_object
+16.7			pump speed	[rps]
+1000000			max_head [meter column fluid]
+0.001			coefficient_order_0	[m3/s]
+0				coefficient_order_1	[m3/s / rps]
+0				coefficient_order_2	[m3/s / rps^2]
+0				coefficient_order_3	[m3/s / rps^3]
+
+#2				identifier
+Pump_Outlet	name
+pipe			class
+1				inlet_object
+3				outlet_object
+0.3				length	[meter]
+0.03			diameter	[meter]
+0.02			friction_coef	[]
+
+#3				identifier
+Splitter_Pump	name
+splitter		class
+2				inlet_object
+2				number_outlets
+4				outlet_1
+17				outlet_2
+
+#3				identifier
+Engine_Inlet	name
+pipe			class
+2				inlet_object
+4				outlet_object
+0.5				length	[meter]
+0.015			diameter	[meter]
+0.02			friction_coef	[]
+
+#4				identifier
+Splitter_Engine	name
+splitter		class
+3				inlet_object
+2				number_outlets
+5				outlet_1
+9				outlet_2
+
+#5				identifier
+Block_cyl1		name
+heat_exch_fix	class
+4				inlet_object
+6				outlet_object
+100				heat	[W]
+50000			hydr_resist	[m.c.f / (m3/s)^2]
+0.0005			volume [m3]
+
+#6				identifier
+Block_cyl2		name
+heat_exch_fix	class
+5				inlet_object
+7				outlet_object
+100				heat	[W]
+50000			hydr_resist	[m.c.f / (m3/s)^2]
+0.0005			volume [m3]
+
+#7				identifier
+Block_cyl3		name
+heat_exch_fix	class
+6				inlet_object
+8				outlet_object
+100				heat	[W]
+50000			hydr_resist	[m.c.f / (m3/s)^2]
+0.0005			volume [m3]
+
+#8				identifier
+Block_cyl4		name
+heat_exch_fix	class
+7				inlet_object
+13				outlet_object
+100				heat	[W]
+50000			hydr_resist	[m.c.f / (m3/s)^2]
+0.0005			volume [m3]
+
+#9				identifier
+Head_cyl1		name
+heat_exch_fix	class
+4				inlet_object
+10				outlet_object
+100				heat	[W]
+50000			hydr_resist	[m.c.f / (m3/s)^2]
+0.0005			volume [m3]
+
+#10				identifier
+Head_cyl2		name
+heat_exch_fix	class
+9				inlet_object
+11				outlet_object
+100				heat	[W]
+50000			hydr_resist	[m.c.f / (m3/s)^2]
+0.0005			volume [m3]
+
+#11				identifier
+Head_cyl3		name
+heat_exch_fix	class
+10				inlet_object
+12				outlet_object
+100				heat	[W]
+50000			hydr_resist	[m.c.f / (m3/s)^2]
+0.0005			volume [m3]
+
+#12				identifier
+Head_cyl4		name
+heat_exch_fix	class
+11				inlet_object
+13				outlet_object
+100				heat	[W]
+50000			hydr_resist	[m.c.f / (m3/s)^2]
+0.0005			volume [m3]
+
+#13				identifier
+Mixer_Engine	name
+mixer			class
+2				number_inlets
+8				inlet_1
+12				inlet_2
+14				outlet_object
+
+#23				identifier
+Splitter_Thermo	name
+splitter		class
+13				inlet_object
+2				number_outlets
+14				outlet_1
+24				outlet_2
+
+#14				identifier
+Thermostat_rad	name
+thermostat		class
+23				inlet_object
+15				outlet_object
+0				coefficient_order_0	[degree]
+0.0125			coefficient_order_1	[degree/K]
+0				coefficient_order_2	[degree * K^(-2)]
+0				coefficient_order_3	[degree * K^(-3)]
+
+#24				identifier
+Thermostat_byp	name
+thermostat		class
+23				inlet_object
+20				outlet_object
+0				coefficient_order_0	[degree]
+0.0125			coefficient_order_1	[degree/K]
+0				coefficient_order_2	[degree * K^(-2)]
+0				coefficient_order_3	[degree * K^(-3)]
+
+#15				identifier
+Radiator		name
+heat_exch_UA	class
+14				inlet_object
+16				outlet_object
+1				UA	[W/K]
+500000			hydr_resist	[m.c.f / (m3/s)^2]
+0.0005			volume [m3]
+
+#16				identifier
+Radiator_Outlet	name
+pipe			class
+15				inlet_object
+20				outlet_object
+1				length	[meter]
+0.02			diameter	[meter]
+0.02			friction_coef	[]
+
+#17				identifier
+EGRexch_valve	name
+valve_var		class
+2				inlet_object
+18				outlet_object
+0				opening
+0				coefficient_order_0	[m.c.f.]
+1				coefficient_order_1	[m.c.f. / degree]
+0				coefficient_order_2	[m.c.f. * degree^(-2)]
+0				coefficient_order_3	[m.c.f. * degree^(-3)]
+
+#18				identifier
+EGRexch_pipe	name
+pipe			class
+17				inlet_object
+19				outlet_object
+0.5				length	[meter]
+0.01			diameter	[meter]
+0.02			friction_coef	[]
+
+#19				identifier
+EGR_exchanger	name
+heat_exch_UA	class
+18				inlet_object
+20				outlet_object
+1				UA	[W/K]
+50000			hydr_resist	[m.c.f / (m3/s)^2]
+0.0005			volume [m3]
+
+#20				identifier
+Mixer_Eng_EGR	name
+mixer			class
+3				number_inlets
+16				inlet_1
+19				inlet_2
+24				inlet_3
+21				outlet_object
+
+#21				identifier
+Return_Pipe		name
+pipe			class
+20				inlet_object
+1				outlet_object
+2				length	[meter]
+0.02			diameter	[meter]
+0.02			friction_coef	[]
+
+
+#22				identifier
+Small_Pump		name
+pump_turbo		class
+20				inlet_object
+21				outlet_object
+16.7			pump speed	[rps]
+0.001			coefficient_order_0	[m.c.f]
+0				coefficient_order_0_N	[m.c.f / rps]
+0				coefficient_order_0_N2	[m.c.f / rps^2]
+0				coefficient_order_1	[m.c.f / m3/s]
+0				coefficient_order_1_N	[m.c.f / m3/s / rps]
+0				coefficient_order_1_N2	[m.c.f / m3/s / rps^2]
+0				coefficient_order_2	[m.c.f / (m3/s)^2]
+0				coefficient_order_2_N	[m.c.f / (m3/s)^2 / rps]
+0				coefficient_order_2_N2	[m.c.f / (m3/s)^2 / rps^2]
+
+#23				identifier
+Useless_Hub		name
+hub				class
+3				number of connections
+22				connection_1
+0				connection_2
+0				connection_3

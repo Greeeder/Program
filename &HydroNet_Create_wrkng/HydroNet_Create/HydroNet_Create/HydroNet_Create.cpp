@@ -16,7 +16,7 @@ void HydroNet_Create(std:: string circuit_file) {
 
 	HydroNet_ReadObj(circuit_file);
 
-	n_obj = size(objects, 1);
+	n_obj = objects.size();
 
 
 

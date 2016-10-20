@@ -319,16 +319,16 @@ valve_var = array2table(valve_var, 'VariableNames',{'id' 'opening' 'coef0' 'coef
     valve_var.Properties.VariableDescriptions{'coef3'} = 'Head loss: coefficient that multiplies opening^3';
     
     
-thermostat = array2table(thermostat, 'VariableNames',{'id' 'T_coef0' 'T_coef1' 'T_coef2' 'T_coef3' 'opening' 'h_coef0' 'h_coef1' 'h_coef2' 'h_coef3'});
-    thermostat.Properties.VariableUnits{'T_coef0'} = ' - ';
-    thermostat.Properties.VariableUnits{'T_coef1'} = 'K^-1';
-    thermostat.Properties.VariableUnits{'T_coef2'} = 'K^-2';
-    thermostat.Properties.VariableUnits{'T_coef3'} = 'K^-3';
+thermostat = array2table(thermostat, 'VariableNames',{'id' 'T_min' 'T_max' 'Shape_factor' 'to_open' 'opening' 'h_coef0' 'h_coef1' 'h_coef2' 'h_coef3'});
+    thermostat.Properties.VariableUnits{'T_min'} = 'K';
+    thermostat.Properties.VariableUnits{'T_max'} = 'K';
+    thermostat.Properties.VariableUnits{'Shape_factor'} = ' ';
+    thermostat.Properties.VariableUnits{'to_open'} = '[0 - 1]';
     thermostat.Properties.VariableUnits{'opening'} = '[0 - 1]';
-    thermostat.Properties.VariableDescriptions{'T_coef0'} = 'Opening: constant';
-    thermostat.Properties.VariableDescriptions{'T_coef1'} = 'Opening: coefficient that multiplies temperature';
-    thermostat.Properties.VariableDescriptions{'T_coef2'} = 'Opening: coefficient that multiplies temperature^2';
-    thermostat.Properties.VariableDescriptions{'T_coef3'} = 'Opening: coefficient that multiplies temperature^3';
+    thermostat.Properties.VariableDescriptions{'T_min'} = 'Start temperaturure for the thermostat change';
+    thermostat.Properties.VariableDescriptions{'T_max'} = 'Finish temperaturure for the thermostat change';
+    thermostat.Properties.VariableDescriptions{'Shape_factor'} = 'Shape factor, controles the slope';
+    thermostat.Properties.VariableDescriptions{'to_open'} = '0 to closed; 1 to open';
     thermostat.Properties.VariableDescriptions{'opening'} = '0 closed; 1 wide open';
     thermostat.Properties.VariableUnits{'h_coef0'} = 'm.c.f.';
     thermostat.Properties.VariableUnits{'h_coef1'} = 'm.c.f.';

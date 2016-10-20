@@ -1,0 +1,44 @@
+water			circuit fluid
+
+#1				identifier
+Main_Pump		name
+pump_volum		class
+4				inlet_object
+2				outlet_object
+0.001			volume [m3]
+0				pump speed [rad/d]
+1000000			max_head [meter column fluid]
+0			coefficient_order_0	[m3/s]
+0.00001				coefficient_order_1	[m3 / rad]
+0				coefficient_order_2	[m3 * s / rad^2]
+0				coefficient_order_3	[m3 * s^2 / rad^3]
+0				pump head [m.c.f.] (initialization)
+0				pump power [W] (initialization)
+
+#2				identifier
+Block_cyl1		name
+heat_exch_fix	class
+1				inlet_object
+3				outlet_object
+0.0005			volume [m3]
+1000000				heat [W]
+50000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+#3				identifier
+Block_cyl1		name
+heat_exch_fix	class
+2				inlet_object
+4				outlet_object
+0.0005			volume [m3]
+1000000				heat [W]
+50000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+#4				identifier
+Splitter_Engine	name
+node			class
+2				number_connections
+3				connection_1
+1				connection_2
+

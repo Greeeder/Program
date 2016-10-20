@@ -1,11 +1,11 @@
-// HydroNet.cpp : Defines the entry point for the application.
+// HydroNet_.cpp : Defines the entry point for the application.
 //
 
 #include "stdafx.h"
 #include "HydroNet.h"
-//#define PI =__cons::Pi
 
-bool all(std::vector<bool> A) {
+
+bool all(std::vector<bool> A) {				// Returns true if every component in the vector is true, if not returns false
 	bool all = true;
 	for (int i = 0; i < A.size(); i++)
 		if (A.at(i) == false) {
@@ -15,7 +15,7 @@ bool all(std::vector<bool> A) {
 	return all;
 }
 
-bool any(std::vector<bool> A) {
+bool any(std::vector<bool> A) {					// Returns true if there is any componet in the vector true
 	bool any = false;
 	for (int i = 0; i < A.size(); i++)
 		if (A.at(i) == true) {
@@ -25,7 +25,7 @@ bool any(std::vector<bool> A) {
 	return any;
 }
 
-bool in(int a, std::vector<int> A) {
+bool in(int a, std::vector<int> A) {			// a is part of the vector A
 	bool in = false;
 
 	for (int i = 0; i < A.size(); i++)
@@ -34,18 +34,7 @@ bool in(int a, std::vector<int> A) {
 			break;
 		}
 	return in;
-}
-
-std::vector<int> flip(std::vector<int> A) {
-	std::vector<int> aux;
-
-	for (int i = 0; i < A.size(); i++)
-		aux.push_back(A.at(A.size() - 1 - i));
-
-	return aux;
-
-
-}
+}				
 
 std::vector<double> roots(double a, double b, double c) {			//Roots a*x^2+b*x+c=0
 	double r1, r2;
@@ -59,14 +48,14 @@ std::vector<double> roots(double a, double b, double c) {			//Roots a*x^2+b*x+c=
 	return r;
 }
 
-double vec_sum_elements(std::vector<double> in, std::vector<int> elem, int elem_size) {
+double vec_sum_elements(std::vector<double> in, std::vector<int> elem, int elem_size) {		// Adds the vecctor in elements presents at vector elem
 	double sum = 0;
 	for (int i = 0; i < elem_size; i++)
 		sum = sum + in.at(elem.at(i));
 	return sum;
 }
 
-double density(std::string fluid_type, double temperature)
+double density(std::string fluid_type, double temperature)				
 {
 	// dummy fuction to be ignored when the model is integrated in VEMOD
 
@@ -81,7 +70,7 @@ double cp(std::string fluid_type, double temperature)
 }
 
 template < class T>
-T flip(T A) {
+T flip(T A) {					// Flips vector A
 	T aux;
 	aux.resize(A.size());
 	for (int i = 0; i < A.size(); i++)
@@ -99,6 +88,8 @@ private:
 
 public:
 	Solver(Eigen::VectorXd x0, Eigen::VectorXd data) {
+
+		//Matrix recostruction
 
 		int count = 0;
 
@@ -208,10 +199,6 @@ std::vector<double> NonLinearSolver(Eigen::VectorXd _sol, std::vector<std::vecto
 
 	//Computation
 	Solver functor(_sol, data);
-	/*Eigen::LevenbergMarquardt<Solver,double> lm(functor);
-	lm.parameters.xtol = 1e-16;
-	lm.parameters.ftol = 1e-16;
-	info = lm.minimize(x);*/
 	Eigen::HybridNonLinearSolver<Solver> solver(functor);
 	solver.diag.setConstant(n, 1.);
 	solver.useExternalScaling = true;
@@ -227,12 +214,12 @@ std::vector<double> NonLinearSolver(Eigen::VectorXd _sol, std::vector<std::vecto
 }
 
 
-double efficiency(double a, double b) {
+double efficiency(double a, double b) {						// Fake efficiency calculation
 	return 1;
 }
 
 
-void HydroNet_model::HydroNet_HeadLoss() {
+void HydroNet_model::HydroNet_HeadLoss() {						// Calculates each object's hydraulic resistance
 
 	std::string _class;
 	int count;
@@ -272,44 +259,45 @@ void HydroNet_model::HydroNet_HeadLoss() {
 
 			if (_class == "pipe") {
 
-				while (index < pipe.size() && _ID != pipe.at(index).pipe_id) {
+				while (index < pipe.size() && _ID != pipe.at(index).pipe_id) {				// Looks for the object
 
 					index++;
 				}
-
+				// Hydro resistance calculation 
 				hydr_resist2.at(count) = hydr_resist2.at(count) + 8 * pipe.at(index).friction_coef * pipe.at(index).length / (__cons::Pi*__cons::Pi / 9.81 / pipe.at(index).diameter * pipe.at(index).diameter * pipe.at(index).diameter * pipe.at(index).diameter * pipe.at(index).diameter);
 			}
 
 			else if (_class == "valve_fix") {
 
-				while (index < valve_fix.size() && _ID != valve_fix.at(index).valve_fix_id) {
+				while (index < valve_fix.size() && _ID != valve_fix.at(index).valve_fix_id) {				// Looks for the object
 
 					index++;
 				}
-
+				// Hydro resistance calculation 	
 				head_loss.at(count) = head_loss.at(count) + valve_fix.at(index).head_loss;
 			}
 
 			else if (_class == "valve_var") {
 
-				while (index < valve_var.size() && _ID != valve_var.at(index).valve_var_id) {
+				while (index < valve_var.size() && _ID != valve_var.at(index).valve_var_id) {							// Looks for the object
 
 					index++;
 				}
-
+				// Hydro resistance calculation 	
 				head_loss.at(count) = head_loss.at(count) + valve_var.at(index).coef0 + valve_var.at(index).coef1 * valve_var.at(index).opening + valve_var.at(index).coef2 * valve_var.at(index).opening*valve_var.at(index).opening + valve_var.at(index).coef3 * valve_var.at(index).opening*valve_var.at(index).opening*valve_var.at(index).opening;
 			}
 			else if (_class == "thermostat") {
 
-				while (index < thermostat.size() && _ID != thermostat.at(index).themostat_id) {
+				while (index < thermostat.size() && _ID != thermostat.at(index).themostat_id) {						// Looks for the object
 
 					index++;;
 				}
+				// Hydro resistance calculation 	
 				obj_pos = (obj_inlet_pos.at(count).at(index) + obj_outlet_pos.at(count).at(index)) / 2;																	//position inside the branch as a % of the branch volume
 
 				temperature_aux = HydroNet_GetObjTemperature(obj_pos, branch_temp_pos.at(count), branch_temperature.at(count));						// temperature in the thermostat
 
-				opening = opening + thermostat.at(index).coef_T_0 + thermostat.at(index).coef_T_1 * temperature_aux + thermostat.at(index).coef_T_2 * temperature_aux*temperature_aux + thermostat.at(index).coef_T_3 * temperature_aux*temperature_aux*temperature_aux;
+				opening = thermostat.at(index).opening;
 
 				head_loss.at(count) = head_loss.at(count) + thermostat.at(index).coef_h_0 + thermostat.at(index).coef_h_1 * opening + thermostat.at(index).coef_h_2 * opening*opening + thermostat.at(index).coef_h_3 * opening*opening*opening;
 
@@ -317,12 +305,12 @@ void HydroNet_model::HydroNet_HeadLoss() {
 
 			else if (_class == "pump_turbo") {
 
-				while (index < pump_turbo.size() && _ID != pump_turbo.at(index).Pump_turbo) {
+				while (index < pump_turbo.size() && _ID != pump_turbo.at(index).Pump_turbo) {							// Looks for the object
 
 					index++;
 				}
 
-
+				// Hydro resistance calculation 	
 				head_loss.at(count) = head_loss.at(count) - (pump_turbo.at(index).coef_N0 + pump_turbo.at(index).coef_N1 * pump_turbo.at(index).pump_speed + pump_turbo.at(index).coef_N2 * pump_turbo.at(index).pump_speed*pump_turbo.at(index).pump_speed);
 
 				hydr_resist1.at(count) = hydr_resist1.at(count) - (pump_turbo.at(index).Q_coef_N0 + pump_turbo.at(index).Q_coef_N1* pump_turbo.at(index).pump_speed + pump_turbo.at(index).Q_coef_N2* pump_turbo.at(index).pump_speed*pump_turbo.at(index).pump_speed);
@@ -333,39 +321,42 @@ void HydroNet_model::HydroNet_HeadLoss() {
 
 			else if (_class == "pump_volum") {
 
-				while (index < pump_volum.size() && _ID != pump_volum.at(index).Pump_volum) {
+				while (index < pump_volum.size() && _ID != pump_volum.at(index).Pump_volum) {					// Looks for the object
 
 					index++;
 				}
+				// Hydro resistance calculation 	
 				hydr_resist1.at(count) = hydr_resist1.at(count) - (pump_volum.at(index).coef0 + pump_volum.at(index).coef1* pump_volum.at(index).pump_speed + pump_volum.at(index).coef2* pump_volum.at(index).pump_speed*pump_volum.at(index).pump_speed + pump_volum.at(index).coef3* pump_volum.at(index).pump_speed*pump_volum.at(index).pump_speed*pump_volum.at(index).pump_speed);
 			}
 
-			else if (_class == "heat_exch_fix") {
+			else if (_class == "heat_exch") {
 
-				while (index < heat_exch_fix.size() && _ID != heat_exch_fix.at(index).heat_exch_fix) {
-
-					index++;
-				}
-				hydr_resist2.at(count) = hydr_resist2.at(count) + heat_exch_fix.at(index).hydr_resist;
-			}
-
-			else if (_class == "heat_exch_Tout") {
-
-				while (index < heat_exch_Tout.size() && _ID != heat_exch_Tout.at(index).heat_exch_Tout) {
+				while (index < heat_exch.size() && _ID != heat_exch.at(index).heat_exch) {				// Looks for the object
 
 					index++;
 				}
-				hydr_resist2.at(count) = hydr_resist2.at(count) + heat_exch_Tout.at(index).hydr_resist;
+				// Hydro resistance calculation 	
+				hydr_resist2.at(count) = hydr_resist2.at(count) + heat_exch.at(index).hydr_resist;
 			}
+
+			//else if (_class == "heat_exch_Tout") {
+
+			//	while (index < heat_exch_Tout.size() && _ID != heat_exch_Tout.at(index).heat_exch_Tout) {				// Looks for the object
+
+			//		index++;
+			//	}
+			//	// Hydro resistance calculation 	
+			//	hydr_resist2.at(count) = hydr_resist2.at(count) + heat_exch_Tout.at(index).hydr_resist;
+			//}
 
 			/*
 			else if (_class == "tank"){
 
-			while (index < valve_var.size() && _ID != valve_var.at(index).pipe_id) {
+			while (index < valve_var.size() && _ID != valve_var.at(index).pipe_id) {				// Looks for the object
 
 			index++
 			}
-
+			// Hydro resistance calculation 	
 			head_loss.at(count) = head_loss.at(count) + tank.at(index).head_loss;
 			}
 			*/
@@ -377,13 +368,11 @@ void HydroNet_model::HydroNet_HeadLoss() {
 
 void HydroNet_model::HydroNet_Main() {
 
-	//std::string circuit_file;
-	//double gravity_acc;
-	//std::vector<std::vector<double>> branch_temp_pos, branch_temperature;
-	std::vector<double> /*head_loss, hydr_resist1, hydr_resist2, flows,*/ dt_vec, volum_pump_speed, turbo_pump_speed, valve_opening, thst_sensitivity, thermostat_opening_new;
-	double /*n_branch, dt, obj_pos,*/ thermostat_temp;
+	std::vector<double>  dt_vec, volum_pump_speed, turbo_pump_speed, valve_opening, thst_sensitivity, thermostat_opening_new;
+	double  thermostat_temp;
 	int n_exec;
-	//bool flag_first_exec, flag_pump_speed_change, flag_valve_change, flag_thermostat_changes;
+	double Tmin, Tmax, y_end, x0, k ;
+	
 
 	// Controls data flow
 
@@ -391,8 +380,8 @@ void HydroNet_model::HydroNet_Main() {
 	//// MODEL CREATION
 	// All valves and thermostats are assumed open.
 
+	//circuit_file = "data//test.txt";
 	circuit_file = "data//Coolant_basic_nodes - copia.txt";
-	//circuit_file = 'Circuit_test_1.txt';
 
 	HydroNet_Create( );
 
@@ -418,13 +407,13 @@ void HydroNet_model::HydroNet_Main() {
 	// Cell to store temperatures of every volume section in the branch
 	// branch_temperature = cell(n_branch, 1);
 	branch_temperature.resize(7);
-	branch_temperature.at(0) = { 300,250 };
-	branch_temperature.at(1) = { 350 };
-	branch_temperature.at(2) = { 400 };
-	branch_temperature.at(3) = { 450, 300 };
-	branch_temperature.at(4) = { 500, 400 };
-	branch_temperature.at(5) = { 550 };
-	branch_temperature.at(6) = { 600, 550 };
+	branch_temperature.at(0) = { 290,290 };
+	branch_temperature.at(1) = { 290 };
+	branch_temperature.at(2) = { 290 };
+	branch_temperature.at(3) = { 290, 290 };
+	branch_temperature.at(4) = { 290, 290 };
+	branch_temperature.at(5) = { 290 };
+	branch_temperature.at(6) = { 290, 290 };
 
 	// Output variables related to branches
 	head_loss.assign(n_branch, 0);
@@ -501,11 +490,19 @@ void HydroNet_model::HydroNet_Main() {
 				for (int count1 = 0; count1<branches.at(count).objects.size(); count1++)
 					if (branches.at(count).objects.at(count1).ID == obj_aux)
 						branch_aux = count;
+			Tmin = thermostat.at(count_thst).T_min;
+			Tmax = thermostat.at(count_thst).T_max;
+			y_end = thermostat.at(count_thst).Shape_factor;
+
+			x0 = (Tmax + Tmin) / 2;
+			k = -log(y_end) / (Tmin - x0);
 			obj_pos = (obj_inlet_pos.at(obj_aux).at(0) + obj_outlet_pos.at(obj_aux).at(0)) / 2;
 
 			thermostat_temp = HydroNet_GetObjTemperature(obj_pos, branch_temp_pos.at(branch_aux), branch_temperature.at(branch_aux));
-
-			thermostat_opening_new.at(count_thst) = thermostat.at(count_thst).coef_T_0 + thermostat.at(count_thst).coef_T_1 * thermostat_temp + thermostat.at(count_thst).coef_T_2 * thermostat_temp* thermostat_temp;
+			if (thermostat.at(count_thst).to_open)
+				thermostat_opening_new.at(count_thst) = 1. / (1 + exp(-k * (thermostat_temp - x0)));
+			else
+				thermostat_opening_new.at(count_thst) = 1 - 1. / (1 + exp(-k * (thermostat_temp - x0)));
 		}
 
 		flag_thermostat_changes = false;
@@ -522,10 +519,7 @@ void HydroNet_model::HydroNet_Main() {
 
 		flag_first_exec = false;
 
-		//display(flows);
-
-
-
+		
 	}
 
 
@@ -540,21 +534,19 @@ void HydroNet_model::HydroNet_ReadObj() {
 	//   are connected and identifiers are right.
 
 
-	//circuit_file = 'Coolant_basic_nodes.txt';
-	//circuit_text = fileread(circuit_file); // read file
-
+	
 	std::string _aux;
-	int adj_size, pump_volum_count = 0, pump_turbo_count = 0, heat_exch_Tout_count = 0, heat_exch_fix_count = 0, pipe_count = 0, valve_fix_count = 0, valve_var_count = 0, thermostat_count = 0, tank_count = 0;
+	int adj_size, pump_volum_count = 0, pump_turbo_count = 0,/* heat_exch_Tout_count = 0,*/ heat_exch_count = 0, pipe_count = 0, valve_fix_count = 0, valve_var_count = 0, thermostat_count = 0, tank_count = 0;
 	std::ifstream circuit_text;
 
 	n_obj = 0;
 
 
-	circuit_text.open(circuit_file, std::ifstream::in);
-	int op = circuit_text.is_open();
+	circuit_text.open(circuit_file, std::ifstream::in);					// File opening
+
 	std::getline(circuit_text, fluid_type, '\t');
 
-	while (!circuit_text.eof()) {
+	while (!circuit_text.eof()) {									// Reads and stores the object data present in the file
 
 		n_obj++;
 
@@ -564,7 +556,7 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 		std::getline(circuit_text, _aux, '\t');
 
-		objects.at(n_obj - 1).ID = std::stod(_aux)-1;
+		objects.at(n_obj - 1).ID = std::stoi(_aux)-1;
 
 		circuit_text.ignore(1000, '\n');
 
@@ -574,6 +566,7 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 		std::getline(circuit_text, objects.at(n_obj - 1).Class, '\t');
 
+		// Knowing the object's class, reads and stores the data folowing each objects structuture
 
 		if (objects.at(n_obj - 1).Class == "node") {
 
@@ -581,7 +574,7 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			adj_size = std::stod(_aux);
+			adj_size = std::stoi(_aux);
 
 			objects.at(n_obj - 1).adjacent.resize(adj_size);
 
@@ -591,7 +584,7 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 				std::getline(circuit_text, _aux, '\t');
 
-				objects.at(n_obj - 1).adjacent.at(count) = std::stod(_aux)-1;
+				objects.at(n_obj - 1).adjacent.at(count) = std::stoi(_aux)-1;
 
 			}
 		}
@@ -611,15 +604,15 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(0) = std::stod(_aux)-1;
-			pump_volum.at(pump_volum_count-1).inlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(0) = std::stoi(_aux)-1;
+			pump_volum.at(pump_volum_count-1).inlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(1) = std::stod(_aux)-1;
-			pump_volum.at(pump_volum_count-1).outlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(1) = std::stoi(_aux)-1;
+			pump_volum.at(pump_volum_count-1).outlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
@@ -693,15 +686,15 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(0) = std::stod(_aux)-1;
-			pump_turbo.at(pump_turbo_count - 1).inlet_object = std::stod(_aux) - 1;
+			objects.at(n_obj - 1).adjacent.at(0) = std::stoi(_aux)-1;
+			pump_turbo.at(pump_turbo_count - 1).inlet_object = std::stoi(_aux) - 1;
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(1) = std::stod(_aux)-1;
-			pump_turbo.at(pump_turbo_count - 1).outlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(1) = std::stoi(_aux)-1;
+			pump_turbo.at(pump_turbo_count - 1).outlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
@@ -798,15 +791,15 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(0) = std::stod(_aux)-1;
-			pipe.at(pipe_count - 1).inlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(0) = std::stoi(_aux)-1;
+			pipe.at(pipe_count - 1).inlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(1) = std::stod(_aux)-1;
-			pipe.at(pipe_count - 1).outlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(1) = std::stoi(_aux)-1;
+			pipe.at(pipe_count - 1).outlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
@@ -830,14 +823,14 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 
 		}
-		else if (objects.at(n_obj - 1).Class == "heat_exch_fix") {
+		else if (objects.at(n_obj - 1).Class == "heat_exch") {
 
-			heat_exch_fix_count++;
+			heat_exch_count++;
 
-			heat_exch_fix.resize(heat_exch_fix_count);
+			heat_exch.resize(heat_exch_count);
 
-			heat_exch_fix.at(heat_exch_fix_count-1).name = objects.at(n_obj - 1).name;
-			heat_exch_fix.at(heat_exch_fix_count - 1).heat_exch_fix = objects.at(n_obj - 1).ID;
+			heat_exch.at(heat_exch_count-1).name = objects.at(n_obj - 1).name;
+			heat_exch.at(heat_exch_count - 1).heat_exch = objects.at(n_obj - 1).ID;
 
 
 			objects.at(n_obj - 1).adjacent.resize(2);
@@ -846,15 +839,15 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(0) = std::stod(_aux)-1;
-			heat_exch_fix.at(heat_exch_fix_count - 1).inlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(0) = std::stoi(_aux)-1;
+			heat_exch.at(heat_exch_count - 1).inlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(1) = std::stod(_aux)-1;
-			heat_exch_fix.at(heat_exch_fix_count - 1).outlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(1) = std::stoi(_aux)-1;
+			heat_exch.at(heat_exch_count - 1).outlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
@@ -866,23 +859,35 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			heat_exch_fix.at(heat_exch_fix_count - 1).heat = std::stod(_aux);
+			heat_exch.at(heat_exch_count - 1).type = (_aux);
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			heat_exch_fix.at(heat_exch_fix_count - 1).hydr_resist = std::stod(_aux);
+			heat_exch.at(heat_exch_count - 1).heat = std::stod(_aux);
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			heat_exch_fix.at(heat_exch_fix_count - 1).T_in = std::stod(_aux);
+			heat_exch.at(heat_exch_count - 1).T_out = std::stod(_aux);
+
+			circuit_text.ignore(1000, '\n');
+
+			std::getline(circuit_text, _aux, '\t');
+
+			heat_exch.at(heat_exch_count - 1).hydr_resist = std::stod(_aux);
+
+			circuit_text.ignore(1000, '\n');
+
+			std::getline(circuit_text, _aux, '\t');
+
+			heat_exch.at(heat_exch_count - 1).T_in = std::stod(_aux);
 
 
 		}
-		else if (objects.at(n_obj - 1).Class == "heat_exch_Tout") {
+		/*else if (objects.at(n_obj - 1).Class == "heat_exch_Tout") {
 
 			heat_exch_Tout_count++;
 
@@ -898,15 +903,15 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(0) = std::stod(_aux)-1;
-			heat_exch_Tout.at(heat_exch_Tout_count - 1).inlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(0) = std::stoi(_aux)-1;
+			heat_exch_Tout.at(heat_exch_Tout_count - 1).inlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(1) = std::stod(_aux)-1;
-			heat_exch_Tout.at(heat_exch_Tout_count - 1).outlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(1) = std::stoi(_aux)-1;
+			heat_exch_Tout.at(heat_exch_Tout_count - 1).outlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
@@ -933,7 +938,7 @@ void HydroNet_model::HydroNet_ReadObj() {
 			heat_exch_Tout.at(heat_exch_Tout_count - 1).hydr_resist = std::stod(_aux);
 
 
-		}
+		}*/
 		else if (objects.at(n_obj - 1).Class == "thermostat") {
 
 			thermostat_count++;
@@ -950,33 +955,39 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(0) = std::stod(_aux)-1;
-			thermostat.at(thermostat_count - 1).inlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(0) = std::stoi(_aux)-1;
+			thermostat.at(thermostat_count - 1).inlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(1) = std::stod(_aux)-1;
-			thermostat.at(thermostat_count - 1).outlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(1) = std::stoi(_aux)-1;
+			thermostat.at(thermostat_count - 1).outlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			thermostat.at(thermostat_count - 1).coef_T_0 = std::stod(_aux);
+			thermostat.at(thermostat_count - 1).T_min = std::stod(_aux);
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			thermostat.at(thermostat_count - 1).coef_T_2 = std::stod(_aux);
+			thermostat.at(thermostat_count - 1).T_max = std::stod(_aux);
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			thermostat.at(thermostat_count - 1).coef_T_3 = std::stod(_aux);
+			thermostat.at(thermostat_count - 1).Shape_factor = std::stod(_aux);
+
+			circuit_text.ignore(1000, '\n');
+
+			std::getline(circuit_text, _aux, '\t');
+
+			thermostat.at(thermostat_count - 1).to_open = std::stoi(_aux);
 
 			circuit_text.ignore(1000, '\n');
 
@@ -1025,15 +1036,15 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(0) = std::stod(_aux)-1;
-			valve_var.at(valve_var_count - 1).inlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(0) = std::stoi(_aux)-1;
+			valve_var.at(valve_var_count - 1).inlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(1) = std::stod(_aux)-1;
-			valve_var.at(valve_var_count - 1).outlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(1) = std::stoi(_aux)-1;
+			valve_var.at(valve_var_count - 1).outlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
@@ -1083,15 +1094,15 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(0) = std::stod(_aux)-1;
-			valve_fix.at(valve_fix_count - 1).inlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(0) = std::stoi(_aux)-1;
+			valve_fix.at(valve_fix_count - 1).inlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(1) = std::stod(_aux)-1;
-			valve_fix.at(valve_fix_count - 1).outlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(1) = std::stoi(_aux)-1;
+			valve_fix.at(valve_fix_count - 1).outlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
@@ -1116,15 +1127,15 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(0) = std::stod(_aux)-1;
-			tank.at(tank_count - 1).inlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(0) = std::stoi(_aux)-1;
+			tank.at(tank_count - 1).inlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
 			std::getline(circuit_text, _aux, '\t');
 
-			objects.at(n_obj - 1).adjacent.at(1) = std::stod(_aux)-1;
-			tank.at(tank_count - 1).outlet_object = std::stod(_aux)-1;
+			objects.at(n_obj - 1).adjacent.at(1) = std::stoi(_aux)-1;
+			tank.at(tank_count - 1).outlet_object = std::stoi(_aux)-1;
 
 			circuit_text.ignore(1000, '\n');
 
@@ -1140,429 +1151,10 @@ void HydroNet_model::HydroNet_ReadObj() {
 	objects.resize(n_obj);
 	objects.shrink_to_fit();
 
-	/*//circuit_obj = strsplit(circuit_text, '#'); // looks for objects and splits text
-	//fluid_type = sscanf(circuit_obj{ 1 }, '%s %*'); // read fisrt string
-	//circuit_obj = circuit_obj(2:end); // remove first string (fluid type)
-	//circuit_obj = cellstr(circuit_obj); // converts into cell array of strings
-
-
-
-	//									//// CREATES TABLE OF OBJECTS
-
-	//n_obj = numel(circuit_obj); // number of objects
-	//if (n_obj == 0) {// no objects
-	//	handle = msgbox('No elements defined in circuit');
-	//	uiwait(handle); // keep msgbox in the foreground
-	//}
-
-	//obj_id = zeros(n_obj, 1); // vector that contants id of objects
-	//obj_name = cell(n_obj, 1); // cell because it contains strings
-	//obj_class = cell(n_obj, 1); // cell because it contains strings
-	//obj_volume = zeros(n_obj, 1); // vector that contants volume of objects
-	//obj_adjac = cell(n_obj, 1); // cell because it contains vectors (adjacent objects)
-
-	//for count = 1 : n_obj{// read id, name, class inlet and outlet of objects
-
-	//	obj_id(count) = sscanf(circuit_obj{ count }, '%d %*'); // id: first integer at first line
-	//obj_name{ count } = sscanf(circuit_obj{ count }, '%*[^\n] %s %*'); // name: first string at 2nd line
-	//obj_class{ count } = sscanf(circuit_obj{ count }, '%*[^\n] %*[^\n] %s %*'); // class
-
-	//if strcmp(obj_class{ count }, 'node') { // is node
-	//	n_aux = sscanf(circuit_obj{ count }, '%*[^\n] %*[^\n] %*[^\n] %d %*'); // number of joints
-	//	adjac = zeros(n_aux, 1); // vector of connections
-	//	for count1 = 1 : n_aux{// reads every connection and stores them in an array
-	//		str_aux = '%*[^\n] %*[^\n] %*[^\n] %d %*'; // to read line 4
-	//	for count2 = 1 : count1{ // line breaks to add
-	//		str_aux = strjoin({ '%*[^\n]', str_aux }); // add one line break for every connection
-	//	}
-	//	adjac(count1) = sscanf(circuit_obj{ count }, str_aux); // stores connection
-	//	}
-	//	obj_adjac{ count } = adjac; // contains vector with all connections
-	//}
-	//else { // one inlet and one outlet (arbitratry)
-	//	adjac = zeros(2, 1);
-	//	adjac(1) = sscanf(circuit_obj{ count }, '%*[^\n] %*[^\n] %*[^\n] %d %*'); // inlet
-	//	adjac(2) = sscanf(circuit_obj{ count }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %d %*'); // outlet
-	//	obj_adjac{ count } = adjac; // contains vector with inlet and outlet
-	//}
-	//}
-
-	//objects = table(obj_id, obj_name, obj_class, obj_volume, obj_adjac, 'VariableNames', { 'id'\t'name'\t'class' 'volume' 'adjacent' });
-
-
-
-	////// CHECKS THAT OBJECT'S ID ARE NOT 0 AND ARE NOT DUPLICATED
-
-	//if any(obj_id == 0) {// there is some 0
-	//	handle = msgbox('Identifier cannot be 0');
-	//	display(objects);
-	//	for count = find((obj_id == 0)) {
-	//		fprintf('Id of %s is 0\n', objects.name{ count });
-	//	}
-	//	uiwait(handle);
-	//}
-
-	//if ne(numel(unique(obj_id)), numel(obj_id)) {
-	//	// vector of unique values must have the same size as original
-	//	handle = msgbox('Some identifier is duplicated');
-	//	display(objects);
-	//	uiwait(handle);
-	//}
-
-
-
-	////// CHECKS THAT CLASSES ARE RECOGNISED
-
-	//for count = 1 : n_obj{
-	//	switch obj_class{ count }
-	//	case 'node'
-	//		case 'pipe'
-	//		case 'valve_fix'
-	//		case 'valve_var'
-	//		case 'thermostat'
-	//		case 'pump_volum'
-	//		case 'pump_turbo'
-	//		case 'heat_exch_fix'
-	//		case 'heat_exch_UA'
-	//		case 'heat_exch_Tout'
-	//		case 'tank'
-	//		otherwisewise
-	//		handle = msgbox('Unrecognised class');
-	//fprintf('Class of #%d %s is %s\n', objects.id(count), objects.name{ count }, objects.class { count });
-	//uiwait(handle);
-	//}
-
-
-	//	//// CHECKS: CONNECTIVITY AMONG OBJECTS, NO SELF-CONNECTIONS AND NO REPETITIONS
-
-	//	for count = 1 : n_obj{ // objects loop
-
-	//		id_aux = objects.id(count); // id of current object
-
-	//if any(objects.adjacent{ count } == id_aux) {
-	//	// the object is connected to itself
-	//	handle = msgbox('Object self-connected');
-	//	display(objects);
-	//	fprintf('Object #%d is connected to itself', id_aux);
-	//	uiwait(handle);
-	//}
-
-	//if ne(numel(objects.adjacent{ count }), numel(unique(objects.adjacent{ count }))) {
-	//	// there are repeated connections
-	//	handle = msgbox('Connection between objects repeated');
-	//	display(objects);
-	//	fprintf('Object #%d has a repeated connection', id_aux);
-	//	uiwait(handle);
-	//}
-
-	//for count1 = 1 : numel(objects.adjacent{ count }) {// connections loop
-	//	id_aux1 = objects.adjacent{ count }(count1); // id of adjacent object
-	//	vec_aux = objects.adjacent(objects.id == id_aux1); // connections of the adjacent object
-	//	if not(any(vec_aux{ 1 } == id_aux)) {
-	//		// the current object is not present among the connections of the adjacent object
-	//		handle = msgbox('Wrong connection between objects');
-	//		display(objects);
-	//		fprintf('Object #%d is linked to #%d but #%d is not linked to #%d', ...
-	//			id_aux, id_aux1, id_aux1, id_aux);
-	//		uiwait(handle);
-	//	}
-	//}
-	//	}
-
-
-
-	//		//// CREATES TABLES FOR CLASSES
-
-	//		// PIPE
-	//		// Looks for objects of class 'pipe'
-	//aux_pos = strcmp(obj_class, 'pipe'); // is pipe? (0,1)
-	//aux_ind = find(aux_pos); // indexes (row of object)
-	//pipe = zeros(sum(aux_pos), 4); // to store parameters
-	//for count = 1 : sum(aux_pos) {// only the pipes
-	//	pipe(count, 1) = objects.id(aux_ind(count)); // identifier
-	//	pipe(count, 2) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // length
-	//	pipe(count, 3) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // diameter
-	//	pipe(count, 4) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // friction coef.
-	//	objects.volume(aux_ind(count)) = pipe(count, 2) * pi / 4 * pipe(count, 3) ^ 2; // calculate volume = length * pi / 4 * diameter^2
-	//}
-
-
-	//// VALVE_FIX
-	//aux_pos = strcmp(obj_class, 'valve_fix');
-	//aux_ind = find(aux_pos);
-	//valve_fix = zeros(sum(aux_pos), 2);
-	//for count = 1 : sum(aux_pos) {
-	//	valve_fix(count, 1) = objects.id(aux_ind(count)); // identifier
-	//	valve_fix(count, 2) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // head loss
-	//}
-
-
-	//// VALVE_VAR
-	//aux_pos = strcmp(obj_class, 'valve_var');
-	//aux_ind = find(aux_pos);
-	//valve_var = zeros(sum(aux_pos), 6);
-	//for count = 1 : sum(aux_pos) {
-	//	valve_var(count, 1) = objects.id(aux_ind(count)); // identifier
-	//	valve_var(count, 2) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // opening
-	//	valve_var(count, 3) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // coef. #0 of curve
-	//	valve_var(count, 4) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // coef. #1 of curve
-	//	valve_var(count, 5) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // coef. #2 of curve
-	//	valve_var(count, 6) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // coef. #3 of curve 
-	//}
-
-
-	//// THERMOSTAT
-	//aux_pos = strcmp(obj_class, 'thermostat');
-	//aux_ind = find(aux_pos);
-	//thermostat = zeros(sum(aux_pos), 10);
-	//for count = 1 : sum(aux_pos) {
-	//	thermostat(count, 1) = objects.id(aux_ind(count)); // identifier
-	//													   // Rest of parameters (coefficients) - use a loop because there are many coefficients (8)
-	//	str_aux = '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'; // to read line 5 (if it were a float)
-	//	for count1 = 2 : size(thermostat, 2) { // line breaks to add
-	//		str_aux = strjoin({ '%*[^\n]', str_aux }); // add one line break for every new coefficient
-	//		thermostat(count, count1) = sscanf(circuit_obj{ aux_ind(count) }, str_aux); // stores coefficients
-	//	}
-	//}
-
-
-	//// PUMP_VOLUM
-	//aux_pos = strcmp(obj_class, 'pump_volum');
-	//aux_ind = find(aux_pos);
-	//pump_volum = zeros(sum(aux_pos), 10);
-	//for count = 1 : sum(aux_pos) {
-	//	pump_volum(count, 1) = objects.id(aux_ind(count)); // identifier
-	//	pump_volum(count, 2) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %d %*'); // outlet object
-	//	objects.volume(aux_ind(count)) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // volume
-	//	pump_volum(count, 3) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // pump speed
-	//	pump_volum(count, 4) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // max. head
-	//	pump_volum(count, 5) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // coef. #0 of curve
-	//	pump_volum(count, 6) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // coef. #1 of curve
-	//	pump_volum(count, 7) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // coef. #2 of curve
-	//	pump_volum(count, 8) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // coef. #3 of curve
-	//	pump_volum(count, 9) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // pump head // initialization of instantaneous variable
-	//	pump_volum(count, 10) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // pump power // initialization of instantaneous variable
-	//}
-
-
-	//// PUMP_TURBO
-	//aux_pos = strcmp(obj_class, 'pump_turbo');
-	//aux_ind = find(aux_pos);
-	//pump_turbo = zeros(sum(aux_pos), 14);
-	//for count = 1 : sum(aux_pos) {
-	//	pump_turbo(count, 1) = objects.id(aux_ind(count)); // identifier
-	//	pump_turbo(count, 2) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %d %*'); // outlet object
-	//	objects.volume(aux_ind(count)) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // volume
-	//	pump_turbo(count, 3) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // pump speed
-	//	pump_turbo(count, 4) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // max head
-	//																																   // Rest of parameters (coefficients) - use a loop because there are many coefficients (9)
-	//	str_aux = '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'; // to read line 7
-	//	for count1 = 2 : size(pump_turbo, 2) {// line breaks to add
-	//		str_aux = strjoin({ '%*[^\n]', str_aux }); // add one line break for every new coefficient
-	//		pump_turbo(count, count1) = sscanf(circuit_obj{ aux_ind(count) }, str_aux); // stores coefficients
-	//	}
-	//	str_aux = strjoin({ '%*[^\n]', str_aux }); // add one more line break
-	//	pump_turbo(count, size(pump_turbo, 2)) = sscanf(circuit_obj{ aux_ind(count) }, str_aux); // pump power // initialization of instantaneous variable
-	//}
-
-
-	//// HEAT_EXCH_FIX
-	//aux_pos = strcmp(obj_class, 'heat_exch_fix');
-	//aux_ind = find(aux_pos);
-	//heat_exch_fix = zeros(sum(aux_pos), 4);
-	//for count = 1 : sum(aux_pos) {
-	//	heat_exch_fix(count, 1) = objects.id(aux_ind(count)); // identifier
-	//	objects.volume(aux_ind(count)) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // volume
-	//	heat_exch_fix(count, 2) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // heat
-	//	heat_exch_fix(count, 3) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // hydr. resistance
-	//	heat_exch_fix(count, 4) = -999; // inlet temperature // initialization of instantaneous variable
-	//}
-
-
-	//// HEAT_EXCH_UA // will be of type heat_exch_Tout
-	//// aux_pos = strcmp(obj_class, 'heat_exch_UA');
-	//// aux_ind = find(aux_pos);
-	//// heat_exch_UA = zeros(sum(aux_pos), 4);
-	//// for count = 1 : sum(aux_pos)
-	////     heat_exch_UA(count, 1) = objects.id(aux_ind(count)); % identifier
-	////     objects.volume(aux_ind(count)) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % volume
-	////     heat_exch_UA(count, 2) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % UA
-	////     heat_exch_UA(count, 3) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % mCp_min
-	////     heat_exch_UA(count, 4) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % hydr. resistance
-	//// end
-
-
-	//// HEAT_EXCH_Tout
-	//aux_pos = strcmp(obj_class, 'heat_exch_Tout');
-	//aux_ind = find(aux_pos);
-	//heat_exch_Tout = zeros(sum(aux_pos), 5);
-	//for count = 1 : sum(aux_pos) {
-	//	heat_exch_Tout(count, 1) = objects.id(aux_ind(count)); // identifier
-	//	heat_exch_Tout(count, 2) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %d %*'); // outlet object
-	//	objects.volume(aux_ind(count)) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // volume
-	//	heat_exch_Tout(count, 3) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // hydr. resistance
-	//	heat_exch_Tout(count, 4) = -999; // outlet temperature // initialization of instantaneous variable
-	//	heat_exch_Tout(count, 5) = -999; // inlet temperature // initialization of instantaneous variable
-	//}
-
-
-	//// TANK
-	//// aux_pos = strcmp(obj_class, 'tank');
-	//aux_ind = find(aux_pos);
-	//tank = zeros(sum(aux_pos), 3);
-	//for count = 1 : sum(aux_pos) {
-	//	tank(count, 1) = objects.id(aux_ind(count)); // identifier
-	//	tank(count, 2) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %d %*'); // outlet object (to be feed by the tank)
-	//	objects.volume(aux_ind(count)) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); // volume
-	//	tank(count, 3) = sscanf(circuit_obj{ aux_ind(count) }, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*');
-	//	// head drop between inlet and outlet   
-	//}
-
-
-
-	//// Convert to tables or create empty tables
-
-	//pipe = array2table(pipe, 'VariableNames', { 'id' 'length' 'diameter' 'friction_coef' });
-	//pipe.Properties.VariableUnits{ 'length' } = 'm';
-	//pipe.Properties.VariableUnits{ 'diameter' } = 'm';
-	//pipe.Properties.VariableDescriptions{ 'diameter' } = 'Inner diameter';
-	//pipe.Properties.VariableUnits{ 'friction_coef' } = ' ';
-
-
-	//valve_fix = array2table(valve_fix, 'VariableNames', { 'id' 'head_loss' });
-	//valve_fix.Properties.VariableUnits{ 'head_loss' } = 'm.c.f.';
-
-
-	//valve_var = array2table(valve_var, 'VariableNames', { 'id' 'opening' 'coef0' 'coef1' 'coef2' 'coef3' });
-	//valve_var.Properties.VariableUnits{ 'opening' } = '[0 - 1]';
-	//valve_var.Properties.VariableDescriptions{ 'opening' } = '0 closed; 1 wide open. Instantaneous input';
-	//valve_var.Properties.VariableUnits{ 'coef0' } = 'm.c.f.';
-	//valve_var.Properties.VariableUnits{ 'coef1' } = 'm.c.f.';
-	//valve_var.Properties.VariableUnits{ 'coef2' } = 'm.c.f.';
-	//valve_var.Properties.VariableUnits{ 'coef3' } = 'm.c.f.';
-	//valve_var.Properties.VariableDescriptions{ 'coef0' } = 'Head loss: constant';
-	//valve_var.Properties.VariableDescriptions{ 'coef1' } = 'Head loss: coefficient that multiplies opening';
-	//valve_var.Properties.VariableDescriptions{ 'coef2' } = 'Head loss: coefficient that multiplies opening^2';
-	//valve_var.Properties.VariableDescriptions{ 'coef3' } = 'Head loss: coefficient that multiplies opening^3';
-
-
-	//thermostat = array2table(thermostat, 'VariableNames', { 'id' 'T_coef0' 'T_coef1' 'T_coef2' 'T_coef3' 'opening' 'h_coef0' 'h_coef1' 'h_coef2' 'h_coef3' });
-	//thermostat.Properties.VariableUnits{ 'T_coef0' } = ' - ';
-	//thermostat.Properties.VariableUnits{ 'T_coef1' } = 'K^-1';
-	//thermostat.Properties.VariableUnits{ 'T_coef2' } = 'K^-2';
-	//thermostat.Properties.VariableUnits{ 'T_coef3' } = 'K^-3';
-	//thermostat.Properties.VariableUnits{ 'opening' } = '[0 - 1]';
-	//thermostat.Properties.VariableDescriptions{ 'T_coef0' } = 'Opening: constant';
-	//thermostat.Properties.VariableDescriptions{ 'T_coef1' } = 'Opening: coefficient that multiplies temperature';
-	//thermostat.Properties.VariableDescriptions{ 'T_coef2' } = 'Opening: coefficient that multiplies temperature^2';
-	//thermostat.Properties.VariableDescriptions{ 'T_coef3' } = 'Opening: coefficient that multiplies temperature^3';
-	//thermostat.Properties.VariableDescriptions{ 'opening' } = '0 closed; 1 wide open';
-	//thermostat.Properties.VariableUnits{ 'h_coef0' } = 'm.c.f.';
-	//thermostat.Properties.VariableUnits{ 'h_coef1' } = 'm.c.f.';
-	//thermostat.Properties.VariableUnits{ 'h_coef2' } = 'm.c.f.';
-	//thermostat.Properties.VariableUnits{ 'h_coef3' } = 'm.c.f.';
-	//thermostat.Properties.VariableDescriptions{ 'h_coef0' } = 'Head loss: constant';
-	//thermostat.Properties.VariableDescriptions{ 'h_coef1' } = 'Head loss: coefficient that multiplies opening';
-	//thermostat.Properties.VariableDescriptions{ 'h_coef2' } = 'Head loss: coefficient that multiplies opening^2';
-	//thermostat.Properties.VariableDescriptions{ 'h_coef3' } = 'Head loss: coefficient that multiplies opening^3';
-
-
-
-	//pump_volum = array2table(pump_volum, 'VariableNames', { 'id' 'outlet' 'pump_speed' 'head_max' 'coef0' 'coef1' 'coef2' 'coef3' ' pump_head' 'pump_power' });
-	//pump_volum.Properties.VariableUnits{ 'pump_speed' } = 'rad/s';
-	//pump_volum.Properties.VariableUnits{ 'head_max' } = 'm.c.f.';
-	//pump_volum.Properties.VariableUnits{ 'coef0' } = 'm^3/s';
-	//pump_volum.Properties.VariableUnits{ 'coef1' } = 'm^3/rad';
-	//pump_volum.Properties.VariableUnits{ 'coef2' } = 'm^3/rad^2*s';
-	//pump_volum.Properties.VariableUnits{ 'coef3' } = 'm^3/rad^3*s^2';
-	//pump_volum.Properties.VariableUnits{ 'pump_head' } = 'm.c.f.';
-	//pump_volum.Properties.VariableUnits{ 'pump_power' } = 'W';
-	//pump_volum.Properties.VariableDescriptions{ 'outlet' } = 'Outlet object';
-	//pump_volum.Properties.VariableDescriptions{ 'pump_speed' } = 'Instantaneous input';
-	//pump_volum.Properties.VariableDescriptions{ 'head_max' } = 'Maximum head: if head loss is higher, flow is zero';
-	//pump_volum.Properties.VariableDescriptions{ 'coef0' } = 'Flow: constant';
-	//pump_volum.Properties.VariableDescriptions{ 'coef1' } = 'Flow: coefficient that multiplies speed';
-	//pump_volum.Properties.VariableDescriptions{ 'coef2' } = 'Flow: coefficient that multiplies speed^2';
-	//pump_volum.Properties.VariableDescriptions{ 'coef3' } = 'Flow: coefficient that multiplies speed^3';
-	//pump_volum.Properties.VariableDescriptions{ 'pump_head' } = 'Instantaneous result';
-	//pump_volum.Properties.VariableDescriptions{ 'pump_power' } = 'Instantaneous result';
-
-
-	//pump_turbo = array2table(pump_turbo, 'VariableNames', { 'id' 'outlet' 'pump_speed' 'head_max' 'coef_N0' 'coef_N1' 'coef_N2' 'Q_coef_N0' 'Q_coef_N1' 'Q_coef_N2' 'Q2_coef_N0' 'Q2_coef_N1' 'Q2_coef_N2' 'pump_power' });
-	//pump_turbo.Properties.VariableUnits{ 'pump_speed' } = 'rad/s';
-	//pump_turbo.Properties.VariableUnits{ 'head_max' } = 'm.c.f.';
-	//pump_turbo.Properties.VariableUnits{ 'coef_N0' } = 'm.c.f.';
-	//pump_turbo.Properties.VariableUnits{ 'coef_N1' } = 'm.c.f./rad*s';
-	//pump_turbo.Properties.VariableUnits{ 'coef_N2' } = 'm.c.f./rad^2*s^2';
-	//pump_turbo.Properties.VariableUnits{ 'Q_coef_N0' } = 'm.c.f./m^3*s';
-	//pump_turbo.Properties.VariableUnits{ 'Q_coef_N1' } = 'm.c.f./m^3/rad*s^2';
-	//pump_turbo.Properties.VariableUnits{ 'Q_coef_N2' } = 'm.c.f./m^3/rad^2*s^3';
-	//pump_turbo.Properties.VariableUnits{ 'Q2_coef_N0' } = 'm.c.f./m^6*s^2';
-	//pump_turbo.Properties.VariableUnits{ 'Q2_coef_N1' } = 'm.c.f./m^6/rad*s^3';
-	//pump_turbo.Properties.VariableUnits{ 'Q2_coef_N2' } = 'm.c.f./m^6/rad^2*s^4';
-	//pump_turbo.Properties.VariableDescriptions{ 'outlet' } = 'Outlet object';
-	//pump_turbo.Properties.VariableDescriptions{ 'pump_speed' } = 'Instantaneous input';
-	//pump_turbo.Properties.VariableDescriptions{ 'head_max' } = 'Maximum head: if head loss is higher, flow is zero';
-	//pump_turbo.Properties.VariableDescriptions{ 'coef_N0' } = 'Head loss: constant';
-	//pump_turbo.Properties.VariableDescriptions{ 'coef_N1' } = 'Head loss: coefficient that multiplies speed';
-	//pump_turbo.Properties.VariableDescriptions{ 'coef_N2' } = 'Head loss: coefficient that multiplies speed^2';
-	//pump_turbo.Properties.VariableDescriptions{ 'Q_coef_N0' } = 'Head loss: coefficient that multiplies flow';
-	//pump_turbo.Properties.VariableDescriptions{ 'Q_coef_N1' } = 'Head loss: coefficient that multiplies flow and speed';
-	//pump_turbo.Properties.VariableDescriptions{ 'Q_coef_N2' } = 'Head loss: coefficient that multiplies flow and speed^2';
-	//pump_turbo.Properties.VariableDescriptions{ 'Q2_coef_N0' } = 'Head loss: coefficient that multiplies flow^2';
-	//pump_turbo.Properties.VariableDescriptions{ 'Q2_coef_N1' } = 'Head loss: coefficient that multiplies flow^2 and speed';
-	//pump_turbo.Properties.VariableDescriptions{ 'Q2_coef_N2' } = 'Head loss: coefficient that multiplies flow^2 and speed^2';
-
-
-	//heat_exch_fix = array2table(heat_exch_fix, 'VariableNames', { 'id' 'heat' 'hydr_resist' 'inlet_temp' });
-	//heat_exch_fix.Properties.VariableUnits{ 'heat' } = 'W';
-	//heat_exch_fix.Properties.VariableUnits{ 'hydr_resist' } = 'm.c.f./m^6*s^2';
-	//heat_exch_fix.Properties.VariableUnits{ 'inlet_temp' } = 'K';
-	//heat_exch_fix.Properties.VariableDescriptions{ 'heat' } = 'Heat power: (+) energy into circuit; (-) energy out of circuit';
-	//heat_exch_fix.Properties.VariableDescriptions{ 'hydr_resist' } = 'Hydraulic resistance = head loss / flow^2';
-	//heat_exch_fix.Properties.VariableDescriptions{ 'inlet_temp' } = 'Temperature at the inlet of the heat exchanger. Instantaneous result';
-
-
-	//// will be of type heat_exch_Tout
-	//// heat_exch_UA = array2table(heat_exch_UA, 'VariableNames',{'id' 'UA' 'mCp_min' 'hydr_resist'});
-	////     heat_exch_UA.Properties.VariableUnits{'UA'} = 'W/K';
-	////     heat_exch_UA.Properties.VariableUnits{'mCp_min'} = 'W/K';
-	////     heat_exch_UA.Properties.VariableUnits{'hydr_resist'} = 'm.c.f./m^6*s^2';
-	////     heat_exch_UA.Properties.VariableDescriptions{'UA'} = 'Constant parameter UA of exchanger: heat / temperature difference';
-	////     heat_exch_UA.Properties.VariableDescriptions{'mCp_min'} = 'Minimum value from both fluids of the product of mass flow times heat capacity';
-	////     heat_exch_UA.Properties.VariableDescriptions{'hydr_resist'} = 'Hydraulic resistance = head loss / flow^2';
-
-
-	//heat_exch_Tout = array2table(heat_exch_Tout, 'VariableNames', { 'id' 'outlet' 'hydr_resist' 'T_out' 'inlet_temp' });
-	//heat_exch_Tout.Properties.VariableUnits{ 'hydr_resist' } = 'm.c.f./m^6*s^2';
-	//heat_exch_Tout.Properties.VariableUnits{ 'T_out' } = 'K';
-	//heat_exch_Tout.Properties.VariableUnits{ 'inlet_temp' } = 'K';
-	//heat_exch_Tout.Properties.VariableDescriptions{ 'outlet' } = 'Outlet object';
-	//heat_exch_Tout.Properties.VariableDescriptions{ 'hydr_resist' } = 'Hydraulic resistance = head loss / flow^2';
-	//heat_exch_Tout.Properties.VariableDescriptions{ 'T_out' } = 'Fluid temperature at the outlet. Instantaneous input'; // instantaneous variable
-	//heat_exch_Tout.Properties.VariableDescriptions{ 'inlet_temp' } = 'Temperature at the inlet of the heat exchanger. Instantaneous result'; // instantaneous variable
-
-
-	//tank = array2table(tank, 'VariableNames', { 'id' 'outlet' 'head_drop' });
-
-
-
-	////% display(pipe);
-	////% display(valve_fix);
-	////% display(valve_var);
-	////% display(thermostat);
-	////% display(pump_volum);
-	////% display(pump_turbo);
-	////% display(heat_exch_fix);
-	////% display(heat_exch_UA);
-	////% display(heat_exch_Tout);
-	////% display(tank);*/
-
-}
+	}
 
 void HydroNet_model::HydroNet_Create() {
 	// Creates a model for the specified circuit
-	//int n_obj;
 	int tank_count;
 	double sum_aux;
 	std::vector<int> inlet_aux;
@@ -1572,8 +1164,6 @@ void HydroNet_model::HydroNet_Create() {
 	// Reads circuit configuration and specifications of objects and stores data in tables
 
 	HydroNet_ReadObj();
-
-	//n_obj = size(objects, 1);
 
 	n_nodes = 0;
 
@@ -1588,24 +1178,7 @@ void HydroNet_model::HydroNet_Create() {
 			n_nodes++;
 		}
 
-	// Using a loop
-	// nodes_ind = zeros(n_obj, 1); // stores position in object list
-	// nodes_id = zeros(n_obj, 1); // stores id
-	//     // maximum size: all objects are nodes
-	//
-	// node_count = 0;
-	// for count = 1 : n_obj // objects loop
-	//     if strcmp(objects.class{count}, 'node')
-	//         node_count = node_count + 1;
-	//         nodes_ind(node_count) = count;
-	//         nodes_id(node_count) = objects.id(count);
-	//     end
-	// end
-	// nodes_ind = nodes_ind(1 : node_count); // adjust size
-	// nodes_id = nodes_id(1 : node_count);
-
-
-
+	
 	//// TANKS
 	// List of all tanks
 
@@ -1623,21 +1196,7 @@ void HydroNet_model::HydroNet_Create() {
 
 	n_tanks = tanks_ind.size();
 
-
-
-	////// ADD OBJECT'S POSITION INTO CERTAIN TABLES
-	//// Index of the object in the object's table
-
-	//valve_var.obj_index = find(strcmp(objects.class, 'valve_var'));
-	//thermostat.obj_index = find(strcmp(objects.class, 'thermostat'));
-	//pump_volum.obj_index = find(strcmp(objects.class, 'pump_volum'));
-	//pump_turbo.obj_index = find(strcmp(objects.class, 'pump_turbo'));
-	//heat_exch_fix.obj_index = find(strcmp(objects.class, 'heat_exch_fix'));
-	//heat_exch_Tout.obj_index = find(strcmp(objects.class, 'heat_exch_Tout'));
-	//tank.obj_index = find(strcmp(objects.class, 'tank'));
-
-
-
+	
 	//// CIRCUIT COMPONENTS
 	// Obtains nodes, branches and meshes in the circuit.
 	// Determines branches connected to nodes and branches that are part of a mesh.
@@ -1651,9 +1210,9 @@ void HydroNet_model::HydroNet_Create() {
 
 	branch_volume.assign(n_branch, 0);
 
-	for (int count = 0; count < n_branch; count++) {// branch loop
+	for (int count = 0; count < n_branch; count++) {													// branch loop
 		sum_aux = 0;
-		for (int count1 = 0, aux; count1 < branches_ind.at(count).size(); count1++) { // loop of objects in the branch
+		for (int count1 = 0, aux; count1 < branches_ind.at(count).size(); count1++) {				 // loop of objects in the branch
 			aux = branches_ind.at(count).at(count1);
 			sum_aux = sum_aux + objects.at(count1).volume;
 		}
@@ -1701,24 +1260,24 @@ void HydroNet_model::HydroNet_Create() {
 
 	//// INDEXES OF HEAT EXCHANGERS & PUMPS IN EVERY BRANCH
 
-	branch_htx_fix.resize(n_branch);
-	branch_htx_Tout.resize(n_branch);
+	branch_htx.resize(n_branch);
+	//branch_htx_Tout.resize(n_branch);
 	branch_pump_volum.resize(n_branch);
 	branch_pump_turbo.resize(n_branch);
 	//Initialisation of vectors
 	for (int count_branch = 0; count_branch < n_branch; count_branch++) {
-		branch_htx_fix.at(count_branch) = {};
-		branch_htx_Tout.at(count_branch) = {};
+		branch_htx.at(count_branch) = {};
+		//branch_htx_Tout.at(count_branch) = {};
 		branch_pump_volum.at(count_branch) = {};
 		branch_pump_turbo.at(count_branch) = {};
 	}
 
 	for (int count_branch = 0; count_branch < n_branch; count_branch++) {
 		for (int count_obj = 0; count_obj < branches.at(count_branch).objects.size(); count_obj++) {
-			if (branches.at(count_branch).objects.at(count_obj).Class == "heat_exch_fix")								// Asigns the heat exchanger identificator when the object is a Heat Echanger type fix
-				branch_htx_fix.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID);
-			if (branches.at(count_branch).objects.at(count_obj).Class == "heat_exch_Tout")								// Asigns the heat exchanger identificator when the object is a Heat Echanger type Tout
-				branch_htx_Tout.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID);
+			if (branches.at(count_branch).objects.at(count_obj).Class == "heat_exch")								// Asigns the heat exchanger identificator when the object is a Heat Echanger type fix
+				branch_htx.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID);
+			//if (branches.at(count_branch).objects.at(count_obj).Class == "heat_exch_Tout")								// Asigns the heat exchanger identificator when the object is a Heat Echanger type Tout
+				//branch_htx_Tout.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID);
 			if (branches.at(count_branch).objects.at(count_obj).Class == "pump_volum")									// Asigns the pump identificator when the object is a Volumetric Pump
 				branch_pump_volum.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID);
 			if (branches.at(count_branch).objects.at(count_obj).Class == "pump_turbo")									// Asigns the pump identificator when the object is a Turbo Pump
@@ -1726,52 +1285,17 @@ void HydroNet_model::HydroNet_Create() {
 		}
 	}
 
-
-
-
-
-
-
-	//for (int count_branch = 0; count_branch < n_branch; count_branch++) {
-	//	branch_htx_fix.at(count_branch) = transpose(find(cell2mat(objects.branch(heat_exch_fix.obj_index)) == count_branch));
-	//	// index in the object's table of heat exchangers of type fix heat that are present in the branch
-	//	// Note: a heat exchanger cannot be in two branches but a branch can contain several heat exchangers
-	//	if (isempty(branch_htx_fix.at(count_branch)))
-	//		branch_htx_fix.at(count_branch) = {}; // to avoid problems with [0x1 double]
-
-	//	branch_htx_Tout.at(count_branch) = transpose(find(cell2mat(objects.branch(heat_exch_Tout.obj_index)) == count_branch));
-	//	// index in the object's table of heat exchangers of type T_out that are present in the branch
-	//	if (isempty(branch_htx_Tout(count_branch)))
-	//		branch_htx_Tout.at(count_branch) = {}; // to avoid problems with [0x1 double]
-
-	//											   // Sort according to closeness to the end of the branch
-	//	[~, ind_aux] = sort(obj_inlet_pos_cell.at(count_branch).at(branch_htx_fix.at(count_branch)), 'descend');
-	//	// sorted indexes of heat exchangers in obj_inlet_pos
-	//	branch_htx_fix.at(count_branch) = branch_htx_fix.at(count_branch).at(ind_aux);
-	//	// reorder heat exchangers
-	//	// Repeat for branch_htx_Tout
-	//	[~, ind_aux] = sort(obj_inlet_pos_cell.at(count_branch).at(branch_htx_Tout.at(count_branch)), 'descend');
-	//	branch_htx_Tout.at(count_branch) = branch_htx_Tout.at(count_branch).at(ind_aux);
-	//}
-
-
-
-
-
 }
 
 void HydroNet_model::HydroNet_Components() {
 
-	int edge_count, start_obj, path_count, obj_count, row_aux, column, prev_row, n_paths, branch_count, /*n_mesh,*/ n_new_paths;
+	int edge_count, start_obj, path_count, obj_count, row_aux, column, prev_row, n_paths, branch_count, n_new_paths;
 	std::vector<std::vector<bool>> edges, mat_aux;
 	std::vector<int> path, branch_aux, vec_aux1, vec_vec_aux, path_aux;
-	std::vector<std::vector<int>>paths_ind, mesh_ind, /*branches_ind,*/ branch_mesh,/* node_branches, mesh_branches,*/ objects_branches, /*branches_id,*/ ind_outlet_aux;
+	std::vector<std::vector<int>>paths_ind, mesh_ind,  branch_mesh, objects_branches,  ind_outlet_aux;
 	bool flag_path, first;
-	std::vector<bool>path_cycle, to_remove, vec_aux/*, branch_cycle*/;
-	//Eigen::RowVectorXi vec_aux;
+	std::vector<bool>path_cycle, to_remove, vec_aux;
 	std::string node = "node", tank = "tank";
-	//std::vector<strBranches> branches;
-
 	/*std::vector<int> tanks_id = {};
 	for (int count=0;count<tank.size();count++)
 	tanks_id.push_back(tank.at(count).tank)*/
@@ -1807,15 +1331,7 @@ void HydroNet_model::HydroNet_Components() {
 	//   Number of branches
 
 
-	// Initialization for testing
-	// circuit_file = 'Coolant_basic_nodes.txt';
-	// //circuit_file = 'Test_nodes.txt';
-	//[fluid_type, objects, pipe, valve_fix, valve_var, thermostat, pump_volum, pump_turbo, ...
-	//     heat_exch_fix, heat_exch_Tout, tank] = HydroNet_ReadObj(circuit_file);
-	// temperature = 0;
-
-
-
+	
 	//// EDGES
 	// Looks for all connections among objects(indirected).
 
@@ -1826,29 +1342,13 @@ void HydroNet_model::HydroNet_Components() {
 
 											  // objects and true if they are connected(rows and columns are the indices of objects)
 
-											  //for (int count = 0; count < n_obj; count++) {// objects loop(no need to check last object)
-											  //// counter is equal to index
-											  //	for (int brch = 0; brch < branches.size(); brch++)
-											  //		for (int count1 = 0, id_aux, ind_aux; branches.at(brch).objects.at(count).adjacent.size(); count1++) { // connections loop
-											  //			id_aux = branches.at(brch).objects.at(count).adjacent.at(count1); // id of adjacent object
-											  //			for (int count2 = 0; count2 < branches.at(brch).objects.size(); count2++)
-											  //				if (branches.at(brch).objects.at(count2).ID == id_aux)
-											  //					ind_aux = branches.at(brch).objects.at(count2).ID;
-											  //			if (ind_aux > count) {// the adjacent object has not been visited
-											  //			// the edge has not been stored
-											  //				edge_count = edge_count + 1; // next edge
-											  //				edges.at(count).at(ind_aux) = true; // stores edge
-											  //			}
-											  //		}
-											  //} // edges is a triangular matrix
-
-											  //edges = mirror(edges); // full symmetrical matrix(false OR true = true)
-
-
-	for (int obj = 0; obj < n_obj; obj++)
+											
+	for (int obj = 0; obj < n_obj; obj++)				// Creates a matrix n_obj * n_obj indicating if the objects are adjacent
 		for (int adj = 0; adj <objects.at(obj).adjacent.size(); adj++)
 			edges.at(objects.at(obj).ID).at(objects.at(obj).adjacent.at(adj)) = true;
 
+
+	//edges count
 	for (int row = 0; row < edges.size(); row++)
 		for (int col = 0; col < edges.at(row).size(); col++)
 			if (edges.at(row).at(col) == true)
@@ -1856,40 +1356,15 @@ void HydroNet_model::HydroNet_Components() {
 
 	edge_count = edge_count / 2;
 
-
-	// Alternative: Store list in a cell
-	// edges = cell((obj_num * (obj_num - 1)) / 2, 1); // stores all edges
-	// maximum size : all objects are nodes and are connected with each other
-	// obj_id = zeros(obj_num, 1);
-	// obj_count = 0; // counter of visited objects
-	// for count = 1 : obj_num - 1 // objects loop(no need to check last object)
-	// id_aux = objects.id(count); // id of current object
-	//     obj_count = obj_count + 1; // next visited object
-	//     obj_id(obj_count) = id_aux; // store object as visited
-	//     for count1 = 1 : numel(objects.adjacent{ count }) // connections loop
-	//         id_aux1 = objects.adjacent{ count }(count1); // id of adjacent object
-	//         if not(any((id_aux1 == obj_id)) // the adjacent object is not in the list of visited objects
-	//             // the edge has not been stored
-	//             edge_count = edge_count + 1; // next edge
-	//             edges{ edge_count } = [id_aux id_aux1]; // stores edge
-	//         end
-	//     end
-	// end
-	// edges = edges(1 : edge_count); // adjust size
-
-
-
+	
 	//// PATHS
 
 	// Selects starting object : first node of the list
 	if (nodes_id.size() == 0) { // no nodes found
 		start_obj = 1; // index of first object in the list
-					   //paths_ind.push_back({}); // stores all paths(indices) // only one path
 	}
 	else {
 		start_obj = nodes_id.at(0); // index of first node
-									//paths_ind.resize(edge_count); // stores all paths(indices)
-									// maximum size : same as number of edges
 	}
 
 
@@ -1897,88 +1372,16 @@ void HydroNet_model::HydroNet_Components() {
 
 	path_count = 0; // counter of paths
 	mat_aux = edges; // auxiliary matrix to mark visited objects
-					 //path.assign(n_obj + 1, 0); // stores indices of objects in a path
-					 // +1 because in a closed cycle the starting object is also the end object
-					 //path.at(0) = start_obj; // initialize path
-	path = { start_obj };
+	path = { start_obj };// Path initialitacio
 	obj_count = 1; // counter of objects along the path
 	row_aux = start_obj; // initialize row(starting object)
 	column = -1;
 
 
-	/*while ( ! ((row_aux == start_obj) && (column ==(n_obj-1)) ) ) {
-	// while there are unexplored paths from the starting object(did not reach the end of the starting row)
-
-	column = column + 1; // next column
-
-	if ( mat_aux.at(row_aux).at(column) == true) { // there is a connection
-
-	mat_aux.at(row_aux).at(column) = false; // mark edge as explored
-	prev_row = row_aux;
-	row_aux = column; // move to connection's row
-	flag_path = false; // path not finished
-	obj_count = obj_count + 1; // next object along the path
-	path.at(obj_count-1)= row_aux; // store index of object in the path
-	mat_aux.at(row_aux).at(prev_row) = false; // going back the same way is not allowed
-
-	//for (int count = 0; count < mat_aux.at(row_aux).size(); count++) {
-	if (!any(mat_aux.at(row_aux)) ) // there are no more ways to go
-	flag_path = true; // end path
-	else
-	for (int count1 = 0;  count1 < obj_count - 2 ; count1++) {
-	if (path.at(count1) == row_aux) {// the new object was already in the path - the cycle is closed
-	flag_path = true;
-	break;// end path
-	}
-	//         elseif strcmp(objects.class(row_aux), 'valve_var') // is a valve and may be closed
-	//             if  valve_var.opening(valve_var.id == objects.id(row_aux)) == 0 // it is closed
-	//                 flag_path = true; // end path
-	//             end
-	//         elseif strcmp(objects.class(row_aux), 'thermostat') // is a thermostat and may be closed
-	//             pos_aux = find(thermostat.id == objects.id(row_aux)); // position in thermostat table
-	//             if thermostat.T_coef0(pos_aux) + thermostat.T_coef1(pos_aux) * temperature ...
-	//                     +thermostat.T_coef2(pos_aux) * temperature ^ 2 == 0 // it is closed
-	//                 flag_path = true; // end path
-	//             end
-	}
-	//}
-
-	if (flag_path) { // pat_h has ended
-	path.resize(obj_count);
-	path.shrink_to_fit();// adjust size
-	path_count = path_count + 1; // next path
-	paths_ind.at(path_count-1)= path; // save path
-	path.pop_back(); // remove last object from path - step back
-	path.resize(n_obj+1);
-	obj_count = obj_count - 1; // previous object along the path
-	if (row_aux == start_obj)// the starting row never gets fully re - initialized
-	mat_aux.at(row_aux).at(prev_row) = true; // just allow the same way back for future paths
-	else
-	mat_aux.at(row_aux) = edges.at(row_aux); // re - initialize connections of object
-
-	row_aux = path.at(obj_count); // return to upper object
-	}
-	else // path goes further
-	column = -1; // stay in the new row and start from the beginning
-
-	}
-	while ((column >= (n_obj-1)) && (row_aux != start_obj)) {// loop to step back in a path
-	// end of the row and it is not the starting object // skip fully explored objects
-	mat_aux.at(row_aux) = edges.at(row_aux); // re - initialize connections of object
-	column = path.at(obj_count - 1); // continue the upper object where it was left
-	path.pop_back(); // remove last object from path - step back
-	path.resize(n_obj);
-	obj_count = obj_count - 1; // previous object along the path
-	row_aux = path.at(obj_count+1); // return to upper object
-	if (path.size() > 1)
-	mat_aux.at(row_aux).at(path.at(obj_count)) = false; // the previous object along the path is not allowed
-	}
-	}*/
+	
 	while (!(row_aux == start_obj && column == n_obj)) {
 		// while there are unexplored paths from the starting object(did not reach the end of the starting row)
-
-
-
+		
 		column = column + 1; // next column
 
 		if (column<n_obj && mat_aux.at(row_aux).at(column)) { // there is a connection
@@ -1998,22 +1401,11 @@ void HydroNet_model::HydroNet_Components() {
 
 			if (!any(mat_aux.at(row_aux))) // there are no more ways to go
 				flag_path = true; // end path
-
-
+			
 
 			else if (in(row_aux, path_aux)) // the new object was already in the path - the cycle is closed
 				flag_path = true; // end path
-								  //         elseif strcmp(objects.class(row_aux), 'valve_var') // is a valve and may be closed
-								  //             if  valve_var.opening(valve_var.id == objects.id(row_aux)) == 0 // it is closed
-								  //                 flag_path = true; // end path
-								  //             end
-								  //         elseif strcmp(objects.class(row_aux), 'thermostat') // is a thermostat and may be closed
-								  //             pos_aux = find(thermostat.id == objects.id(row_aux)); // position in thermostat table
-								  //             if thermostat.T_coef0(pos_aux) + thermostat.T_coef1(pos_aux) * temperature ...
-								  //                     +thermostat.T_coef2(pos_aux) * temperature ^ 2 == 0 // it is closed
-								  //                 flag_path = true; // end path
-								  //             end
-
+								  
 
 			if (flag_path) {// path has ended
 				path_count = path_count + 1; // next path
@@ -2064,7 +1456,7 @@ void HydroNet_model::HydroNet_Components() {
 																  // branched cycle(first objects are not a part of the cycle)
 		if (paths_ind.at(count_path).at(0) == paths_ind.at(count_path).at(paths_ind.at(count_path).size() - 1)) // pure cycle
 			path_cycle.at(count_path) = true;
-		else {//any(paths_ind{ count }(2 : end - 2) == paths_ind{ count }(end)) // branched cycle
+		else {
 			for (int count_obj = 1; count_obj < paths_ind.at(count_path).size() - 3; count_obj++) {// minus first, last and next - to - last
 				if (paths_ind.at(count_path).at(count_obj) == paths_ind.at(count_path).at(paths_ind.at(count_path).size() - 1)) { // cycle starts here
 					path_cycle.at(count_path) = true;
@@ -2102,13 +1494,6 @@ void HydroNet_model::HydroNet_Components() {
 		if (to_remove.at(count) == false) { // the path is not marked to be deleted
 			for (int count1 = count + 1; count1 < n_paths; count1++) {// compare with next paths
 				if (paths_ind.at(count1).size() == paths_ind.at(count).size()) {
-					// to compare for equality, vectors must have the same length
-					//                 if or (paths_ind{ count1 } == paths_ind{ count }, paths_ind{ count1 } == flip(paths_ind{ count }))
-					// // paths are equal OR path is equal to the inverse path
-					//                     to_remove(count1) = true; // mark to be removed
-					//                 end
-					// all objects of one branch are present in the other one
-					// (even if start / end node is not the sa)me)
 					vec_aux.assign(paths_ind.at(count).size(), false);
 					for (int count_obj = 0; count_obj < paths_ind.at(count).size(); count_obj++) {
 						if (in(paths_ind.at(count).at(count_obj), paths_ind.at(count1))) {
@@ -2133,34 +1518,17 @@ void HydroNet_model::HydroNet_Components() {
 		}
 	n_paths = paths_ind.size(); // refresh number of paths
 
+	if (n_paths == 1)
+		paths_ind.at(0).pop_back();
 
-								// // Convert paths to change indices by id's
-								// paths_id = cell(path_count, 1); // store all paths(id)
-								// for count = 1 : path_count // path loop
-								//     for count1 = 1 : numel(paths_ind{ count }) // objects in a path
-								//         paths_id {count}(count1) = objects.id(paths_ind{ count }(count1)); // assign id
-								//     end
-								// end
-
-
-
+	
 								//// MESHES(cycles)
 	for (int count = 0; count < paths_ind.size(); count++) {
 		if (path_cycle.at(count) == true)
 			mesh_ind.push_back(paths_ind.at(count)); // paths that are cycles(indices)
-													 // mesh_id = paths_id(path_cycle); // (id)
 	}
 
-	// Convert meshes to change indices by id's
-	// mesh_id = cell(size(mesh_ind, 1), 1); // store all meshes(id)
-	// for count = 1 : size(mesh_id, 1) // mesh loop
-	//     for count1 = 1 : numel(mesh_ind{ count }) // objects in a mesh
-	//         mesh_id {	count}(count1) = objects.id(mesh_ind{ count }(count1)); // assign id
-	//     end
-	// end
-
-
-
+	
 	//// BRANCHES
 	// Paths without bifurcations crossed by a single flow.
 	// Branches that are not included in a mesh will be obtained too because they may be
@@ -2181,7 +1549,7 @@ void HydroNet_model::HydroNet_Components() {
 	for (int count = 0, count1; count < n_paths; count++) { // path loop
 		start_obj = 0; // starting index for the first branch
 		for (count1 = 1; count1 < (paths_ind.at(count).size() - 1); count1++) { // counter of objects in a path excluding first and last
-			if (/*(objects.at(paths_ind.at(count).at(count1)).Class == node)--->*/ in(paths_ind.at(count).at(count1), nodes_id)/* || in(paths_ind.at(count).at(count1), tanks_id) /*<-----(objects.at(paths_ind.at(count).at(count1)).Class == tank)*/) {
+			if ( in(paths_ind.at(count).at(count1), nodes_id)/* || in(paths_ind.at(count).at(count1), tanks_id) */) {
 				branch_count = branch_count + 1; // next branch
 
 				for (int aux = start_obj; aux <= count1; aux++)
@@ -2275,43 +1643,49 @@ void HydroNet_model::HydroNet_Components() {
 			if (branches_ind.at(count).at(0) == 1 || branches_ind.at(count).at(branches_ind.at(count).size() - 1) == 1) {
 				// starting object is in the branch(its index is 1)
 				if (branch_cycle.at(count) == true) { // is in a mesh(second condition)
-					for (int count1 = count; count1 < branch_count; count1++) {// looks for the other side
+					for (int count1 = count+1, aux_size; count1 < branch_count; count1++) {// looks for the other side
 						if (branches_ind.at(count1).at(0) == 1 || branches_ind.at(count1).at(branches_ind.at(count1).size() - 1) == 1) {
 							// Join branches
-							if (branches_ind.at(count).at(branches_ind.at(count).size() - 1) == 1 && branches_ind.at(count).at(0) == 1)
+							if (branches_ind.at(count).at(branches_ind.at(count).size() - 1) == 1 && branches_ind.at(count).at(0) == 1) {
 								// starting object is the last of first branch and the first of the second brandlch
-								for (int aux = 1; aux < branches_ind.at(count1).size(); aux++)
+								aux_size = branches_ind.at(count1).size();
+								for (int aux = 1; aux < aux_size; aux++)
 									branches_ind.at(count).push_back(branches_ind.at(count1).at(aux)); // join directly // do not repeat starting object
-							else if (branches_ind.at(count).at(1) == 1 && branches_ind.at(count).at(branches_ind.at(count).size() - 1) == 1)
+							}
+							else if (branches_ind.at(count).at(1) == 1 && branches_ind.at(count).at(branches_ind.at(count).size() - 1) == 1) {
 								// starting object is the last of first branch and the last of the second branch
-								for (int aux = 1; aux < branches_ind.at(count1).size(); aux++)
+								aux_size = branches_ind.at(count1).size();
+								for (int aux = 1; aux < aux_size; aux++)
 									branches_ind.at(count).push_back(branches_ind.at(count1).at(branches_ind.at(count1).size() - aux)); // flip second branch
+							}
 							else if (branches_ind.at(count).at(1) == 1 && branches_ind.at(count).at(branches_ind.at(count).size() - 1) == 1) {
 								// starting object is the first of first branch and the first of the second branch
-								for (int aux = 0; aux < branches_ind.at(count1).size(); aux++) {
+								aux_size = branches_ind.at(count1).size();
+								for (int aux = 0; aux < aux_size; aux++) {
 									branch_aux.push_back(branches_ind.at(count).at(branches_ind.at(count).size() - 1 - aux));
 								}
-								for (int aux = 0; aux < branches_ind.at(count1).size(); aux++) {
+								for (int aux = 0; aux < aux_size; aux++) {
 									branch_aux.push_back(branches_ind.at(count1).at(aux));
 								}
 								branches_ind.at(count) = branch_aux; // flip first branch
 
 							}
 
-							else if (branches_ind.at(count).at(1) == 1 && branches_ind.at(count).at(branches_ind.at(count).size() - 1) == 1)
+							else if (branches_ind.at(count).at(1) == 1 && branches_ind.at(count).at(branches_ind.at(count).size() - 1) == 1) {
 								// starting object is the first of first branch and the last of the second branch
 								branch_aux = branches_ind.at(count1);
-							for (int aux = 1; aux < branches_ind.at(count1).size(); aux++) {
-								branch_aux.push_back(branches_ind.at(count).at(aux));
-								branches_ind.at(count) = branch_aux; // join second branch and then first
+								aux_size = branches_ind.at(count1).size();
+								for (int aux = 1; aux < aux_size; aux++) {
+									branch_aux.push_back(branches_ind.at(count).at(aux));
+									branches_ind.at(count) = branch_aux; // join second branch and then first
 
-								branches_ind.erase(branches_ind.begin() + count1); // remove second branch
-								branch_cycle.erase(branch_cycle.cbegin() + count1);
-								branch_mesh.erase(branch_mesh.begin() + count1);
-								branch_count = branch_count - 1; // refresh number of branches
-								break; // all done; exit algorithm
+									branches_ind.erase(branches_ind.begin() + count1); // remove second branch
+									branch_cycle.erase(branch_cycle.cbegin() + count1);
+									branch_mesh.erase(branch_mesh.begin() + count1);
+									branch_count = branch_count - 1; // refresh number of branches
+									break; // all done; exit algorithm
+								}
 							}
-
 						}
 					}
 					break;// exit algorithm
@@ -2404,27 +1778,27 @@ void HydroNet_model::HydroNet_Components() {
 																							   // Inverts branches that are in the wrong direction
 																							   // Flow direction is determined in some objects(and their branches) :
 																							   // pumps and heat exchangers of type 'T out'
-	for (int aux = 0, i; aux < pump_volum.size() + pump_turbo.size()  + heat_exch_Tout.size() /*+tank.size()-1*/; aux++) {
-		if (aux < pump_volum.size() - 1) {
+	for (int aux = 0, i; aux < pump_volum.size() + pump_turbo.size()  + heat_exch.size() /*+tank.size()*/; aux++) {
+		if (aux < pump_volum.size()) {
 			i = aux;
 			ind_outlet_aux.push_back({ pump_volum.at(i).Pump_volum,pump_volum.at(i).outlet_object });
 		}
-		else if (pump_turbo.size()!=0 && pump_volum.size() - 1 < aux < pump_turbo.size() - 1) {
+		else if (pump_turbo.size()!=0 && pump_volum.size() < aux < pump_turbo.size() ) {
 			i = aux - (pump_volum.size() - 1);
 			ind_outlet_aux.push_back({ pump_turbo.at(i).Pump_turbo,pump_turbo.at(i).outlet_object });
 		}
-		else if (heat_exch_Tout.size()!=0 &&pump_volum.size() - 1 + pump_turbo.size() - 1 < aux <heat_exch_Tout.size() - 1) {
-			i = aux - (pump_volum.size() - 1 + pump_turbo.size() - 1);
-			ind_outlet_aux.push_back({ heat_exch_Tout.at(i).heat_exch_Tout,heat_exch_Tout.at(i).outlet_object });
+		else if (heat_exch.size()!=0 &&pump_volum.size()  + pump_turbo.size() < aux <heat_exch.size() ) {
+			if (heat_exch.at(i).type == "T_out") {
+				i = aux - (pump_volum.size() - 1 + pump_turbo.size() - 1);
+				ind_outlet_aux.push_back({ heat_exch.at(i).heat_exch,heat_exch.at(i).outlet_object });
+			}
 		}
 		/*else if (pump_volum.size() - 1 + pump_turbo.size() - 1 +heat_exch_Tout.size() - 1 < aux < tank.size()) {
 		i = aux - (pump_volum.size() - 1 + pump_turbo.size() - 1);
 		ind_outlet_aux.push_back({ tank.at(i).tank,tank.at(i).outlet_object });
 		}*/
 	}
-	//ind_outlet_aux.at(0) = { pump_volum.at(0).name, pump_volum.at(0).outlet_oject; pump_turbo.at(0).name ,  pump_turbo.at(0).outlet_oject; heat_exch_Tout.at(0).name , heat_exch_Tout.at(0).outlet_object/*; tank.obj_index tank.at(0).outlet*/ };
-	// column 1: object index of all volumetric pumps, turbopumps, tanks and heat exchangers of type 'T out'
-	// column 2 : id ot the outlets of those objects
+	
 	for (int count = 0, ind_aux, ind_aux1; count< ind_outlet_aux.size(); count++) { // counter of objects that have a direction
 		branch_aux = objects_branches.at(ind_outlet_aux.at(count).at(0)); // branch that contains the object
 		for (int aux = 0; aux<branches_ind.at(branch_aux.at(0)).size(); aux++)
@@ -2483,13 +1857,9 @@ void HydroNet_model::HydroNet_Components() {
 
 void HydroNet_model::HydroNet_Executions() {
 
-	//std::vector<double>bound_flows;
 	bool solver_flag = false;
 	double head_aux, pos_aux, temperature_aux, obj_inlet_pos_aux;
-	//std::vector<double> head_vol_pump, hundred;
-	//hundred.assign(100, n_branch);
-	// Main execution of the HydroNet model
-
+	
 
 	//// HEAD LOSS IN BRANCHES
 	// Calculates head loss in every branch
@@ -2511,7 +1881,7 @@ void HydroNet_model::HydroNet_Executions() {
 	for (int count = 0; count < bound_flows.size(); count++)
 		if (!branch_cycle.at(count))
 			bound_flows.at(count) = 0;
-	//bound_flows(not(branch_cycle)) = 0; // outside a closed cycle
+	
 	for (int count = 1, obj_aux, branch_aux; count < valve_var.size(); count++) {
 		if (valve_var.at(count).opening == 0) {
 			obj_aux = valve_var.at(count).valve_var_id;
@@ -2522,7 +1892,7 @@ void HydroNet_model::HydroNet_Executions() {
 						break;
 						break;
 					}
-			//branch_aux = objects.branch{ obj_aux };
+			
 			bound_flows.at(branch_aux) = 0;
 		}
 	}
@@ -2536,7 +1906,7 @@ void HydroNet_model::HydroNet_Executions() {
 						break;
 						break;
 					}
-			//branch_aux = objects.branch{ obj_aux };
+			
 			bound_flows.at(branch_aux) = 0;
 		}
 	}
@@ -2577,9 +1947,9 @@ void HydroNet_model::HydroNet_Executions() {
 				for (int count1 = 0; count1<branch_temp_pos.at(count_branch).size(); count1++)
 					branch_temp_pos.at(count_branch).at(count1) = 100 - branch_temp_pos.at(count_branch).at(count1);
 				branch_temperature.at(count_branch) = flip(branch_temperature.at(count_branch));
-				branch_htx_fix.at(count_branch) = flip(branch_htx_fix.at(count_branch));
-				branch_htx_Tout.at(count_branch)
-					= flip(branch_htx_Tout.at(count_branch));
+				branch_htx.at(count_branch) = flip(branch_htx.at(count_branch));
+				/*branch_htx_Tout.at(count_branch)
+					= flip(branch_htx_Tout.at(count_branch));*/
 
 				for (int count = 0, count_obj; count < branches_ind.at(count_branch).size(); count++) {
 					std::vector<double> obj_inlet_pos_aux;
@@ -2672,9 +2042,6 @@ double HydroNet_model::HydroNet_GetObjTemperature(double obj_pos, std::vector<do
 
 HydroNet_model::strInsertVolum HydroNet_model::HydroNet_InsertVolume(std::vector<double> positions, std::vector<double> temperatures, double start_pos, double end_pos, int temp_action, std::string fluid_type, double value, double volume, int max_divisions, int size_position, int size_temperature) {
 
-
-
-
 	strInsertVolum InsertVolum;
 
 	int start_pos_ind;
@@ -2713,7 +2080,7 @@ HydroNet_model::strInsertVolum HydroNet_model::HydroNet_InsertVolume(std::vector
 
 
 	// Obtains range of positions where a volume is to be placed inside a branch and replaces current volumes by the new volume.In addition, a temperature for the volume is calculated.
-	//Fluid_type is only mandatory for temp_action = 0 and 1 (must calculate outlet temperature).
+	// Fluid_type is only mandatory for temp_action = 0 and 1 (must calculate outlet temperature).
 	// Value is only mandatory for temp_action = 1 and 2 (not just averaging).
 	// Volume is only mandatory for temp_action = 1 (impose heat).
 
@@ -2721,7 +2088,7 @@ HydroNet_model::strInsertVolum HydroNet_model::HydroNet_InsertVolume(std::vector
 		return InsertVolum;					// to avoid dividing by zero
 
 
-											// Finds start position inside positions vector
+	// Finds start position inside positions vector
 
 	while ((count < size.position) && (start_pos > positions.at(count))) {
 
@@ -2769,15 +2136,15 @@ HydroNet_model::strInsertVolum HydroNet_model::HydroNet_InsertVolume(std::vector
 			temp_mass_start = 0;
 		}
 		else if (start_pos_ind == end_pos_ind) {			// both are inside the same volume initially
-			mass_start = density(fluid_type, temperatures.at(start_pos_ind /*- 1*/)) * (end_pos - start_pos);
+			mass_start = density(fluid_type, temperatures.at(start_pos_ind )) * (end_pos - start_pos);
 			// Not a real mass.Volume is not included because it appears both
 			// in the numerator and the denominator multiplying all terms.
-			temp_mass_start = temperatures.at(start_pos_ind /*- 1*/) * mass_start;
+			temp_mass_start = temperatures.at(start_pos_ind) * mass_start;
 		}
 		else {
-			mass_start = density(fluid_type, temperatures.at(start_pos_ind /*-1*/)) * (positions.at(start_pos_ind) - start_pos);
+			mass_start = density(fluid_type, temperatures.at(start_pos_ind )) * (positions.at(start_pos_ind) - start_pos);
 			// Not a real mass.Volume is not included because it appears both in the numerator and the denominator multiplying all terms.
-			temp_mass_start = temperatures.at(start_pos_ind /*- 1*/) * mass_start;
+			temp_mass_start = temperatures.at(start_pos_ind) * mass_start;
 		}
 
 		if (flag_end_exists == true) {							 // end_pos already exists in the vector
@@ -2790,8 +2157,8 @@ HydroNet_model::strInsertVolum HydroNet_model::HydroNet_InsertVolume(std::vector
 			temp_mass_end = 0;
 		}
 		else {
-			mass_end = density(fluid_type, temperatures.at(end_pos_ind /*- 1*/)) * (end_pos - positions.at(end_pos_ind /*- 1*/));
-			temp_mass_end = temperatures.at(end_pos_ind /*- 1*/) * mass_end;
+			mass_end = density(fluid_type, temperatures.at(end_pos_ind )) * (end_pos - positions.at(end_pos_ind ));
+			temp_mass_end = temperatures.at(end_pos_ind) * mass_end;
 		}
 
 		mass_sum = mass_start + mass_end;						// denominator
@@ -2843,17 +2210,17 @@ HydroNet_model::strInsertVolum HydroNet_model::HydroNet_InsertVolume(std::vector
 			temp_mass_start = 0;
 		}
 		else if (start_pos_ind == end_pos_ind) {						 // both are inside the same volume initially
-			mass_start = density(fluid_type, temperatures.at(start_pos_ind /*- 1*/)) * (end_pos - start_pos);
+			mass_start = density(fluid_type, temperatures.at(start_pos_ind )) * (end_pos - start_pos);
 			// Not a real mass.Volume is not included because it appears both
 			// in the numerator and the denominator multiplying all terms.
-			temp_mass_start = temperatures.at(start_pos_ind /*- 1*/) * mass_start;
+			temp_mass_start = temperatures.at(start_pos_ind ) * mass_start;
 		}
 
 		else {
-			mass_start = density(fluid_type, temperatures.at(start_pos_ind /*- 1*/)) * (positions.at(start_pos_ind) - start_pos);
+			mass_start = density(fluid_type, temperatures.at(start_pos_ind )) * (positions.at(start_pos_ind) - start_pos);
 			// Not a real mass.Volume is not included because it appears both
 			// in the numerator and the denominator multiplying all terms.
-			temp_mass_start = temperatures.at(start_pos_ind /*- 1*/) * mass_start;
+			temp_mass_start = temperatures.at(start_pos_ind) * mass_start;
 		}
 
 
@@ -2866,8 +2233,8 @@ HydroNet_model::strInsertVolum HydroNet_model::HydroNet_InsertVolume(std::vector
 			temp_mass_end = 0;
 		}
 		else {
-			mass_end = density(fluid_type, temperatures.at(end_pos_ind /*- 1*/)) * (end_pos - positions.at(end_pos_ind /*- 1*/));
-			temp_mass_end = temperatures.at(end_pos_ind /*- 1*/) * mass_end;
+			mass_end = density(fluid_type, temperatures.at(end_pos_ind )) * (end_pos - positions.at(end_pos_ind ));
+			temp_mass_end = temperatures.at(end_pos_ind ) * mass_end;
 		}
 
 
@@ -2939,10 +2306,7 @@ HydroNet_model::strInsertVolum HydroNet_model::HydroNet_InsertVolume(std::vector
 		}
 
 	}
-	/*temperatures.clear();
-
-	temperatures = _temperatures;*/
-
+	
 
 	//Inserts specified positions and removes intermediate positions in the branch
 
@@ -2995,11 +2359,7 @@ HydroNet_model::strInsertVolum HydroNet_model::HydroNet_InsertVolume(std::vector
 		}
 
 	}
-	/*positions.clear();
-
-	positions = _positions;*/
-
-
+	
 
 	InsertVolum.temperature = _temperatures;
 	InsertVolum.position = _positions;
@@ -3011,19 +2371,11 @@ HydroNet_model::strInsertVolum HydroNet_model::HydroNet_InsertVolume(std::vector
 
 void HydroNet_model::HydroNet_FlowSolver() {
 
-	//std::vector<double> flows;
-	//std::vector<bool> solved;
 	Eigen::RowVectorXi solved(n_branch);
 	std::vector<bool> trues;
-	//std::vector<bool> volum_pump;
 	Eigen::RowVectorXi volum_pump(n_branch);
-	//std::vector<double> head_vol_pump;
-	//int n_nodes;
-	//std::vector<bool> solv_nodes;
 	Eigen::RowVectorXi solv_nodes(nodes_id.size());
 	bool while_flag;
-	//std::vector<bool> solv_prev1;
-	//std::vector<bool> solv_prev2;
 	Eigen::RowVectorXi solv_prev1(n_branch);
 	Eigen::RowVectorXi solv_prev2(n_branch);
 	int count_uns;
@@ -3040,7 +2392,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 	std::vector<double> const_vec;
 	std::vector<int> unk_ind_aux;
 	std::vector<bool> volpump_ind_aux, flows_ind_aux;
-	int last_row;
+	int last_row=0;
 	int n_idp_mesh;
 	std::vector<int> idp_mesh;
 	std::vector<bool> remain_branch;
@@ -3056,30 +2408,28 @@ void HydroNet_model::HydroNet_FlowSolver() {
 	trues.assign(n_branch, true);
 
 
-	/*
-	Solver for hydraulic networks.
-	Receives information about meshes, branches and nodes in the the network.
-	Receives known flows imposed as boundary conditions - a vector with the flow values in the corresponding branches and NaN in the rest.
-	Receives head losses in every branch.Data must be divided in three vectors: one for head losses that do not depend on the flow, another one for head losses proportional to the flow and the last one for losses proportional to the flow squared.
-	This function attempts to solve the network with algebraic methods.If some flows cannot be solved, it uses a numerical method.
-	Receives information about volumetric pumps.If there are volumetric pumps in the circuit, the fucntion returns its pump head.
+	
+	//Solver for hydraulic networks.
+	//Receives information about meshes, branches and nodes in the the network.
+	//Receives known flows imposed as boundary conditions - a vector with the flow values in the corresponding branches and NaN in the rest.
+	//Receives head losses in every branch.Data must be divided in three vectors: one for head losses that do not depend on the flow, another one for head losses proportional to the flow and the last one for losses proportional to the flow squared.
+	//This function attempts to solve the network with algebraic methods.If some flows cannot be solved, it uses a numerical method.
+	//Receives information about volumetric pumps.If there are volumetric pumps in the circuit, the fucntion returns its pump head.
 
 
 
-	SOLVING PROCEDURE
+	//SOLVING PROCEDURE
 
-	First, solves branches where flow is known, is zero or can be calculated independently because there is a volumetric pump(flow depends on pump speed).Check if all branches are solved.
+	//First, solves branches where flow is known, is zero or can be calculated independently because there is a volumetric pump(flow depends on pump speed).Check if all branches are solved.
 
-	Second, enters a loop :
-	NODES STEP : Solves nodes where there is only one unknown flow.Check if all branches are solved.Loop until no more nodes are solved.
-	If it is not the first iteration and no branches have been solved in the nodes step, break main loop.
-	MESH STEP : solves meshes that depend only on one flow(simple meshes; only one branch remains to be solved).Check if all branches are solved.Loop until no more meshes are solved.
-	If no branches have been solved in the mesh step, break main loop.
-	Loop
+	//Second, enters a loop :
+	//NODES STEP : Solves nodes where there is only one unknown flow.Check if all branches are solved.Loop until no more nodes are solved.
+	//If it is not the first iteration and no branches have been solved in the nodes step, break main loop.
+	//MESH STEP : solves meshes that depend only on one flow(simple meshes; only one branch remains to be solved).Check if all branches are solved.Loop until no more meshes are solved.
+	//If no branches have been solved in the mesh step, break main loop.
+	//Loop
 
-	Third, sets up and solves the system of non - linear equations.Equations  depend on flow(nodes, etc.), on flow ^ 2 (pipes, etc.) and on head of volumetric pumps.All branches are solved.
-
-	*/
+	//Third, sets up and solves the system of non - linear equations.Equations  depend on flow(nodes, etc.), on flow ^ 2 (pipes, etc.) and on head of volumetric pumps.All branches are solved.
 
 	// Creates result vectors
 
@@ -3210,7 +2560,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 
 		solv_prev1 = solved;																		// flows solved after the nodes step
 
-																									//////////////////////////// middle of loop
+				//////////////////////////// middle of loop
 
 		solv_prev2.resize(solved.size());																	// flows solved in the previous step(sub - loop)
 
@@ -3232,7 +2582,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 				}
 				if (count_uns == 1) {																			 // one unknown; mesh can be solved directly
 
-																												 // II Kirchhoff's Law: sum of head increments in a mesh = 0
+						 // II Kirchhoff's Law: sum of head increments in a mesh = 0
 					total_head = 0;
 					last_id = 0;
 					for (int count1 = 0; count1 < mesh_branches.at(count).size(); count++) {								// branches that form the mesh
@@ -3292,7 +2642,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 
 
 							// Save result
-							flows.at(ind_aux) = sol_aux * sign_aux*(-1);																		 // add sign now
+							flows.at(ind_aux) = sol_aux * sign_aux*(-1);													 // add sign now
 							solved(ind_aux) = true;																			// set as solved
 						}
 					}
@@ -3326,10 +2676,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 	const_mat.resize(n_unknown); // matrix for independent head loss in unsolved branches
 
 	for (int count = 0; count < n_unknown; count++) {
-		/*coef2_mat.resize(n_unknown);
-		coef1_mat.resize(n_unknown);
-		const_mat.resize(n_unknown);*/
-		for (int count1 = 0; count1 < n_unknown; count1++) {
+			for (int count1 = 0; count1 < n_unknown; count1++) {
 			coef2_mat.at(count).assign(n_unknown, 0);
 			coef1_mat.at(count).assign(n_unknown, 0);
 			const_mat.at(count).assign(n_unknown, 0);
@@ -3360,16 +2707,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 
 	}
 
-	// Auxiliary vector that contains 1 at the indices where the vector
-	// 'unknowns' or 'X' refer to flows
-	//volpump_ind_aux.flip;
-
-	//flows_ind_aux = volpump_ind_aux;
-
-	//volpump_ind_aux.flip;
-
-
-
+	
 
 	// NODE EQUATIONS
 	// All unsolved nodes are considered for the system but one of them is
@@ -3388,7 +2726,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 		}
 
 	// Formulates node equations
-	//solv_nodes.flip();
+	
 	for (int count = 0; count < (solv_nodes.size() - solv_nodes.sum()); count++) { // unsolved nodes loop
 
 
@@ -3413,17 +2751,13 @@ void HydroNet_model::HydroNet_FlowSolver() {
 		}
 		last_row = count + 1; // save row to continue entering the equations
 	}
-	//solv_nodes.flip();
-
+	
 	// MESH EQUATIONS
 
 	// Number of independent meshes : branches to solve - nodes to solve + 1 = branches to solve - independent nodes to solve
-	//solv_nodes.flip();
-	//solved.flip();
+	
 	n_idp_mesh = (solved.size() - solved.sum()) - (solv_nodes.size() - solv_nodes.sum()) + volum_pump.sum() - n_tanks;
-	//solved.flip();
-	//solv_nodes.flip();
-
+	
 	// head of volumetric pumps must be solved as well
 	// additionaly for every tank, there is a fake branch and two known pressure nodes : -1 mesh per tank
 
@@ -3438,13 +2772,12 @@ void HydroNet_model::HydroNet_FlowSolver() {
 
 	// Vector that marks the branches that are not covered by the current
 	// selection of mesh equations.Remaining branches to be added to the system.
-	//solved.flip();
+	
 	for (int count = 0; count < solved.size(); count++) {
 		remain_branch.at(size.remain_branch) = (!solved(count) || volum_pump(count));
 		size.remain_branch++;
 	}
-	//solved.flip();
-
+	
 
 	if (n_mesh > n_idp_mesh) { // there are more meshes than necessary->selection
 		for (int count = 0; count < n_idp_mesh; count++) { // selected mesh loop
@@ -3484,7 +2817,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 
 	else // all meshes are necessary
 		 // save all meshes as independent
-		idp_mesh.assign(n_mesh, 1);
+		idp_mesh.assign(n_mesh, 0);
 
 	idp_mesh_branches.resize(idp_mesh.size());
 
@@ -3494,20 +2827,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 
 	// Initial values for the non - linear solver
 	x0.setConstant(n_unknown, 0.0001);
-	/*x0.resize(flows.size()) ; // size equal to number of unknowns
-	for (int count = 0; count < solved.size(); count++) {
-	if (solved.at(count) == false)
-	x0.at(count) = 0.001;
-	else
-	x0.at(count) == flows.at(count);
-
-	}*/
-	// flow 1 liter per second
-	// x0 = zeros(n_unknown, 1); // size equal to number of unknowns
-	// x0(flows_ind_aux) = 0.001; // flow 1 liter per second
-	// x0(volpump_ind_aux) = 10; // head  10 m.c.f
-	// in the future, this vector can be feed with values obtained in a
-	// previous call or from tables; remember to divide pump head by 10000 or so
+	
 
 	// Formulates mesh equations
 
@@ -3554,7 +2874,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 
 			}
 
-			else { //if (unk_ind_aux.at(count) = aux){// flow is unknown
+			else { 
 				   // assume flow mesh and branch flow have the same direction
 
 
@@ -3574,10 +2894,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 	coef2_mat;
 
 
-	//f = @(x) coef2_mat*(x.*abs(x)) + coef1_mat*x + const_mat*(x. / abs(x)) + const_vec;
-	// oldopts = optimoptions('fsolve');
-	// opts = optimoptions(oldopts,'MaxFunEvals',1000000), 'Display','off');
-	Y = NonLinearSolver(x0, coef1_mat, coef2_mat, const_mat, const_vec); //,opts);
+	Y = NonLinearSolver(x0, coef1_mat, coef2_mat, const_mat, const_vec);
 
 
 																		 // Save 
@@ -3588,7 +2905,6 @@ void HydroNet_model::HydroNet_FlowSolver() {
 		}
 	}
 
-	///flows(not(solved)) = Y(flows_ind_aux);
 
 	// Save head in volumetric pumps 
 	for (int count = 0; count < volum_pump.size(); count++) {
@@ -3598,7 +2914,7 @@ void HydroNet_model::HydroNet_FlowSolver() {
 		}
 	}
 
-	///head_vol_pump(volum_pump) = Y(volpump_ind_aux) * 10000;
+
 	// previously pump head was divided by 10000 so its magnitude order was
 	// close to that of the flows
 
@@ -3614,10 +2930,10 @@ void HydroNet_model::HydroNet_Temperature() {
 	// in every branch as well as temperatures for the inlet of heat exchangers.
 	// Merges ranges (volumes) and its temperatures if there are too many of them in a branch.
 
-	int /*max_divisions,*/ extra_div, position_count = 0, node_count, end_node_ind, start_node_ind, node_aux, temp_action, pos_aux;
+	int  extra_div, position_count = 0, node_count, end_node_ind, start_node_ind, node_aux, temp_action, pos_aux;
 	std::vector<std::vector<double>>new_pos, new_temp;
 	std::vector<std::vector<int>>  node_inlet_branches, node_outlet_branches;
-	std::vector<double> /*overflow,*/ overflow_temperature, overflow_temp_volpos_aux, overflow_temperature_aux;
+	std::vector<double>  overflow_temperature, overflow_temp_volpos_aux, overflow_temperature_aux;
 	double delta_pos, start_pos, end_pos, value = -9595959, sum_aux, temp_aux, flow_sum, sum_mass, sum_temp_mass, position, obj_pos;
 	bool flows_flag = false;
 	std::vector<bool>flag_inlet, to_remove;
@@ -3647,7 +2963,7 @@ void HydroNet_model::HydroNet_Temperature() {
 			overflow(count) = flows.at(count) * dt;
 	}
 
-	overflow_temperature.assign(n_branch, 0);//ones(n_branch, 1) * (-999999); // vector to store temperatures of overflowed volumes
+	overflow_temperature.assign(n_branch, 0); // vector to store temperatures of overflowed volumes
 
 	size.node_inlet_branches.resize(n_nodes);
 	size.node_outlet_branches.resize(n_nodes);
@@ -3684,71 +3000,77 @@ void HydroNet_model::HydroNet_Temperature() {
 		node_outlet_branches.at(count).resize(n_branch);
 	}
 	// Branches without volume
-	for (int count_branch = 0; count_branch < branch_volume.size(); count_branch++) {//count_branch = transpose(find(branch_volume == 0))
+	for (int count_branch = 0; count_branch < branch_volume.size(); count_branch++) {
 		if (branch_volume.at(count_branch) == 0) {
 			new_pos.at(count_branch).at(0) = 0;
 			new_pos.at(count_branch).at(1) = 100;
 			size.new_pos.at(count_branch) = 2;
-			for (int count = 0; count<branch_temperature.at(count_branch).size(); count++)
+			for (int count = 0; count < branch_temperature.at(count_branch).size(); count++)
 				new_temp.at(count_branch).at(count) = branch_temperature.at(count_branch).at(count);
 			size.new_temp.at(count_branch) = branch_temperature.at(count_branch).size();
-			//new_temp.at(count_branch) = branch_temperature.at(count_branch);
+
 		}
 	}
 
 
 	// Branch loop excluding branches without volume
-	for (int count_branch = 0; count_branch < branch_volume.size(); count_branch++) {//count_branch = transpose(find(branch_volume == 0))
+	for (int count_branch = 0; count_branch < branch_volume.size(); count_branch++) {
 		if (branch_volume.at(count_branch) > 0) {
 			delta_pos = flows.at(count_branch) * dt / branch_volume.at(count_branch) * 100;
-			// \% of branch volume that flow moved
+			// % of branch volume that flow moved
 
 			// NO FLOW MOVEMENT: refreshes temperatures inside the branch
 			if (delta_pos == 0) {// flow is zero, no movement
 
-				for (int count = 0; count< branch_temp_pos.at(count_branch).size(); count++)
+				for (int count = 0; count < branch_temp_pos.at(count_branch).size(); count++)
 					new_pos.at(count_branch).at(count) = branch_temp_pos.at(count_branch).at(count);
 				size.new_pos.at(count_branch) = branch_temp_pos.at(count_branch).size();
-				for (int count = 0; count< branch_temperature.at(count_branch).size(); count++)
+				for (int count = 0; count < branch_temperature.at(count_branch).size(); count++)
 					new_temp.at(count_branch).at(count) = branch_temperature.at(count_branch).at(count);
 				size.new_temp.at(count_branch) = branch_temperature.at(count_branch).size();
 				// If there are heat exchangers or pumps, inserts volume for it and refreshes temperature
-				// Heat exchanger of type T_out
-				for (int count_obj_htx = 0, ind_aux; count_obj_htx < branch_htx_Tout.at(count_branch).size(); count_obj_htx++) {//count_obj_htx = branch_htx_Tout{ count_branch }
+				//// Heat exchanger of type T_out
+				//for (int count_obj_htx = 0, ind_aux; count_obj_htx < branch_htx_Tout.at(count_branch).size(); count_obj_htx++) {
 
-					ind_aux = heat_exch_Tout.at(count_obj_htx).heat_exch_Tout;
+				//	ind_aux = heat_exch_Tout.at(count_obj_htx).heat_exch_Tout;
+				//	// index of the heat exchanger in the table objects
+
+				//	start_pos = obj_inlet_pos.at(ind_aux).at(0); // object's inlet position
+				//	end_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position
+				//	temp_action = 2; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+				//	value = heat_exch_Tout.at(count_obj_htx).T_out; // final temperature
+
+				//	InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
+				//	for (int count = 0; count< InsertVolum.position.size(); count++)
+				//		new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
+				//	size.new_pos.at(count_branch) = InsertVolum.pos_size;
+				//	for (int count = 0; count< InsertVolum.temperature.size(); count++)
+				//		new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
+				//	size.new_temp.at(count_branch) = InsertVolum.temp_size;
+				//}
+
+				// Heat exchanger 
+				for (int count_obj_htx = 0, ind_aux; count_obj_htx < branch_htx.at(count_branch).size(); count_obj_htx++) {
+
+					ind_aux = heat_exch.at(branch_htx.at(count_branch).at(count_obj_htx)).heat_exch;
 					// index of the heat exchanger in the table objects
 
 					start_pos = obj_inlet_pos.at(ind_aux).at(0); // object's inlet position
 					end_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position
-					temp_action = 2; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
-					value = heat_exch_Tout.at(count_obj_htx).T_out; // final temperature
+					if (heat_exch.at(branch_htx.at(count_branch).at(count_obj_htx)).type == "fix") {
+						temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+						value = heat_exch.at(branch_htx.at(count_branch).at(count_obj_htx)).heat; // heat to add
+					}
+					else {
+						temp_action = 2; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+						value = heat_exch.at(branch_htx.at(count_branch).at(count_obj_htx)).T_out; // New volume's temperature
+					}
 
 					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
-					for (int count = 0; count< InsertVolum.position.size(); count++)
+					for (int count = 0; count < InsertVolum.position.size(); count++)
 						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
 					size.new_pos.at(count_branch) = InsertVolum.pos_size;
-					for (int count = 0; count< InsertVolum.temperature.size(); count++)
-						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
-					size.new_temp.at(count_branch) = InsertVolum.temp_size;
-				}
-
-				// Heat exchanger of type fixed heat
-				for (int count_obj_htx = 0, ind_aux; count_obj_htx < branch_htx_fix.at(count_branch).size(); count_obj_htx++) {//count_obj_htx = branch_htx_fix{ count_branch }
-
-					ind_aux = heat_exch_fix.at(branch_htx_fix.at(count_branch).at(count_obj_htx)).heat_exch_fix;
-					// index of the heat exchanger in the table objects
-
-					start_pos = obj_inlet_pos.at(ind_aux).at(0); // object's inlet position
-					end_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position
-					temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
-					value = heat_exch_fix.at(branch_htx_fix.at(count_branch).at(count_obj_htx)).heat; // heat to add
-
-					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
-					for (int count = 0; count< InsertVolum.position.size(); count++)
-						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
-					size.new_pos.at(count_branch) = InsertVolum.pos_size;
-					for (int count = 0; count< InsertVolum.temperature.size(); count++)
+					for (int count = 0; count < InsertVolum.temperature.size(); count++)
 						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
 					size.new_temp.at(count_branch) = InsertVolum.temp_size;
 				}
@@ -3765,16 +3087,16 @@ void HydroNet_model::HydroNet_Temperature() {
 					value = pump_volum.at(branch_pump_volum.at(count_branch).at(count_obj_pump)).heat; // heat to add
 
 					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
-					for (int count = 0; count< InsertVolum.position.size(); count++)
+					for (int count = 0; count < InsertVolum.position.size(); count++)
 						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
 					size.new_pos.at(count_branch) = InsertVolum.pos_size;
-					for (int count = 0; count< InsertVolum.temperature.size(); count++)
+					for (int count = 0; count < InsertVolum.temperature.size(); count++)
 						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
 					size.new_temp.at(count_branch) = InsertVolum.temp_size;
 				}
 
 				// Turbo pump
-				for (int count_obj_pump = 0, ind_aux; count_obj_pump < branch_pump_turbo.at(count_branch).size(); count_obj_pump++) {//count_obj_htx = branch_htx_fix{ count_branch }
+				for (int count_obj_pump = 0, ind_aux; count_obj_pump < branch_pump_turbo.at(count_branch).size(); count_obj_pump++) {
 
 					ind_aux = pump_turbo.at(branch_pump_turbo.at(count_branch).at(count_obj_pump)).Pump_turbo;
 					// index of the heat exchanger in the table objects
@@ -3785,10 +3107,10 @@ void HydroNet_model::HydroNet_Temperature() {
 					value = pump_turbo.at(branch_pump_turbo.at(count_branch).at(count_obj_pump)).heat; // heat to add
 
 					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
-					for (int count = 0; count< InsertVolum.position.size(); count++)
+					for (int count = 0; count < InsertVolum.position.size(); count++)
 						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
 					size.new_pos.at(count_branch) = InsertVolum.pos_size;
-					for (int count = 0; count< InsertVolum.temperature.size(); count++)
+					for (int count = 0; count < InsertVolum.temperature.size(); count++)
 						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
 					size.new_temp.at(count_branch) = InsertVolum.temp_size;
 				}
@@ -3809,8 +3131,8 @@ void HydroNet_model::HydroNet_Temperature() {
 				size.new_temp.at(count_branch) = 0;
 
 				// REFRESHES TEMPERATURES INSIDE THE BRANCH WITHOUT HEAT EXCHANGE
-				while (((position_count) < (branch_temp_pos.at(count_branch).size())) && ((branch_temp_pos.at(count_branch).at(position_count) + delta_pos) <= 100)) {//and ((branch_temp_pos{ count_branch }(position_count)+delta_pos) <= 10(position_count) < numel(branch_temp_pos{ count_branch })) // old position exists inside the vector
-																																									  // Positions are moved along the branch according to flowing flow
+				while (((position_count) < (branch_temp_pos.at(count_branch).size())) && ((branch_temp_pos.at(count_branch).at(position_count) + delta_pos) <= 100)) {
+					// Positions are moved along the branch according to flowing flow
 
 					position = branch_temp_pos.at(count_branch).at(position_count);
 					size.position = 1;
@@ -3823,11 +3145,7 @@ void HydroNet_model::HydroNet_Temperature() {
 
 					position_count = position_count + 1;
 				}
-				//if (branch_temp_pos.at(count_branch).size() == 2)
-				//	position_count = position_count + 1;
-				// New position is in another branch OR there are no more positions in the branch
-				// Closes branch
-				//new_pos.at(count_branch).insert(new_pos.at(count_branch).begin(), 0); // add vector start 
+
 				new_pos.at(count_branch).at(size.new_pos.at(count_branch)) = 100; // add vector end
 				size.new_pos.at(count_branch)++;
 				new_temp.at(count_branch).at(size.new_temp.at(count_branch)) = (branch_temperature.at(count_branch).at(branch_temperature.at(count_branch).size() - 1));
@@ -3846,24 +3164,21 @@ void HydroNet_model::HydroNet_Temperature() {
 					// for the volume that goes out of the branch
 					overflow_temp_volpos_aux.at(0) = 100; // initialization: branch end
 					size.overflow_temp_volpos_aux = 1;
-					// position specified as \// of the branch volume
+					// position specified as % of the branch volume
 					size.overflow_temperature_aux = 0;
 
 					if (branch_temp_pos.at(count_branch).size() == 2) {
 						overflow_temperature_aux.at(size.overflow_temperature_aux) = (branch_temperature.at(count_branch).at(0));
 						size.overflow_temperature_aux++;
-						//overflow_temp_volpos_aux = { 0,100 };
 						overflow_temp_volpos_aux.at(0) = 0;
 						overflow_temp_volpos_aux.at(1) = 100;
 						size.overflow_temp_volpos_aux = 2;
 					}
 
 					for (int count = position_count; count < branch_temp_pos.at(count_branch).size(); count++) {
-						//if (position_count == branch_temp_pos.size()-1) 
 
 						overflow_temp_volpos_aux.at(size.overflow_temp_volpos_aux) = (branch_temp_pos.at(count_branch).at(position_count) + delta_pos);
 						size.overflow_temp_volpos_aux++;
-						// position specified as \// of the branch volume (> 100%)
 						overflow_temperature_aux.at(size.overflow_temperature_aux) = (branch_temperature.at(count_branch).at(position_count - 1));
 						size.overflow_temperature_aux++;
 					}
@@ -3877,7 +3192,7 @@ void HydroNet_model::HydroNet_Temperature() {
 				// There can only be heat exchangers if branch volume is > 0.
 				// Second step to find the temperature of the buffer volume
 
-				// Heat exchanger of type T_out
+				/*// Heat exchanger of type T_out
 				for (int count = 0, count_obj_htx, ind_aux; count < branch_htx_Tout.at(count_branch).size(); count++) {// loop starting from the closest exchanger to the branch's end
 					count_obj_htx = branch_htx_Tout.at(count_branch).at(count);
 
@@ -3916,52 +3231,75 @@ void HydroNet_model::HydroNet_Temperature() {
 					for (int count = 0; count< InsertVolum.temperature.size(); count++)
 						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
 					size.new_temp.at(count_branch) = InsertVolum.temp_size;
-				}
+				}*/
 
 				// Heat exchanger of type fixed heat
-				for (int count = 0, count_obj_htx, ind_aux; count < branch_htx_fix.at(count_branch).size(); count++) { // loop starting from the closest exchanger to the branch's end
-					count_obj_htx = branch_htx_fix.at(count_branch).at(count);
-					for (int aux=0; aux<heat_exch_fix.size();aux++)
-						if (count_obj_htx == heat_exch_fix.at(aux).heat_exch_fix) {
+				for (int count = 0, count_obj_htx, ind_aux; count < branch_htx.at(count_branch).size(); count++) { // loop starting from the closest exchanger to the branch's end
+					count_obj_htx = branch_htx.at(count_branch).at(count);
+					for (int aux = 0; aux < heat_exch.size(); aux++)
+						if (count_obj_htx == heat_exch.at(aux).heat_exch) {
 							ind_aux = aux;
 							break;
 						}
-					
+
 					// index of the heat exchanger in the table objects
+					if (heat_exch.at(ind_aux).type == "fix") {
+						temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+						value = heat_exch.at(ind_aux).heat;
 
-					temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
-					value = heat_exch_fix.at(ind_aux).heat;
-
-					start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
-					end_pos = start_pos + delta_pos;
-
-					if (end_pos > 100) {
-
-						value = heat_exch_fix.at(ind_aux).heat* (end_pos - 100) / (end_pos - start_pos);
-						// heat to add averaged for the volume that goes out of the branch
-
-						start_pos = 100;
-
-						InsertVolum = HydroNet_InsertVolume(overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.overflow_temp_volpos_aux, size.overflow_temperature_aux);
-						for (int count = 0; count< InsertVolum.position.size(); count++)
-							overflow_temp_volpos_aux.at(count) = InsertVolum.position.at(count);
-						size.overflow_temp_volpos_aux = InsertVolum.pos_size;
-						for (int count = 0; count< InsertVolum.temperature.size(); count++)
-							overflow_temperature_aux.at(count) = InsertVolum.temperature.at(count);
-						size.overflow_temperature_aux = InsertVolum.temp_size;
-
-						// For the volume inside the branch
 						start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
-						end_pos = 100;
-						value = heat_exch_fix.at(ind_aux).heat* (100 - start_pos) / (end_pos - start_pos);
-						// heat to add averaged for the volume that stays inside the branch
+						end_pos = start_pos + delta_pos;
+
+						if (end_pos > 100) {
+
+							value = heat_exch.at(ind_aux).heat* (end_pos - 100) / (end_pos - start_pos);
+							// heat to add averaged for the volume that goes out of the branch
+
+							start_pos = 100;
+
+							InsertVolum = HydroNet_InsertVolume(overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.overflow_temp_volpos_aux, size.overflow_temperature_aux);
+							for (int count = 0; count < InsertVolum.position.size(); count++)
+								overflow_temp_volpos_aux.at(count) = InsertVolum.position.at(count);
+							size.overflow_temp_volpos_aux = InsertVolum.pos_size;
+							for (int count = 0; count < InsertVolum.temperature.size(); count++)
+								overflow_temperature_aux.at(count) = InsertVolum.temperature.at(count);
+							size.overflow_temperature_aux = InsertVolum.temp_size;
+
+							// For the volume inside the branch
+							start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
+							end_pos = 100;
+							value = heat_exch.at(ind_aux).heat* (100 - start_pos) / (end_pos - start_pos);
+							// heat to add averaged for the volume that stays inside the branch
+						}
+					}
+					else {
+						temp_action = 2; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
+						value = heat_exch.at(count_obj_htx).T_out; // new temperature
+
+						start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
+						end_pos = start_pos + delta_pos;
+
+						if (end_pos > 100) {
+							start_pos = 100;
+
+							InsertVolum = HydroNet_InsertVolume(overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.overflow_temp_volpos_aux, size.overflow_temperature_aux);
+							for (int count = 0; count < InsertVolum.position.size(); count++)
+								overflow_temp_volpos_aux.at(count) = InsertVolum.position.at(count);
+							size.overflow_temp_volpos_aux = InsertVolum.pos_size;
+							for (int count = 0; count < InsertVolum.temperature.size(); count++)
+								overflow_temperature_aux.at(count) = InsertVolum.temperature.at(count);
+							size.overflow_temperature_aux = InsertVolum.temp_size;
+							// For the volume inside the branch
+							start_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position is the start position
+							end_pos = 100;
+						}
 					}
 
 					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
-					for (int count = 0; count< InsertVolum.pos_size; count++)
+					for (int count = 0; count < InsertVolum.pos_size; count++)
 						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
 					size.new_pos.at(count_branch) = InsertVolum.pos_size;
-					for (int count = 0; count< InsertVolum.temp_size; count++)
+					for (int count = 0; count < InsertVolum.temp_size; count++)
 						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
 					size.new_temp.at(count_branch) = InsertVolum.temp_size;
 				}
@@ -3969,7 +3307,7 @@ void HydroNet_model::HydroNet_Temperature() {
 				// Volumetric pumps
 				for (int count = 0, count_obj_pmp, ind_aux; count < branch_pump_volum.at(count_branch).size(); count++) { // loop starting from the closest exchanger to the branch's end
 					count_obj_pmp = branch_pump_volum.at(count_branch).at(count);
-					for (int aux = 0; aux<pump_volum.size(); aux++)
+					for (int aux = 0; aux < pump_volum.size(); aux++)
 						if (count_obj_pmp == pump_volum.at(aux).Pump_volum) {
 							ind_aux = aux;
 							break;
@@ -3990,10 +3328,10 @@ void HydroNet_model::HydroNet_Temperature() {
 						start_pos = 100;
 
 						InsertVolum = HydroNet_InsertVolume(overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.overflow_temp_volpos_aux, size.overflow_temperature_aux);
-						for (int count = 0; count< InsertVolum.position.size(); count++)
+						for (int count = 0; count < InsertVolum.position.size(); count++)
 							overflow_temp_volpos_aux.at(count) = InsertVolum.position.at(count);
 						size.overflow_temp_volpos_aux = InsertVolum.pos_size;
-						for (int count = 0; count< InsertVolum.temperature.size(); count++)
+						for (int count = 0; count < InsertVolum.temperature.size(); count++)
 							overflow_temperature_aux.at(count) = InsertVolum.temperature.at(count);
 						size.overflow_temperature_aux = InsertVolum.temp_size;
 
@@ -4005,17 +3343,17 @@ void HydroNet_model::HydroNet_Temperature() {
 					}
 
 					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
-					for (int count = 0; count< InsertVolum.pos_size; count++)
+					for (int count = 0; count < InsertVolum.pos_size; count++)
 						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
 					size.new_pos.at(count_branch) = InsertVolum.pos_size;
-					for (int count = 0; count< InsertVolum.temp_size; count++)
+					for (int count = 0; count < InsertVolum.temp_size; count++)
 						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
 					size.new_temp.at(count_branch) = InsertVolum.temp_size;
 				}
 				// Turbo pump
 				for (int count = 0, count_obj_pmp, ind_aux; count < branch_pump_turbo.at(count_branch).size(); count++) { // loop starting from the closest exchanger to the branch's end
 					count_obj_pmp = branch_pump_turbo.at(count_branch).at(count);
-					for (int aux = 0; aux<pump_turbo.size(); aux++)
+					for (int aux = 0; aux < pump_turbo.size(); aux++)
 						if (count_obj_pmp == pump_turbo.at(aux).Pump_turbo) {
 							ind_aux = aux;
 							break;
@@ -4036,10 +3374,10 @@ void HydroNet_model::HydroNet_Temperature() {
 						start_pos = 100;
 
 						InsertVolum = HydroNet_InsertVolume(overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.overflow_temp_volpos_aux, size.overflow_temperature_aux);
-						for (int count = 0; count< InsertVolum.position.size(); count++)
+						for (int count = 0; count < InsertVolum.position.size(); count++)
 							overflow_temp_volpos_aux.at(count) = InsertVolum.position.at(count);
 						size.overflow_temp_volpos_aux = InsertVolum.pos_size;
-						for (int count = 0; count< InsertVolum.temperature.size(); count++)
+						for (int count = 0; count < InsertVolum.temperature.size(); count++)
 							overflow_temperature_aux.at(count) = InsertVolum.temperature.at(count);
 						size.overflow_temperature_aux = InsertVolum.temp_size;
 
@@ -4051,10 +3389,10 @@ void HydroNet_model::HydroNet_Temperature() {
 					}
 
 					InsertVolum = HydroNet_InsertVolume(new_pos.at(count_branch), new_temp.at(count_branch), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(count_branch), max_divisions, size.new_pos.at(count_branch), size.new_temp.at(count_branch));
-					for (int count = 0; count< InsertVolum.pos_size; count++)
+					for (int count = 0; count < InsertVolum.pos_size; count++)
 						new_pos.at(count_branch).at(count) = InsertVolum.position.at(count);
 					size.new_pos.at(count_branch) = InsertVolum.pos_size;
-					for (int count = 0; count< InsertVolum.temp_size; count++)
+					for (int count = 0; count < InsertVolum.temp_size; count++)
 						new_temp.at(count_branch).at(count) = InsertVolum.temperature.at(count);
 					size.new_temp.at(count_branch) = InsertVolum.temp_size;
 				}
@@ -4078,6 +3416,7 @@ void HydroNet_model::HydroNet_Temperature() {
 
 
 
+
 	//// SEPARES BRANCHES AT THE INLET AND OUTLET OF EVERY NODE
 	// Separates branches that are inlets to nodes and those that are outlets to nodes from node_branches
 	// All branches should start and end at a node!!
@@ -4087,23 +3426,20 @@ void HydroNet_model::HydroNet_Temperature() {
 
 	if (flows_flag == true) { // if there is no movement in the branch, there is no need for this
 
-
-							  //node_volume_out = zeros(n_nodes, 1);
 							  // stores the sum of all volumes leaving every node to check if outlet branches are overflowed
 							  // no used because, later, volume_share is more precise
 
 		for (int node_count = 0, count; node_count < n_nodes; node_count++) { // node loop
 			flag_inlet.assign(node_branches.at(node_count).size(), false); // marks inlet branches to this node
 			count = -1; // counter of branches in every node
-			for (int count1 = 0, count_branch; count1 < node_branches.at(node_count).size(); count1++) {// alternative: branch_count = 1 : numel(node_branches{node_count})
+			for (int count1 = 0, count_branch; count1 < node_branches.at(node_count).size(); count1++) {
 
 				count_branch = node_branches.at(node_count).at(count1);
 				count++;
 				if (branches_id.at(count_branch).at(branches_id.at(count_branch).size() - 1) == nodes_id.at(node_count))
 					// flow goes into the node from the branch: it is an inlet branch to the node
 					flag_inlet.at(count) = true; // mark branch as inlet to node
-												 //         else // flow goes into the branch from the node: it is an outlet branch from the node
-												 //             node_volume_out(node_count) = node_volume_out(node_count) + branch_volume(branch_count);
+												 
 
 			}
 
@@ -4119,19 +3455,7 @@ void HydroNet_model::HydroNet_Temperature() {
 					node_outlet_branches.at(node_count).at(size.node_outlet_branches.at(node_count)) = node_branches.at(node_count).at(aux);
 					size.node_outlet_branches.at(node_count)++;
 				}
-			//	else
-			//		node_outlet_branches.at(node_count).erase(node_outlet_branches.at(node_count).begin() + aux);
-
-			//node_inlet_branches = node_branches;
-			//node_outlet_branches = node_branches;
-			/*node_outlet_branches.resize(2 * max_divisions);
-			node_inlet_branches.resize(2 * max_divisions);*/
-			//for (int count = 0; count <n_nodes; count++) {
-			//	size.node_inlet_branches.at(count) = 0;
-			//	size.node_outlet_branches.at(count) = 0;
-			//	/*node_outlet_branches.at(count).resize(2 * max_divisions);
-			//	node_inlet_branches.at(count).resize(2 * max_divisions);*/
-			//}
+			
 		}
 	}
 
@@ -4140,7 +3464,7 @@ void HydroNet_model::HydroNet_Temperature() {
 	// All branches should start and end at a node!!
 	// The number of branches without volume must be minimized!!
 
-	while (overflow.isZero()/*== false*/) { // while there are overflows
+	while (overflow.isZero()) { // while there are overflows
 
 											// Makes an enthalpy balance of all volumes mixing in every node
 		node_volume_in.assign(n_nodes, 0); // stores the sum of all volumes mixing in every node
@@ -4231,7 +3555,6 @@ void HydroNet_model::HydroNet_Temperature() {
 										branch_ind_order_aux.at(aux1) = branch_ind_order_aux.at(aux1 + 1);
 									}
 									size.branch_ind_order_aux--;
-									//branch_ind_order_aux.erase(branch_ind_order_aux.begin() + count1); // remove the branch
 									branch_ind_order_aux.at(size.branch_ind_order_aux) = (count_branch); // put the branch at the bottom of the list
 									size.branch_ind_order_aux++;
 								}
@@ -4265,7 +3588,7 @@ void HydroNet_model::HydroNet_Temperature() {
 						new_temp.at(count_branch).at(aux) == new_temp.at(count_branch).at(aux + 1);
 					size.new_temp.at(count_branch)--;
 				}
-				//	new_temp.at(count_branch).erase(new_temp.at(count_branch).begin());
+				
 			}
 
 			sum_aux = 0; // sum of volumes at the start of branches without volume
@@ -4295,8 +3618,7 @@ void HydroNet_model::HydroNet_Temperature() {
 				// volume that goes to every branch that is an outlet to the node (proportional to flow)
 				for (int count_branch = 0, branch_aux; count_branch < size.node_outlet_branches.at(node_count); count_branch++) { // loop of branches that are outlets to the node
 					branch_aux = node_outlet_branches.at(node_count).at(count_branch); // branch index
-																					   /*size.new_pos.at(count_branch) = 0;
-																					   size.new_temp.at(count_branch) = 0;*/
+																					 
 					if (volume_share.at(count_branch) > 0) {// processes only branches where volume actually goes in
 						if (volume_share.at(count_branch) <= branch_volume.at(branch_aux)) {
 							// volume in the branch is bigger than incoming volume
@@ -4306,11 +3628,9 @@ void HydroNet_model::HydroNet_Temperature() {
 							for (int aux = 0; aux < size.new_pos.at(branch_aux) && aux < 2 * max_divisions - 1; aux++)
 								new_pos.at(branch_aux).at(size.new_pos.at(branch_aux) - aux) = new_pos.at(branch_aux).at(size.new_pos.at(branch_aux) - aux - 1);
 							new_pos.at(branch_aux).at(0) = volume_share.at(count_branch) / branch_volume.at(branch_aux) * 100;
-							//new_pos.at(branch_aux).insert(new_pos.at(branch_aux).begin(), (volume_share.at(count_branch) / branch_volume.at(branch_aux) * 100));
 							for (int aux = 0; aux < size.new_temp.at(branch_aux) && aux < 2 * max_divisions - 1; aux++)
 								new_temp.at(branch_aux).at(size.new_temp.at(branch_aux) - aux) = new_temp.at(branch_aux).at(size.new_temp.at(branch_aux) - aux - 1);
 							new_temp.at(branch_aux).at(0) = node_temperature.at(node_count);
-							//new_temp.at(branch_aux).insert(new_temp.at(branch_aux).begin(), node_temperature.at(node_count));
 							size.new_pos.at(branch_aux)++;
 							size.new_temp.at(branch_aux)++;
 
@@ -4327,12 +3647,11 @@ void HydroNet_model::HydroNet_Temperature() {
 								if (to_remove.at(aux) == true) {
 									for (int aux1 = aux; aux1 < size.new_pos.at(branch_aux) && aux1 < 2 * max_divisions - 2; aux1++)
 										new_pos.at(branch_aux).at(aux1) = new_pos.at(branch_aux).at(aux1 + 1);
-									//new_pos.at(branch_aux).erase(new_pos.at(branch_aux).begin()+aux);
 									size.new_pos.at(branch_aux)--;
 								}
 
 							// Does not remove temperature that is after the last position to remove
-							for (int count1 = 0; count1 < size.to_remove; count1++) /*: -1 : 1*/ {
+							for (int count1 = 0; count1 < size.to_remove; count1++)  {
 								if (to_remove.at(count1) == true) {
 									to_remove.at(count1) = false;
 									break;
@@ -4348,7 +3667,6 @@ void HydroNet_model::HydroNet_Temperature() {
 										new_temp.at(branch_aux).at(aux1) = new_temp.at(branch_aux).at(aux1 + 1);
 									}
 									size.new_temp.at(branch_aux)--;
-									//new_temp.at(branch_aux).erase(new_temp.at(branch_aux).begin() + aux);
 								}
 
 							// Adds position 0 at the beginning
@@ -4397,7 +3715,6 @@ void HydroNet_model::HydroNet_Temperature() {
 				aux_vec.at(size.aux_vec) = (new_pos_aux.at(3 + aux) - new_pos_aux.at(aux));
 			size.aux_vec++;
 			pos_aux = MinComponent(aux_vec);
-			//pos_aux = 0;
 
 			// Obtains temperature by means of an enthalpy balance
 			temp_aux = (new_temp.at(count_branch).at(pos_aux) * density(fluid_type, new_temp.at(count_branch).at(pos_aux)) * (new_pos.at(count_branch).at(pos_aux + 1) - new_pos.at(count_branch).at(pos_aux)) + new_temp.at(count_branch).at(pos_aux + 1) * density(fluid_type, new_temp.at(count_branch).at(pos_aux + 1)) * (new_pos.at(count_branch).at(pos_aux + 2) - new_pos.at(count_branch).at(pos_aux + 1))) / (density(fluid_type, new_temp.at(count_branch).at(pos_aux)) * (new_pos_aux.at(pos_aux + 1) - new_pos_aux.at(pos_aux)) + density(fluid_type, new_temp.at(count_branch).at(pos_aux + 1)) * (new_pos_aux.at(pos_aux + 2) - new_pos_aux.at(pos_aux + 1)));
@@ -4410,8 +3727,6 @@ void HydroNet_model::HydroNet_Temperature() {
 				new_temp.at(count_branch).at(aux1) = new_temp.at(count_branch).at(aux1 + 1);
 			}
 			size.new_temp.at(count_branch)--;
-			//new_pos.at(count_branch).erase(new_pos.at(count_branch).begin() + (pos_aux + 1)); 
-			//new_temp.at(count_branch).erase(new_temp.at(count_branch).begin() + (pos_aux + 1)); 
 			new_temp.at(count_branch).at(pos_aux) = temp_aux; // enter temperature from balance
 
 			extra_div = extra_div - 1; // next division to merge
@@ -4429,7 +3744,7 @@ void HydroNet_model::HydroNet_Temperature() {
 	// heat exchanger or pump and obtains its temperature.
 	// Backwards direction from the outlet of the heat exchanger or pump.
 
-	// Heat exchangers of type Tout
+	/*// Heat exchangers of type Tout
 	for (int count_htx = 0, obj_aux, branch_aux; count_htx < heat_exch_Tout.size(); count_htx++) {
 
 		obj_aux = heat_exch_Tout.at(count_htx).heat_exch_Tout; // index of the heat exchanger in objects table
@@ -4551,14 +3866,14 @@ void HydroNet_model::HydroNet_Temperature() {
 									// Stores resulting inlet temperature
 			heat_exch_Tout.at(count_htx).T_in = sum_temp_mass / sum_mass;
 		}
-	}
+	}*/
 
 
-	// Heat exhangers of type fixed heat
-	for (int count_htx = 0, branch_aux, obj_aux; count_htx < heat_exch_fix.size(); count_htx++) {
+	// Heat exhangers
+	for (int count_htx = 0, branch_aux, obj_aux; count_htx < heat_exch.size(); count_htx++) {
 
 
-		obj_aux = heat_exch_fix.at(count_htx).heat_exch_fix; // index of the heat exchanger in objects table
+		obj_aux = heat_exch.at(count_htx).heat_exch; // index of the heat exchanger in objects table
 		for (int count = 0; count < branches.size(); count++)
 			for (int count1 = 0; count1 < branches.at(count).objects.size(); count1++)
 				if (obj_aux == branches.at(count).objects.at(count1).ID) {
@@ -4576,7 +3891,7 @@ void HydroNet_model::HydroNet_Temperature() {
 
 			// Reads and stores the temperature in the middle of the heat exchanger
 			obj_pos = (start_pos + end_pos) / 2;
-			heat_exch_fix.at(count_htx).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);//branch_temp_pos_aux, branch_temp_aux);
+			heat_exch.at(count_htx).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);//branch_temp_pos_aux, branch_temp_aux);
 		}
 
 		else if ((flows.at(branch_aux) * dt) <= (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux))) {
@@ -4590,7 +3905,7 @@ void HydroNet_model::HydroNet_Temperature() {
 
 			// Reads and stores the temperature in the middle of the affected volume
 			obj_pos = (start_pos + end_pos) / 2;
-			heat_exch_fix.at(count_htx).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);// branch_temp_pos_aux, branch_temp_aux);
+			heat_exch.at(count_htx).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);// branch_temp_pos_aux, branch_temp_aux);
 		}
 
 		else {// there is movement in the branch and the affected volume reaches the previous branches
@@ -4605,7 +3920,7 @@ void HydroNet_model::HydroNet_Temperature() {
 			// Reads and stores the temperature in the middle of the affected volume
 			obj_pos = (start_pos + end_pos) / 2;
 			temp_aux = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature); //branch_temp_pos_aux, branch_temp_aux);
-			heat_exch_fix.at(count_htx).T_in = temp_aux;
+			heat_exch.at(count_htx).T_in = temp_aux;
 
 			// Initializes enthalpy balance
 			sum_mass = density(fluid_type, temp_aux) * (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux));
@@ -4676,7 +3991,7 @@ void HydroNet_model::HydroNet_Temperature() {
 				overflow(count) = 0;// leaves everything as found
 
 									// Stores resulting inlet temperature
-			heat_exch_fix.at(count_htx).T_in = sum_temp_mass / sum_mass;
+			heat_exch.at(count_htx).T_in = sum_temp_mass / sum_mass;
 
 		}
 	}
@@ -4701,9 +4016,7 @@ void HydroNet_model::HydroNet_Temperature() {
 			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
 			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
 
-			// Reads and stores the temperature in the middle of the heat exchanger
-			obj_pos = (start_pos + end_pos) / 2;
-			pump_volum.at(count_pmp).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);//branch_temp_pos_aux, branch_temp_aux);
+			
 		}
 
 		else if ((flows.at(branch_aux) * dt) <= (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux))) {
@@ -4714,10 +4027,6 @@ void HydroNet_model::HydroNet_Temperature() {
 			end_pos = obj_outlet_pos.at(obj_aux).at(0);
 			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
 			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
-
-			// Reads and stores the temperature in the middle of the affected volume
-			obj_pos = (start_pos + end_pos) / 2;
-			pump_volum.at(count_pmp).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);// branch_temp_pos_aux, branch_temp_aux);
 		}
 
 		else {// there is movement in the branch and the affected volume reaches the previous branches
@@ -4728,11 +4037,6 @@ void HydroNet_model::HydroNet_Temperature() {
 			end_pos = obj_outlet_pos.at(obj_aux).at(0);
 			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
 			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
-
-			// Reads and stores the temperature in the middle of the affected volume
-			obj_pos = (start_pos + end_pos) / 2;
-			temp_aux = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature); //branch_temp_pos_aux, branch_temp_aux);
-			pump_volum.at(count_pmp).T_in = temp_aux;
 
 			// Initializes enthalpy balance
 			sum_mass = density(fluid_type, temp_aux) * (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux));
@@ -4802,9 +4106,7 @@ void HydroNet_model::HydroNet_Temperature() {
 			for (int count = 0; count < overflow.size(); count++)
 				overflow(count) = 0;// leaves everything as found
 
-									// Stores resulting inlet temperature
-			pump_volum.at(count_pmp).T_in = sum_temp_mass / sum_mass;
-
+								
 		}
 	}
 
@@ -4829,9 +4131,7 @@ void HydroNet_model::HydroNet_Temperature() {
 			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
 			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
 
-			// Reads and stores the temperature in the middle of the heat exchanger
-			obj_pos = (start_pos + end_pos) / 2;
-			pump_turbo.at(count_pmp).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);//branch_temp_pos_aux, branch_temp_aux);
+			
 		}
 
 		else if ((flows.at(branch_aux) * dt) <= (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux))) {
@@ -4843,10 +4143,7 @@ void HydroNet_model::HydroNet_Temperature() {
 			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
 			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
 
-			// Reads and stores the temperature in the middle of the affected volume
-			obj_pos = (start_pos + end_pos) / 2;
-			pump_turbo.at(count_pmp).T_in = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature);// branch_temp_pos_aux, branch_temp_aux);
-		}
+			}
 
 		else {// there is movement in the branch and the affected volume reaches the previous branches
 
@@ -4857,11 +4154,7 @@ void HydroNet_model::HydroNet_Temperature() {
 			temp_action = 0; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
 			InsertVolum = HydroNet_InsertVolume(new_pos.at(branch_aux), new_temp.at(branch_aux), start_pos, end_pos, temp_action, fluid_type, value, branch_volume.at(branch_aux), max_divisions, size.new_pos.at(branch_aux), size.new_temp.at(branch_aux));
 
-			// Reads and stores the temperature in the middle of the affected volume
-			obj_pos = (start_pos + end_pos) / 2;
-			temp_aux = HydroNet_GetObjTemperature(obj_pos, InsertVolum.position, InsertVolum.temperature); //branch_temp_pos_aux, branch_temp_aux);
-			pump_turbo.at(count_pmp).T_in = temp_aux;
-
+			
 			// Initializes enthalpy balance
 			sum_mass = density(fluid_type, temp_aux) * (obj_outlet_pos.at(obj_aux).at(0) / 100 * branch_volume.at(branch_aux));
 			sum_temp_mass = temp_aux * sum_mass; // sum of temperature times mass
@@ -4931,7 +4224,7 @@ void HydroNet_model::HydroNet_Temperature() {
 				overflow(count) = 0;// leaves everything as found
 
 									// Stores resulting inlet temperature
-			pump_turbo.at(count_pmp).T_in = sum_temp_mass / sum_mass;
+			
 
 		}
 	}

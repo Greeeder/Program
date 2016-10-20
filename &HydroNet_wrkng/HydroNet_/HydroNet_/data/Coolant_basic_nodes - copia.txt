@@ -34,22 +34,26 @@ node			class
 
 #4				identifier
 Block_cyl1		name
-heat_exch_fix	class
+heat_exch	class
 3				inlet_object
 6				outlet_object
 0.0005			volume [m3]
+fix				type
 1000000				heat [W]
+-9999				T_out
 50000			hydr_resist [m.c.f / (m3/s)^2]
 -999			inlet temperarure [K] (initialization)
 
 
 #5				identifier
 Head_cyl1		name
-heat_exch_fix	class
+heat_exch	class
 3				inlet_object
 14				outlet_object
 0.0005			volume [m3]
+fix				type
 1000000				heat [W]
+-9999				T_out
 50000			hydr_resist [m.c.f / (m3/s)^2]
 -999			inlet temperarure [K] (initialization)
 
@@ -75,10 +79,10 @@ Thermostat_rad	name
 thermostat		class
 7				inlet_object
 10				outlet_object
-1				coefficient_order_0	[-]
-0				coefficient_order_1	[K^(-1)]
-0				coefficient_order_2	[K^(-2)]
-0				coefficient_order_3	[K^(-3)]
+100				T_min			[K]
+110				T_max			[K]
+99				Shape_factor		
+1				to_open			
 0				opening (0:closed; 1:wide open) (initialization)
 1000				coefficient_order_0	[-]
 100				coefficient_order_1	[m.c.f.]
@@ -90,10 +94,10 @@ Thermostat_byp	name
 thermostat		class
 7				inlet_object
 15				outlet_object
-0				coefficient_order_0	[-]
-0				coefficient_order_1	[K^(-1)]
-0				coefficient_order_2	[K^(-2)]
-0				coefficient_order_3	[K^(-3)]
+100				T_min			[K]
+110				T_max			[K]
+99				Shape_factor		
+0				to_open			
 0				opening (0:closed; 1:wide open) (initialization)
 1000				coefficient_order_0	[-]
 100				coefficient_order_1	[m.c.f.]
@@ -102,11 +106,13 @@ thermostat		class
 
 #10				identifier
 Radiator		name
-heat_exch_fix	class
+heat_exch	class
 8				inlet_object
 11				outlet_object
 0.0005			volume [m3]
+fix				type
 -300000			heat [W]
+-9999				T_out
 500000			hydr_resist	[m.c.f / (m3/s)^2]
 -999			inlet temperarure [K] (initialization)
 
@@ -139,11 +145,13 @@ pipe			class
 
 #14	
 Head_cyl2		name
-heat_exch_fix	class
+heat_exch			class
 5				inlet_object
 6				outlet_object
 0.0005			volume [m3]
+fix				type
 1000000				heat [W]
+-9999				T_out
 50000			hydr_resist [m.c.f / (m3/s)^2]
 -999			inlet temperarure [K] (initialization)
 

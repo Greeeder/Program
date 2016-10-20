@@ -75,10 +75,10 @@ Thermostat_rad	name
 thermostat		class
 7				inlet_object
 10				outlet_object
-1				coefficient_order_0	[-]
-0				coefficient_order_1	[K^(-1)]
-0				coefficient_order_2	[K^(-2)]
-0				coefficient_order_3	[K^(-3)]
+85				T_min			[K]
+105				T_max			[K]
+99				Shape_factor		
+1				to_open			
 0				opening (0:closed; 1:wide open) (initialization)
 1000				coefficient_order_0	[-]
 100				coefficient_order_1	[m.c.f.]
@@ -90,10 +90,10 @@ Thermostat_byp	name
 thermostat		class
 7				inlet_object
 15				outlet_object
-1				coefficient_order_0	[-]
-0				coefficient_order_1	[K^(-1)]
-0				coefficient_order_2	[K^(-2)]
-0				coefficient_order_3	[K^(-3)]
+85				T_min			[K]
+105				T_max			[K]
+99				Shape_factor		
+0				to_open			
 0				opening (0:closed; 1:wide open) (initialization)
 1000				coefficient_order_0	[-]
 100				coefficient_order_1	[m.c.f.]

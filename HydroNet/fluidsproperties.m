@@ -1,6 +1,23 @@
 function [ rho,mu,lamda,cp]= fluidsproperties(fluid, temperature, weight_fraction )
 %fluidsproperties returns the properties of the fluids at a temperature
-%   Calculate a fluids properties aproximation given a temperature and a concentration	
+%   Calculate a fluids properties aproximation given a temperature and a
+%   concentration	of :
+%               Air
+% 				Water
+% 				Steam
+% 				Oil
+% 				EthyleneGlycol
+% 				DiethyleneGlycol
+% 				TriethyleneGlycol
+% 				PropyleneGlycol
+% 				DipropyleneGlycol
+% 				EthyleneGycol_Coolant
+% 				DiethyleneGlycol_Coolant
+% 				TriethyleneGlycol_Coolant
+% 				PropyleneGlycol_Coolant
+% 				DipropyleneGlycol_Coolant
+%   Be careful when tiping, if the name is not a matxh to any of the above
+%   it won't work.
 
 
 switch fluid

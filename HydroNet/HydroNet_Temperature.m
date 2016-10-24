@@ -473,7 +473,7 @@ for count_htx = 1 : size(heat_exch_Tout, 1)
         heat_exch_Tout.inlet_temp(count_htx) = temp_aux;
         
         % Initializes enthalpy balance
-        [density,~]=fluidsproprerty(fluid_type, temp_aux,weight_fraction);
+        [density,~]=fluidsproperties(fluid_type, temp_aux,weight_fraction);
 
         sum_mass = density * (obj_outlet_pos{obj_aux} / 100 * branch_volume(branch_aux));
         sum_temp_mass = temp_aux * sum_mass; % sum of temperature times mass
@@ -506,9 +506,9 @@ for count_htx = 1 : size(heat_exch_Tout, 1)
                         temp_aux = HydroNet_GetObjTemperature(obj_pos, branch_temp_pos_aux, branch_temp_aux);
                         
                         % Enters temperature and mass in the enthalpy balance
-                        
-                        sum_mass = sum_mass + density(fluid_type, temp_aux) * volume_share(count_branch1);
-                        sum_temp_mass = sum_temp_mass + temp_aux * density(fluid_type, temp_aux) * volume_share(count_branch1);
+                        [density,~]=fluidsproperties(fluid_type, temp_aux,weight_fraction);
+                        sum_mass = sum_mass + density * volume_share(count_branch1);
+                        sum_temp_mass = sum_temp_mass + temp_aux * density * volume_share(count_branch1);
 
                     else % volume in the branch is smaller than outcoming volume
 
@@ -524,7 +524,7 @@ for count_htx = 1 : size(heat_exch_Tout, 1)
                         temp_aux = HydroNet_GetObjTemperature(obj_pos, branch_temp_pos_aux, branch_temp_aux);
                         
                         % Enters temperature and mass in the enthalpy balance
-                        [density,~]=fluidsproprerty(fluid_type, temp_aux,weight_fraction);
+                        [density,~]=fluidsproperties(fluid_type, temp_aux,weight_fraction);
                         sum_mass = sum_mass + density * volume_share(count_branch1);
                         sum_temp_mass = sum_temp_mass + temp_aux * density * volume_share(count_branch1);
 

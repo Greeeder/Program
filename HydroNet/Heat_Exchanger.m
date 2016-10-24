@@ -5,8 +5,8 @@ function [ T_out_1, T_out_2, heat ] = Heat_Exchanger( fluid_1, mass_flow_1, T_in
 % Outputs: outlet temperatures of 1 and 2 and heat from 1 to 2
 % Calculates efficiency from the UA value of the heat exchanger and from
 %   the flows' characteristics
-[density_1,viscosity_1,conductance_1,Cp_1]=fluidproperties(fluid_1,T_in_1,weight_fraction_1);
-[density_2,viscosity_2,conductance_2,Cp_2]=fluidproperties(fluid_2,T_in_2,weight_fraction_2);
+[~,Cp_1]=fluidproperties(fluid_1,T_in_1,weight_fraction_1);
+[~,Cp_2]=fluidproperties(fluid_2,T_in_2,weight_fraction_2);
 
 mCp_1 = mass_flow_1 * Cp_1;
 mCp_2 = mass_flow_2 * Cp_2;

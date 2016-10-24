@@ -1,4 +1,4 @@
-water			circuit fluid
+Water			circuit fluid
 
 #1				identifier
 Main_Pump		name
@@ -75,8 +75,8 @@ Thermostat_rad	name
 thermostat		class
 7				inlet_object
 10				outlet_object
-85				T_min			[K]
-105				T_max			[K]
+358.15				T_min			[K]
+378.15				T_max			[K]
 99				Shape_factor		
 1				to_open			
 0				opening (0:closed; 1:wide open) (initialization)
@@ -90,11 +90,11 @@ Thermostat_byp	name
 thermostat		class
 7				inlet_object
 15				outlet_object
-85				T_min			[K]
-105				T_max			[K]
+358.15				T_min			[K]
+378.15				T_max			[K]
 99				Shape_factor		
 0				to_open			
-0				opening (0:closed; 1:wide open) (initialization)
+1				opening (0:closed; 1:wide open) (initialization)
 1000				coefficient_order_0	[-]
 100				coefficient_order_1	[m.c.f.]
 0				coefficient_order_2	[m.c.f.]
@@ -106,7 +106,7 @@ heat_exch_fix	class
 8				inlet_object
 11				outlet_object
 0.0005			volume [m3]
--300000			heat [W]
+-3000000			heat [W]
 500000			hydr_resist	[m.c.f / (m3/s)^2]
 -999			inlet temperarure [K] (initialization)
 

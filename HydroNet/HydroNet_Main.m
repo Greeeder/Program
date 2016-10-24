@@ -32,7 +32,7 @@ branch_temp_pos = {[0,10,100]; [0, 100]; [0, 100]; [0,20,100]; [0,30,100]; [0, 1
 %branch_temp_pos = {[0,10,100]};
 % Cell to store temperatures of every volume section in the branch
 % branch_temperature = cell(n_branch, 1);
-branch_temperature = {[80,80]; 80; 80; [80,80]; [80,80]; 80; [80,80]};
+branch_temperature = {[300,300]; 300; 300; [300,300]; [300,300]; 300; [300,300]};
 %branch_temperature = {20};
 %branch_temperature = {20;20;20;20;20;20;20};
 %branch_temperature = {[20,20]};
@@ -47,7 +47,7 @@ flows = zeros(n_branch, 1);
 %% EXECUTIONS
 % Some variables must be recalculated only if other change
 
-n_exec = 100;
+n_exec = 200;
 
 dt_vec = ones(n_exec, 1) * 0.1;
 
@@ -121,7 +121,7 @@ for count_exec = 1 : n_exec
         k = - log(y_end) / (Tmin - x0);
         obj_pos = (obj_inlet_pos{obj_aux} + obj_outlet_pos{obj_aux}) / 2;
         thermostat_temp = HydroNet_GetObjTemperature(obj_pos, branch_temp_pos{branch_aux}, branch_temperature{branch_aux});
-        if thermostat.to_open(:)
+        if thermostat.to_open(count_thst)
             thermostat_opening_new(count_thst) = 1./(1 + exp(-k(count_thst) * (thermostat_temp - x0(count_thst))));
          
         else
@@ -138,6 +138,8 @@ for count_exec = 1 : n_exec
     thermostat.opening(:) = thermostat_opening_new;
     
     
+    weight_fraction=0;
+    
     % MAIN EXECUTION FUNCTION CALL
     [ flows, branches_ind, branches_id, branch_temp_pos, branch_temperature, branch_htx_fix, branch_htx_Tout, ...
         heat_exch_Tout, heat_exch_fix, obj_inlet_pos, obj_outlet_pos,pump_volum, head_loss, hydr_resist1, hydr_resist2 ] = HydroNet_Executions ( fluid_type, objects, ...
@@ -145,7 +147,7 @@ for count_exec = 1 : n_exec
         nodes_ind, nodes_id, n_nodes, branches_ind, branches_id, branch_cycle, mesh_branches, node_branches, ...
         n_mesh, n_branch, n_tanks, branch_volume, obj_inlet_pos, obj_outlet_pos, branch_htx_Tout, branch_htx_fix, ...
         branch_temp_pos, branch_temperature, gravity_acc, dt, flag_pump_speed_change, flag_valve_change, ...
-        flag_thermostat_changes, flag_first_exec, head_loss, hydr_resist1, hydr_resist2, flows ); 
+        flag_thermostat_changes, flag_first_exec, head_loss, hydr_resist1, hydr_resist2, flows,weight_fraction ); 
     
      [temperature_after_pump,temperature_after_engine,temperature_after_radiator,time] ...
 =register( branch_temp_pos, branch_temperature,dt,time,flag_first_exec,temperature_after_pump,...

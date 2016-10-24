@@ -1,5 +1,5 @@
 function [ positions, temperatures ] = HydroNet_InsertVolume( positions, temperatures, ...
-    start_pos, end_pos, temp_action, fluid_type, value, volume )
+    start_pos, end_pos, temp_action, fluid_type, value, volume,weight_fraction )
 % Obtains range of positions where a volume is to be placed inside a branch and replaces
 % current volumes by the new volume. In addition, a temperature for the volume is calculated.
 % Fluid_type is only mandatory for temp_action = 0 and 1 (must calculate outlet temperature).
@@ -68,12 +68,14 @@ else % 0 or 1: calculates mean temperature with an enthalpy balance
         mass_start = 0;
         temp_mass_start = 0;
     elseif start_pos_ind == end_pos_ind % both are inside the same volume initially
-        mass_start = density(fluid_type, temperatures(start_pos_ind - 1)) * (end_pos - start_pos);
+        [density,~]=fluidsproperties(fluid_type, temperatures(start_pos_ind - 1),weight_fraction);
+        mass_start = density * (end_pos - start_pos);
             % Not a real mass. Volume is not included because it appears both
             % in the numerator and the denominator multiplying all terms. 
         temp_mass_start = temperatures(start_pos_ind - 1) * mass_start;
     else
-        mass_start = density(fluid_type, temperatures(start_pos_ind - 1)) * (positions(start_pos_ind) - start_pos);
+        [density,~]=fluidsproperties(fluid_type, temperatures(start_pos_ind - 1),weight_fraction);
+        mass_start = density * (positions(start_pos_ind) - start_pos);
             % Not a real mass. Volume is not included because it appears both
             % in the numerator and the denominator multiplying all terms. 
         temp_mass_start = temperatures(start_pos_ind - 1) * mass_start;
@@ -86,7 +88,8 @@ else % 0 or 1: calculates mean temperature with an enthalpy balance
          mass_end = 0;
          temp_mass_end = 0;
     else
-        mass_end = density(fluid_type, temperatures(end_pos_ind - 1)) * (end_pos - positions(end_pos_ind - 1));
+        [density,~]=fluidsproperties(fluid_type, temperatures(end_pos_ind - 1),weight_fraction);
+        mass_end = density * (end_pos - positions(end_pos_ind - 1));
         temp_mass_end = temperatures(end_pos_ind - 1) * mass_end;
     end
     
@@ -103,8 +106,9 @@ else % 0 or 1: calculates mean temperature with an enthalpy balance
     end
 
     for count_pos = start_pos_ind : last_element
-        mass_sum = mass_sum + density(fluid_type, temperatures(count_pos)) * (positions(count_pos + 1) - positions(count_pos));
-        temp_mass_sum = temp_mass_sum + temperatures(count_pos) * density(fluid_type, temperatures(count_pos)) * ...
+        [density,~]=fluidsproperties(fluid_type, temperatures(count_pos),weight_fraction);
+        mass_sum = mass_sum + density * (positions(count_pos + 1) - positions(count_pos));
+        temp_mass_sum = temp_mass_sum + temperatures(count_pos) * density * ...
             (positions(count_pos + 1) - positions(count_pos));
     end
     
@@ -115,7 +119,9 @@ else % 0 or 1: calculates mean temperature with an enthalpy balance
     if temp_action == 1 % calculate temperature imposing exchanged heat
         
         mass_sum = mass_sum * volume; % volume needed to calculate real mass
-        temp_to_insert = temp_to_insert + value / mass_sum / cp(fluid_type, temp_to_insert);    
+        [~,~,~,Cp]=fluidsproperties(fluid_type,temp_to_insert ,weight_fraction);
+        
+        temp_to_insert = temp_to_insert + value / mass_sum / Cp;    
     end
 end
 

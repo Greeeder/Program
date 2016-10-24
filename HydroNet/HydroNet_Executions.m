@@ -5,7 +5,7 @@ function ...
 	nodes_ind, nodes_id, n_nodes, branches_ind, branches_id, branch_cycle, mesh_branches, node_branches, ...
 	n_mesh, n_branch, n_tanks, branch_volume, obj_inlet_pos, obj_outlet_pos, branch_htx_Tout, branch_htx_fix, ...
 	branch_temp_pos, branch_temperature, gravity_acc, dt, flag_pump_speed_change, flag_valve_change, ...
-	flag_thermostat_changes, flag_first_exec, head_loss, hydr_resist1, hydr_resist2, flows )
+	flag_thermostat_changes, flag_first_exec, head_loss, hydr_resist1, hydr_resist2, flows,weight_fraction )
     % Main execution of the HydroNet model
 
 
@@ -105,8 +105,11 @@ if flag_first_exec || flag_pump_speed_change || flag_valve_change || flag_thermo
         pos_aux = obj_inlet_pos{object_aux} + obj_outlet_pos{object_aux} / 2;
         temperature_aux = HydroNet_GetObjTemperature(pos_aux, branch_temp_pos{branch_aux}, branch_temperature{branch_aux});
             % temperature at the pump's middle
+        
+        [density,~]=fluidsproperties(fluid_type,temperature_aux,weight_fraction);
+       
 
-        pump_volum.pump_power(count) = density(fluid_type, temperature_aux) * gravity_acc * head_vol_pump(branch_aux) * ...
+        pump_volum.pump_power(count) = density * gravity_acc * head_vol_pump(branch_aux) * ...
             flows(branch_aux) / efficiency(head_vol_pump(branch_aux), flows(branch_aux));
     end
 
@@ -125,8 +128,11 @@ if flag_first_exec || flag_pump_speed_change || flag_valve_change || flag_thermo
             pump_turbo.pump_speed + pump_turbo.Q_coef_N2(count) * pump_turbo.pump_speed^2) + ...
             flows(branch_aux)^2 * (pump_turbo.Q2_coef_N0(count) + pump_turbo.Q2_coef_N1(count) * ...
             pump_turbo.pump_speed + pump_turbo.Q2_coef_N2(count) * pump_turbo.pump_speed^2);
+        
+        [density,~]=fluidsproprerty(fluid_type,temperature_aux,weight_fraction);
 
-        pump_turbo.pump_power(count) = density(fluid_type, temperature_aux) * gravity_acc * head_aux * ...
+
+        pump_turbo.pump_power(count) = density * gravity_acc * head_aux * ...
             flows(branch_aux) / efficiency(head_vol_pump(branch_aux), flows(branch_aux));
     end
 end
@@ -137,7 +143,7 @@ end
 
 [ branch_temp_pos, branch_temperature ] = HydroNet_Temperature(fluid_type, objects, obj_inlet_pos, ...
     obj_outlet_pos, heat_exch_Tout, heat_exch_fix, nodes_ind, branches_ind, node_branches, n_nodes, n_branch, branch_volume, ...
-    branch_temp_pos, branch_temperature, branch_htx_Tout, branch_htx_fix, flows, dt);
+    branch_temp_pos, branch_temperature, branch_htx_Tout, branch_htx_fix, flows, dt,weight_fraction);
 
 
 end

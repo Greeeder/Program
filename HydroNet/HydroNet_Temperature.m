@@ -1,7 +1,7 @@
 
 function [ new_pos, new_temp ] = HydroNet_Temperature( fluid_type, objects, obj_inlet_pos, obj_outlet_pos, ...
     heat_exch_Tout, heat_exch_fix, nodes_ind, branches_ind, node_branches, n_nodes, n_branch, branch_volume, ...
-    branch_temp_pos, branch_temperature, branch_htx_Tout, branch_htx_fix, flows, dt )
+    branch_temp_pos, branch_temperature, branch_htx_Tout, branch_htx_fix, flows, dt ,weight_fraction)
 % Finds positions where temperature changes and temperatures in those ranges.
 % Moves positions and temperatures according to flows and, simultaneously,
 % enters heat from heat exchangers. Returns refreshed ranges and temperatures
@@ -55,7 +55,7 @@ for count_branch = transpose(find(branch_volume > 0))
             value = heat_exch_Tout.T_out(count_obj_htx); % final temperature
             
             [new_pos{count_branch}, new_temp{count_branch}] = HydroNet_InsertVolume...
-                (new_pos{count_branch}, new_temp{count_branch}, start_pos, end_pos, temp_action, fluid_type, value);
+                (new_pos{count_branch}, new_temp{count_branch}, start_pos, end_pos, temp_action, fluid_type, value,NaN, weight_fraction);
         end
         % Heat exchanger of type fixed heat
         for count_obj_htx = branch_htx_fix{count_branch}
@@ -69,7 +69,7 @@ for count_branch = transpose(find(branch_volume > 0))
             value = heat_exch_fix.heat(count_obj_htx)*dt; % heat to add
             
             [new_pos{count_branch}, new_temp{count_branch}] = HydroNet_InsertVolume(new_pos{count_branch}, ...
-                new_temp{count_branch}, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch));
+                new_temp{count_branch}, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch), weight_fraction);
         end
 
         
@@ -144,7 +144,7 @@ for count_branch = transpose(find(branch_volume > 0))
                 start_pos = 100;
                  
                 [overflow_temp_volpos_aux, overflow_temperature_aux] = HydroNet_InsertVolume...
-                    (overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value);
+                    (overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value,NaN, weight_fraction);
                 
                 % For the volume inside the branch
                 start_pos = obj_outlet_pos{ind_aux}; % object's outlet position is the start position
@@ -152,7 +152,7 @@ for count_branch = transpose(find(branch_volume > 0))
             end
             
             [new_pos{count_branch}, new_temp{count_branch}] = HydroNet_InsertVolume...
-                (new_pos{count_branch}, new_temp{count_branch}, start_pos, end_pos, temp_action, fluid_type, value);
+                (new_pos{count_branch}, new_temp{count_branch}, start_pos, end_pos, temp_action, fluid_type, value,NaN,NaN, weight_fraction);
         end
         
          % Heat exchanger of type fixed heat
@@ -175,7 +175,7 @@ for count_branch = transpose(find(branch_volume > 0))
                 start_pos = 100;
                 
                 [overflow_temp_volpos_aux, overflow_temperature_aux] = HydroNet_InsertVolume(overflow_temp_volpos_aux, ...
-                    overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch));
+                    overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch),weight_fraction);
                 
                 % For the volume inside the branch
                 start_pos = obj_outlet_pos{ind_aux}; % object's outlet position is the start position
@@ -185,7 +185,7 @@ for count_branch = transpose(find(branch_volume > 0))
             end
             
             [new_pos{count_branch}, new_temp{count_branch}] = HydroNet_InsertVolume(new_pos{count_branch}, ...
-                new_temp{count_branch}, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch));
+                new_temp{count_branch}, start_pos, end_pos, temp_action, fluid_type, value, branch_volume(count_branch),weight_fraction);
         end
         
         
@@ -198,7 +198,7 @@ for count_branch = transpose(find(branch_volume > 0))
         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
         
         [~, overflow_temperature(count_branch)] = HydroNet_InsertVolume...
-            (overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type);
+            (overflow_temp_volpos_aux, overflow_temperature_aux, start_pos, end_pos, temp_action, fluid_type,NaN,NaN,weight_fraction);
     end
 end
 
@@ -251,8 +251,10 @@ while any(overflow ~= 0) % while there are overflows
         % branch_count = 1 : n_branch would be valid too (overflow = 0 does not add volume or mass)
         end_node_ind = find(nodes_ind == branches_ind{count_branch}(end)); % index of the node at the end of the branch
         node_volume_in(end_node_ind) = node_volume_in(end_node_ind)  + overflow(count_branch);
+        [density,~]=fluidsproperties(fluid_type,overflow_temperature(count_branch),weight_fraction);
+
         node_mass(end_node_ind) = node_mass(end_node_ind) + ...
-            density(fluid_type, overflow_temperature(count_branch)) * overflow(count_branch);
+            density * overflow(count_branch);
     end
     
     % Temperature in nodes, provisional
@@ -260,8 +262,10 @@ while any(overflow ~= 0) % while there are overflows
     for count_node = transpose(find(node_mass > 0)) % to avoid dividing by zero
         for count_branch = node_inlet_branches{count_node}
             end_node_ind = find(nodes_ind == branches_ind{count_branch}(end)); % index of the node at the end of the branch
+            [density,~]=fluidsproperties(fluid_type, overflow_temperature(count_branch),weight_fraction);
+
             node_temperature(end_node_ind) = node_temperature(end_node_ind) + ...
-                overflow_temperature(count_branch) * density(fluid_type, overflow_temperature(count_branch)) * ...
+                overflow_temperature(count_branch) * density * ...
                 overflow(count_branch) / node_mass(end_node_ind);
                 % T branch to node * branch mass to node / total mass to node
         end
@@ -392,11 +396,15 @@ for count_branch = 1 : n_branch
         % Finds smaller combination of adjacent volumes
         [~, pos_aux] = min(new_pos_aux(3:end) - new_pos_aux(1:end-2));
         
+        
         % Obtains temperature by means of an enthalpy balance
-        temp_aux = (new_temp{count_branch}(pos_aux) * density(fluid_type, new_temp{count_branch}(pos_aux)) * (new_pos_aux(pos_aux + 1) - new_pos_aux(pos_aux)) + ...
-            new_temp{count_branch}(pos_aux + 1) * density(fluid_type, new_temp{count_branch}(pos_aux + 1)) * (new_pos_aux(pos_aux + 2) - new_pos_aux(pos_aux + 1))) / ...
-            (density(fluid_type, new_temp{count_branch}(pos_aux)) * (new_pos_aux(pos_aux + 1) - new_pos_aux(pos_aux)) + ...
-            density(fluid_type, new_temp{count_branch}(pos_aux + 1)) * (new_pos_aux(pos_aux + 2) - new_pos_aux(pos_aux + 1))); 
+        [density1,~]=fluidsproperties(fluid_type,new_temp{count_branch}(pos_aux + 1),weight_fraction);
+        [density2,~]=fluidsproperties(fluid_type,new_temp{count_branch}(pos_aux) ,weight_fraction);
+        
+        temp_aux = (new_temp{count_branch}(pos_aux) * density2 * (new_pos_aux(pos_aux + 1) - new_pos_aux(pos_aux)) + ...
+            new_temp{count_branch}(pos_aux + 1) * density1 * (new_pos_aux(pos_aux + 2) - new_pos_aux(pos_aux + 1))) / ...
+            (density2 * (new_pos_aux(pos_aux + 1) - new_pos_aux(pos_aux)) + ...
+            density1 * (new_pos_aux(pos_aux + 2) - new_pos_aux(pos_aux + 1))); 
         
         % Merges volumes
         new_pos{count_branch}(pos_aux + 1) = []; % remove position in the middle
@@ -429,7 +437,7 @@ for count_htx = 1 : size(heat_exch_Tout, 1)
         end_pos = obj_outlet_pos{obj_aux};
         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
         [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(new_pos{branch_aux}, new_temp{branch_aux}, ...
-            start_pos, end_pos, temp_action, fluid_type);
+            start_pos, end_pos, temp_action, fluid_type,NaN,NaN, weight_fraction);
         
         % Reads and stores the temperature in the middle of the heat exchanger
         obj_pos = (start_pos + end_pos) / 2;
@@ -443,7 +451,7 @@ for count_htx = 1 : size(heat_exch_Tout, 1)
         end_pos = obj_outlet_pos{obj_aux};
         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
         [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(new_pos{branch_aux}, new_temp{branch_aux}, ...
-            start_pos, end_pos, temp_action, fluid_type);        
+            start_pos, end_pos, temp_action, fluid_type,NaN,NaN, weight_fraction);        
         
         % Reads and stores the temperature in the middle of the affected volume
         obj_pos = (start_pos + end_pos) / 2;
@@ -457,7 +465,7 @@ for count_htx = 1 : size(heat_exch_Tout, 1)
         end_pos = obj_outlet_pos{obj_aux};
         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
         [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(new_pos{branch_aux}, new_temp{branch_aux}, ...
-            start_pos, end_pos, temp_action, fluid_type);        
+            start_pos, end_pos, temp_action, fluid_type,NaN,NaN, weight_fraction);        
         
         % Reads and stores the temperature in the middle of the affected volume
         obj_pos = (start_pos + end_pos) / 2;
@@ -465,7 +473,9 @@ for count_htx = 1 : size(heat_exch_Tout, 1)
         heat_exch_Tout.inlet_temp(count_htx) = temp_aux;
         
         % Initializes enthalpy balance
-        sum_mass = density(fluid_type, temp_aux) * (obj_outlet_pos{obj_aux} / 100 * branch_volume(branch_aux));
+        [density,~]=fluidsproprerty(fluid_type, temp_aux,weight_fraction);
+
+        sum_mass = density * (obj_outlet_pos{obj_aux} / 100 * branch_volume(branch_aux));
         sum_temp_mass = temp_aux * sum_mass; % sum of temperature times mass
         
         % Stores volume that will come from previous branches
@@ -489,13 +499,14 @@ for count_htx = 1 : size(heat_exch_Tout, 1)
                         end_pos = 100;
                         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
                         [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(new_pos{branch_aux1}, new_temp{branch_aux1}, ...
-                            start_pos, end_pos, temp_action, fluid_type);  
+                            start_pos, end_pos, temp_action, fluid_type,NaN,NaN, weight_fraction);  
                         
                         % Reads the temperature in the middle of the affected volume
                         obj_pos = (start_pos + end_pos) / 2;
                         temp_aux = HydroNet_GetObjTemperature(obj_pos, branch_temp_pos_aux, branch_temp_aux);
                         
                         % Enters temperature and mass in the enthalpy balance
+                        
                         sum_mass = sum_mass + density(fluid_type, temp_aux) * volume_share(count_branch1);
                         sum_temp_mass = sum_temp_mass + temp_aux * density(fluid_type, temp_aux) * volume_share(count_branch1);
 
@@ -506,15 +517,16 @@ for count_htx = 1 : size(heat_exch_Tout, 1)
                         end_pos = 100;
                         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
                         [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(new_pos{branch_aux1}, new_temp{branch_aux1}, ...
-                            start_pos, end_pos, temp_action, fluid_type);  
+                            start_pos, end_pos, temp_action, fluid_type,NaN,NaN, weight_fraction);  
                         
                         % Reads the temperature in the middle of the branch
                         obj_pos = (start_pos + end_pos) / 2;
                         temp_aux = HydroNet_GetObjTemperature(obj_pos, branch_temp_pos_aux, branch_temp_aux);
                         
                         % Enters temperature and mass in the enthalpy balance
-                        sum_mass = sum_mass + density(fluid_type, temp_aux) * volume_share(count_branch1);
-                        sum_temp_mass = sum_temp_mass + temp_aux * density(fluid_type, temp_aux) * volume_share(count_branch1);
+                        [density,~]=fluidsproprerty(fluid_type, temp_aux,weight_fraction);
+                        sum_mass = sum_mass + density * volume_share(count_branch1);
+                        sum_temp_mass = sum_temp_mass + temp_aux * density * volume_share(count_branch1);
 
                         % Stores the excess volume
                         overflow(branch_aux1) = volume_share(count_branch1) - branch_volume(branch_aux1);
@@ -543,7 +555,7 @@ for count_htx = 1 : size(heat_exch_fix, 1)
         end_pos = obj_outlet_pos{obj_aux};
         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
         [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(new_pos{branch_aux}, new_temp{branch_aux}, ...
-            start_pos, end_pos, temp_action, fluid_type);
+            start_pos, end_pos, temp_action, fluid_type,NaN,NaN,weight_fraction);
         
         % Reads and stores the temperature in the middle of the heat exchanger
         obj_pos = (start_pos + end_pos) / 2;
@@ -557,7 +569,7 @@ for count_htx = 1 : size(heat_exch_fix, 1)
         end_pos = obj_outlet_pos{obj_aux};
         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
         [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(new_pos{branch_aux}, new_temp{branch_aux}, ...
-            start_pos, end_pos, temp_action, fluid_type);        
+            start_pos, end_pos, temp_action, fluid_type,NaN,NaN, weight_fraction);        
         
         % Reads and stores the temperature in the middle of the affected volume
         obj_pos = (start_pos + end_pos) / 2;
@@ -571,7 +583,7 @@ for count_htx = 1 : size(heat_exch_fix, 1)
         end_pos = obj_outlet_pos{obj_aux};
         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
         [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(new_pos{branch_aux}, new_temp{branch_aux}, ...
-            start_pos, end_pos, temp_action, fluid_type);        
+            start_pos, end_pos, temp_action, fluid_type,NaN,NaN, weight_fraction);        
         
         % Reads and stores the temperature in the middle of the affected volume
         obj_pos = (start_pos + end_pos) / 2;
@@ -579,7 +591,8 @@ for count_htx = 1 : size(heat_exch_fix, 1)
         heat_exch_fix.inlet_temp(count_htx) = temp_aux;
         
         % Initializes enthalpy balance
-        sum_mass = density(fluid_type, temp_aux) * (obj_outlet_pos{obj_aux} / 100 * branch_volume(branch_aux));
+        [density,~]=fluidsproperties(fluid_type, temp_aux,weight_fraction);
+        sum_mass = density * (obj_outlet_pos{obj_aux} / 100 * branch_volume(branch_aux));
         sum_temp_mass = temp_aux * sum_mass; % sum of temperature times mass
         
         % Stores volume that will come from previous branches
@@ -603,15 +616,16 @@ for count_htx = 1 : size(heat_exch_fix, 1)
                         end_pos = 100;
                         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
                         [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(new_pos{branch_aux1}, new_temp{branch_aux1}, ...
-                            start_pos, end_pos, temp_action, fluid_type);  
+                            start_pos, end_pos, temp_action, fluid_type,NaN,NaN, weight_fraction);  
                         
                         % Reads the temperature in the middle of the affected volume
                         obj_pos = (start_pos + end_pos) / 2;
                         temp_aux = HydroNet_GetObjTemperature(obj_pos, branch_temp_pos_aux, branch_temp_aux);
                         
                         % Enters temperature and mass in the enthalpy balance
-                        sum_mass = sum_mass + density(fluid_type, temp_aux) * volume_share(count_branch1);
-                        sum_temp_mass = sum_temp_mass + temp_aux * density(fluid_type, temp_aux) * volume_share(count_branch1);
+                        [density,~]=fluidsproperties(fluid_type, temp_aux,weight_fraction);
+                        sum_mass = sum_mass + density * volume_share(count_branch1);
+                        sum_temp_mass = sum_temp_mass + temp_aux * density * volume_share(count_branch1);
 
                     else % volume in the branch is smaller than outcoming volume
 
@@ -620,15 +634,16 @@ for count_htx = 1 : size(heat_exch_fix, 1)
                         end_pos = 100;
                         temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
                         [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(new_pos{branch_aux1}, new_temp{branch_aux1}, ...
-                            start_pos, end_pos, temp_action, fluid_type);  
+                            start_pos, end_pos, temp_action, fluid_type,NaN,NaN, weight_fraction);  
                         
                         % Reads the temperature in the middle of the branch
                         obj_pos = (start_pos + end_pos) / 2;
                         temp_aux = HydroNet_GetObjTemperature(obj_pos, branch_temp_pos_aux, branch_temp_aux);
                         
                         % Enters temperature and mass in the enthalpy balance
-                        sum_mass = sum_mass + density(fluid_type, temp_aux) * volume_share(count_branch1);
-                        sum_temp_mass = sum_temp_mass + temp_aux * density(fluid_type, temp_aux) * volume_share(count_branch1);
+                        [density,~]=fluidsproperties(fluid_type, temp_aux,weight_fraction);
+                        sum_mass = sum_mass + density * volume_share(count_branch1);
+                        sum_temp_mass = sum_temp_mass + temp_aux * density * volume_share(count_branch1);
 
                         % Stores the excess volume
                         overflow(branch_aux1) = volume_share(count_branch1) - branch_volume(branch_aux1);

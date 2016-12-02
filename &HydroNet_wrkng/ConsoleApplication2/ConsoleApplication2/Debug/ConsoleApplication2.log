@@ -1,0 +1,9 @@
+﻿  ConsoleApplication2.cpp
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\consoleapplication2\consoleapplication2\consoleapplication2.cpp(18): warning C4018: '<': signed/unsigned mismatch
+  c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\consoleapplication2\consoleapplication2\consoleapplication2.cpp(102): note: see reference to function template instantiation 'std::vector<int,std::allocator<_Ty>> find_equal<int>(std::vector<_Ty,std::allocator<_Ty>>,std::vector<_Ty,std::allocator<_Ty>>)' being compiled
+          with
+          [
+              _Ty=int
+          ]
+  ConsoleApplication2.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet_wrkng\ConsoleApplication2\Debug\ConsoleApplication2.exe
+  ConsoleApplication2.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet_wrkng\ConsoleApplication2\Debug\ConsoleApplication2.pdb (Full PDB)

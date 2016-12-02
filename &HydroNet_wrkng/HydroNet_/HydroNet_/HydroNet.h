@@ -1,5 +1,7 @@
+#ifndef HydroNet_h
+#define HydroNet_h
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <vector>
 #include <cmath>
 #include <algorithm>
@@ -28,6 +30,9 @@ public:
 	*\date 13/10/2016
 	*
 	*/
+
+	HydroNet_model();
+	~HydroNet_model();
 	void HydroNet_Main();
 
 
@@ -47,7 +52,8 @@ private:
 	
 	struct strPipe
 	{
-		int pipe_id;										//!< Identifier
+		int ID;										//!< Identifier
+		int obj_index;										//!< Index
 		std::string name;									//!< Pipe's name
 		int inlet_object;									//!< Pipe's inlet object identifier
 		int outlet_object;									//!< Pipe's outlet object identifier
@@ -59,7 +65,8 @@ private:
 
 	struct strValve_fix
 	{
-		int valve_fix_id;									//!< Identifier
+		int ID;									//!< Identifier
+		int obj_index;										//!< Index
 		std::string name;									//!< Valve's name	
 		int inlet_object;									//!< Valve's inlet object identifier
 		int outlet_object;									//!< Valve's outlet object identifier
@@ -68,7 +75,8 @@ private:
 
 	struct strValve_var
 	{
-		int valve_var_id;									//!< Identifier
+		int ID;									//!< Identifier
+		int obj_index;										//!< Index
 		std::string name;									//!< Valve's name	
 		int inlet_object;									//!< Valve's inlet object identifier
 		int outlet_object;									//!< Valve's outlet object identifier
@@ -81,12 +89,13 @@ private:
 
 	struct strThermostat
 	{
-		int themostat_id;									//!< Identifier
+		int ID;									//!< Identifier
+		int obj_index;										//!< Index
 		std::string name;									//!< Thermostat's name	
 		int inlet_object;									//!< Thermostat's inlet object identifier
 		int outlet_object;									//!< Thermostat's outlet object identifier
-		double T_min;										//!< Start temperaturure for the thermostat change [K]
-		double T_max;										//!< Finish temperaturure for the thermostat change [K]
+		double T_closed;										//!< Start temperaturure for the thermostat change [K]
+		double T_open;										//!< Finish temperaturure for the thermostat change [K]
 		double Shape_factor;								//!< Slope shape factor
 		bool to_open;										//!< 0 to closed; 1 to open'
 		double coef_h_0;									//!< Coefficent order 0 [m.c.f.]
@@ -94,11 +103,14 @@ private:
 		double coef_h_2;									//!< Coefficent order 2 [m.c.f. / (m ^ 3 / s) ^ 2]
 		double coef_h_3;									//!< Coefficent order 3 [m.c.f. / (m ^ 3 / s) ^ 3]
 		double opening;										//!< Opening [degree]
+		double Ref_temp;									//!< Temperature of reference to control the thermostat
+		int Sensor;											//!< Object in wich the temperature is taken
 	};
 
 	struct strPump_turbo
 	{
-		int Pump_turbo;										//!< Identifier
+		int ID;										//!< Identifier
+		int obj_index;										//!< Index
 		std::string name;									//!< Pump's name	
 		int inlet_object;									//!< Pups's inlet object identifier
 		int outlet_object;									//!< Pump's outlet object identifier
@@ -120,7 +132,8 @@ private:
 
 	struct strPump_volum
 	{
-		int Pump_volum;										//!< Identifier
+		int ID;										//!< Identifier
+		int obj_index;										//!< Index
 		std::string name;									//!< Pump's name	
 		int inlet_object;									//!< Pups's inlet object identifier
 		int outlet_object;									//!< Pump's outlet object identifier
@@ -137,7 +150,8 @@ private:
 
 	struct strHeat_exch
 	{
-		int heat_exch;									//!< Identifier
+		int ID;									//!< Identifier
+		int obj_index;										//!< Index
 		std::string name;									//!< Heat Exchanger name
 		int inlet_object;									//!< Heat Exchanger's inlet object identifier
 		int outlet_object;									//!< Heat Exchanger's outlet object identifier
@@ -150,7 +164,8 @@ private:
 
 	//struct strHeat_exch_Tout
 	//{
-	//	int heat_exch_Tout;									//!< Identifier
+	//	int ID;									//!< Identifier
+	//  int obj_index;										//!< Index
 	//	std::string name;									//!< Heat Exchanger name
 	//	int inlet_object;									//!< Heat Exchanger's inlet object identifier
 	//	int outlet_object;									//!< Heat Exchanger's outlet object identifier
@@ -161,7 +176,8 @@ private:
 
 	struct strTank
 	{
-		int tank;												//!< Identifier
+		int ID;												//!< Identifier
+		int obj_index;										//!< Index
 		std::string name;										//!< Tank's name
 		int inlet_object;										//!< Tank's inlet object identifier
 		int outlet_object;										//!< Tank's outlet object identifier
@@ -238,6 +254,9 @@ private:
 	std::vector<std::vector<int>>branch_htx;			//!< Vector with the heat exchangers type fix index in each branch
 	std::vector<std::vector<int>>branch_pump_volum;			//!< Vector with the volumetric pumps index in each branch
 	std::vector<std::vector<int>>branch_pump_turbo;			//!< Vector with the turbo pumps index in each branch
+	std::vector<std::vector<int>>branch_valve_var;			//!< Vector with the valve_var index in each branch
+	std::vector<std::vector<int>>branch_valve_fix;			//!< Vector with the valve_fix index in each branch
+	std::vector<std::vector<int>>branch_pipe;			//!< Vector with the pipe index in each branch
 	std::vector<double> branch_volume;						//!< Volume of each branch
 	std::vector<double> hydr_resist1;						//!< Branches 1st order hydraulic resistance
 	std::vector<double> hydr_resist2;						//!< Branches 2nd order hydraulic resistance
@@ -266,6 +285,7 @@ private:
 	std::vector<double> bound_flows;						//!< Bound flows [L / s]
 	std::vector<int> tanks_ind;								//!< Tanks index
 	std::vector<double> head_vol_pump;						//!< Volumetric pump head preassure [m.c.f.]
+	double weight_fraction;									//!< weight fraction
 
 
 
@@ -335,7 +355,23 @@ private:
 	*
 	*/
 
-	double HydroNet_GetObjTemperature(double obj_pos, std::vector<double> branch_temp_pos, std::vector<double> branch_temperature);
+	double HydroNet_GetPosTemperature(double obj_pos, std::vector<double> branch_temp_pos, std::vector<double> branch_temperature);
+
+	/*!
+	*\brief Returns the temperature at an object.
+	*
+	*\author J. Salvador and J. Monfort
+	*\date 13/10/2016
+	*
+	*\pram obj_index			PObject's index.
+	*\pram branch_temp_pos		Vector contanining the position in wich the temperature changes in the branch.
+	*\pram branch_temperature	Vector contanining the diferent temperatures in the branch [K].
+	*\pram obj_intlet_pos		Vector whith the objects inlet position
+	*\pram obj_outlet_pos		Vector whith the objects outlet position
+	*
+	*/
+
+	double HydroNet_GetObjTemperature(double obj_index, std::vector<double> branch_temp_pos, std::vector<double> branch_temperature);
 
 	/*!
 	*\brief Inserts a new volume whth it's temperature
@@ -381,3 +417,5 @@ private:
 
 
 };
+
+#endif

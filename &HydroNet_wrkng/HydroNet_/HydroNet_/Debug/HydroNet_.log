@@ -83,105 +83,101 @@ c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\h
 c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2463): warning C4018: '<': signed/unsigned mismatch
 c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2464): warning C4018: '<': signed/unsigned mismatch
 c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2471): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2505): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2523): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2573): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2574): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2588): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2606): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2608): warning C4804: '~': unsafe use of type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2608): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2620): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2629): warning C4804: '~': unsafe use of type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2629): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2690): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2703): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2722): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2734): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2739): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2788): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2801): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2812): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2824): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2838): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2863): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2865): warning C4804: '~': unsafe use of type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2865): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2869): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2902): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2911): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2912): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2961): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3003): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3008): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3017): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3025): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3028): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3053): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3070): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3073): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3079): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2513): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2531): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2536): warning C4804: '~': unsafe use of type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2539): warning C4804: '~': unsafe use of type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2583): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2584): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2598): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2616): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2618): warning C4804: '~': unsafe use of type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2618): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2630): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2639): warning C4804: '~': unsafe use of type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2639): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2700): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2717): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2737): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2749): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2754): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2803): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2818): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2822): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2837): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2849): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2863): error C2440: '=': cannot convert from 'std::_Vector_iterator<std::_Vector_val<std::_Simple_types<int>>>' to 'int'
+  c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2863): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2875): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2900): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2902): warning C4804: '~': unsafe use of type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2902): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2906): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2939): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2948): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2949): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(2998): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3040): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3045): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3054): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3062): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3065): warning C4018: '<': signed/unsigned mismatch
 c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3090): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3093): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3099): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3107): warning C4018: '<': signed/unsigned mismatch
 c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3110): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3113): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3134): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3159): warning C4018: '<=': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3178): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3237): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3239): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3261): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3264): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3286): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3289): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3308): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3310): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3331): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3334): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3354): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3356): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3377): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3380): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3423): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3435): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3447): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3453): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3480): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3492): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3497): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3116): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3127): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3130): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3136): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3147): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3150): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3171): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3196): warning C4018: '<=': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3215): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3274): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3276): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3298): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3301): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3323): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3326): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3345): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3347): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3368): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3371): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3391): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3393): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3414): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3417): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3460): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3472): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3484): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3490): warning C4018: '<': signed/unsigned mismatch
 c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3517): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3522): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3536): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3542): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3546): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3569): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3572): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3588): warning C4553: '==': operator has no effect; did you intend '='?
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3595): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3599): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3611): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3697): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3714): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3717): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3873): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3877): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3878): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3937): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4000): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4004): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4005): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4053): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4115): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4119): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4120): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4170): warning C4018: '<': signed/unsigned mismatch
-c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(76): warning C4018: '<': signed/unsigned mismatch
-  c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(1611): note: see reference to function template instantiation 'T flip<std::vector<int,std::allocator<_Ty>>>(T)' being compiled
-          with
-          [
-              T=std::vector<int,std::allocator<int>>,
-              _Ty=int
-          ]
-  HydroNet_.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet_wrkng\HydroNet_\Debug\HydroNet_.exe
-  HydroNet_.vcxproj -> C:\Users\Jaime\Documents\& PFC-CMT\Program\&HydroNet_wrkng\HydroNet_\Debug\HydroNet_.pdb (Full PDB)
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3529): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3534): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3554): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3559): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3573): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3579): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3583): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3606): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3609): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3625): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3632): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3636): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3648): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3734): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3751): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3754): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3910): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3914): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3915): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(3974): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4037): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4041): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4042): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4090): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4152): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4156): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4157): warning C4018: '<': signed/unsigned mismatch
+c:\users\jaime\documents\& pfc-cmt\program\&hydronet_wrkng\hydronet_\hydronet_\hydronet_.cpp(4207): warning C4018: '<': signed/unsigned mismatch

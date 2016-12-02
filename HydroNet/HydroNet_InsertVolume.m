@@ -16,7 +16,7 @@ flag_start_exists = false;
 if isempty(ind_aux) % position does not exist in the vector yet
     count_pos = 1; % position counter
     while positions(count_pos) <= start_pos
-        a=start_pos-positions(count_pos);
+        %a=start_pos-positions(count_pos);
             % position is lower or equal and counter is inside the vector
         count_pos = count_pos + 1;
         if count_pos > numel(positions) % counter is outside the vector

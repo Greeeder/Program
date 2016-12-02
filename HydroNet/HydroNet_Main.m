@@ -16,9 +16,9 @@ flag_save=0;
 %circuit_file = 'Cyl&pump&rad-valves.txt';
 %circuit_file = 'test.txt';
 %circuit_file='cyl-2cyl-3cyl-rad-2rad-pump.txt';
-circuit_file='TestEngine.txt';
+%circuit_file='TestEngine.txt';
 %circuit_file='no_nodes _cyl_pump.txt';
-
+circuit_file='Engine_Renault.txt';
 [ fluid_type, objects, pipe, valve_fix, valve_var, thermostat, pump_volum, pump_turbo, ...
     heat_exch, tank, nodes_ind, nodes_id, n_nodes, branches_ind, branches_id, branch_cycle, mesh_branches, ...
     node_branches, n_mesh, n_branch, n_tanks, branch_volume, obj_inlet_pos, obj_outlet_pos, branch_htx, ...
@@ -75,8 +75,8 @@ thermostat_opening_old=thermostat.opening(:);
 
 % Some variables must be recalculated only if other change
 
-n_exec = 16000;
-dt = 0.1;
+n_exec = 1600;
+dt = 0.05;
 dt_vec = ones(n_exec, 1) * dt;
 
 
@@ -634,14 +634,14 @@ L2.FontSize = 14;
 L2.Location ='best';
 line_1_2.LineStyle='--';
 line_2_2.LineStyle='--';
-axis(y_axis_1(1) , [0 1000 0 0.0015]);
-axis(y_axis_1(2) , [0 1000 0 4]);
-axis(y_axis_2(1) , [0 1000 0 150]);
-axis(y_axis_2(2) , [0 1000 0 35]);
-set(y_axis_1(1),'ytick',linspace(0,0.0015,4));
-set(y_axis_1(2),'ytick',linspace(0,4,5));
-set(y_axis_2(1),'ytick',[0,50,100,150]);
-set(y_axis_2(2),'ytick',linspace(0,35,8));
+% axis(y_axis_1(1) , [0 1000 0 0.0015]);
+% axis(y_axis_1(2) , [0 1000 0 4]);
+% axis(y_axis_2(1) , [0 1000 0 150]);
+% axis(y_axis_2(2) , [0 1000 0 35]);
+% set(y_axis_1(1),'ytick',linspace(0,0.0015,4));
+% set(y_axis_1(2),'ytick',linspace(0,4,5));
+% set(y_axis_2(1),'ytick',[0,50,100,150]);
+% set(y_axis_2(2),'ytick',linspace(0,35,8));
 if flag_save
     title_txt_1.FontSize = 26;
     title_txt_2.FontSize = 26;

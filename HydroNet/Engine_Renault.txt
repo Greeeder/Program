@@ -1,0 +1,235 @@
+
+Water			circuit fluid
+
+#1				identifier
+Pump			name
+pump_turbo			class
+15				inlet_object
+2				outlet_object
+0.001				volume [m3]
+0				pump speed [rad/d]
+1000000				max_head [meter column fluid]
+40				coef_N0	[m.c.f]
+0				coef_N1	[m.c.f/(rad/s)]
+0				coef_N2	[m.c.f/((rad/s)^2)]
+0				Q_coef_N0	[m.c.f(m^3/s)]
+0				Q_coef_N1	[m.c.f/(m^3/s*rad/s)]
+0				Q_coef_N2	[m.c.f/((m^3/s*(rad/s)^2)]
+-700000 			Q2_coef_N0	[m.c.f/((m^3/s)^2)]
+0				Q2_coef_N1	[m.c.f/((m^3/s)^2*rad/s)]
+0				Q2_coef_N2	[m.c.f/(((m^3/s)^2*(rad/s)^2)]
+
+#2				identifier
+Pump_out			name
+pipe			class
+1				inlet_object
+3				outlet_object
+0.2				length [meter]
+0.03			diameter [meter]
+0.02			friction_coef []
+
+#3				identifier
+Pump_EGR_Eng_node	name
+node			class
+3				number_connections
+2				connection_1
+4				connection_2
+23				connection_3
+
+#4				identifier
+Eng_in			name
+pipe			class
+3				inlet_object
+5				outlet_object
+0.2				length [meter]
+0.025			diameter [meter]
+0.02			friction_coef []
+
+#5				identifier
+Engine				name
+heat_exch			class
+4				inlet_object
+6				outlet_object
+0.0035			volume [m3]
+0			0: Heat, 1: Outlet temperature
+50000				heat [W]
+-999			outlet temperature [K]
+500000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+#6				identifier
+Eng_out			name
+pipe			class
+5				inlet_object
+7				outlet_object
+0.1				length [meter]
+0.025			diameter [meter]
+0.02			friction_coef []
+
+#7				identifier
+Eng_Rad_Valv_node	name
+node			class
+3				number_connections
+6				connection_1
+8				connection_2
+14				connection_3
+
+#8				identifier
+valve	name
+valve_var		class
+7				inlet_object
+9				outlet_object
+0				opening
+0				coefficient_order_0	[m.c.f.]
+0				coefficient_order_1	[m.c.f. / degree]
+0				coefficient_order_2	[m.c.f. * degree^(-2)]
+0				coefficient_order_3	[m.c.f. * degree^(-3)]
+
+#9				identifier
+Valve_pipe			name
+pipe			class
+8				inlet_object
+10				outlet_object
+0.1				length [meter]
+0.02			diameter [meter]
+0.02			friction_coef []
+
+#10				identifier
+Valv_Rad_By_Oil_Pump_node	name
+node			class
+5				number_connections
+9				connection_1
+11				connection_2
+15				connection_3
+16				connection_4
+17				connection_5
+
+#11				identifier
+Thermostat			name
+thermostat			class
+10				inlet_object
+12				outlet_object
+370				T_closed		[K]
+380				T_open			[K]
+99				Shape_factor		
+0				opening (0:closed; 1:wide open) (initialization)
+0				coefficient_order_0	[-]
+0				coefficient_order_1	[m.c.f.]
+0				coefficient_order_2	[m.c.f.]
+1000				coefficient_order_3	[m.c.f.]
+
+#12				identifier
+Rad_in			name
+pipe			class
+11				inlet_object
+13				outlet_object
+0.5				length [meter]
+0.03			diameter [meter]
+0.02			friction_coef []
+
+#13				identifier
+Radiator		name
+heat_exch			class
+12				inlet_object
+14				outlet_object
+0.001			volume [m3]
+0			0: Heat, 1: Outlet temperature
+-1100000				heat [W]
+-999			outlet temperature [K]
+60000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+#14				identifier
+Rad_out			name
+pipe			class
+13				inlet_object
+7				outlet_object
+0.5				length [meter]
+0.03			diameter [meter]
+0.02			friction_coef []
+
+#15				identifier
+Pump_in		name
+pipe			class
+10				inlet_object
+1				outlet_object
+0.5				length [meter]
+0.035			diameter [meter]
+0.02			friction_coef []
+
+#16				identifier
+ByPass		name
+pipe			class
+10				inlet_object
+20				outlet_object
+0.6				length [meter]
+0.01			diameter [meter]
+0.02			friction_coef []
+
+#17				identifier
+Oil/Water_in			name
+pipe			class
+10				inlet_object
+18				outlet_object
+0.5				length [meter]
+0.01			diameter [meter]
+0.02			friction_coef []
+
+#18				identifier
+Heater			name
+Oil/Water_exch			class
+17				inlet_object
+19				outlet_object
+0.0005			volume [m3]
+0			0: Heat, 1: Outlet temperature
+15000				heat [W]
+-999			outlet temperature [K]
+25000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+#19				identifier
+Oil/Water_out		name
+pipe			class
+18				inlet_object
+20				outlet_object
+0.5				length [meter]
+0.01			diameter [meter]
+0.02			friction_coef []
+
+#20				identifier
+Oli_By_EGR_node		name
+node				class
+3				number_connections
+16				connection_1
+19				connection_2
+21				connection_3
+
+#21				identifier
+EGR_in			name
+pipe			class
+20				inlet_object
+22				outlet_object
+0.3				length [meter]
+0.01			diameter [meter]
+0.02			friction_coef []
+
+#22				identifier
+EGR			name
+heat_exch			class
+21				inlet_object
+23				outlet_object
+0.0005			volume [m3]
+0			0: Heat, 1: Outlet temperature
+10000				heat [W]
+-999			outlet temperature [K]
+50000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+#23				identifier
+EGR_Out			name
+pipe			class
+22				inlet_object
+3				outlet_object
+0.1				length [meter]
+0.01			diameter [meter]
+0.02			friction_coef []

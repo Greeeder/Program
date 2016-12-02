@@ -16,7 +16,7 @@ pump_volum		class
 0				pump power [W] (initialization)
 
 #2				identifier
-Engine_Inlet	name
+Engine_Inlet		name
 pipe			class
 1				inlet_object
 3				outlet_object
@@ -25,7 +25,7 @@ pipe			class
 0.02			friction_coef []
 
 #3				identifier
-Splitter_Engine	name
+Splitter_Engine		name
 node			class
 3				number_connections
 2				connection_1
@@ -34,28 +34,28 @@ node			class
 
 #4				identifier
 Block_cyl1		name
-heat_exch_fix	class
+heat_exch_fix		class
 3				inlet_object
 6				outlet_object
 0.0005			volume [m3]
-1000000				heat [W]
+10000				heat [W]
 50000			hydr_resist [m.c.f / (m3/s)^2]
 -999			inlet temperarure [K] (initialization)
 
 
 #5				identifier
 Head_cyl1		name
-heat_exch_fix	class
+heat_exch_fix		class
 3				inlet_object
 14				outlet_object
 0.0005			volume [m3]
-1000000				heat [W]
+10000				heat [W]
 50000			hydr_resist [m.c.f / (m3/s)^2]
 -999			inlet temperarure [K] (initialization)
 
 
 #6				identifier
-Mixer_Engine	name
+Mixer_Engine		name
 node			class
 3				number_connections
 4				connection_1
@@ -63,7 +63,7 @@ node			class
 7				connection_3
 
 #7				identifier
-Splitter_Thermo	name
+Splitter_Thermo			name
 node			class
 3				number_connections
 6				connection_1
@@ -71,49 +71,49 @@ node			class
 9				connection_3
 
 #8				identifier
-Thermostat_rad	name
+Thermostat_rad			name
 thermostat		class
 7				inlet_object
 10				outlet_object
-358.15				T_min			[K]
-378.15				T_max			[K]
+370				T_min			[K]
+380				T_max			[K]
 99				Shape_factor		
 1				to_open			
 0				opening (0:closed; 1:wide open) (initialization)
-1000				coefficient_order_0	[-]
-100				coefficient_order_1	[m.c.f.]
+0				coefficient_order_0	[-]
+0				coefficient_order_1	[m.c.f.]
 0				coefficient_order_2	[m.c.f.]
-0				coefficient_order_3	[m.c.f.]
+1000				coefficient_order_3	[m.c.f.]
 
 #9				identifier
-Thermostat_byp	name
+Thermostat_byp			name
 thermostat		class
 7				inlet_object
 15				outlet_object
-358.15				T_min			[K]
-378.15				T_max			[K]
+370				T_min			[K]
+380				T_max			[K]
 99				Shape_factor		
 0				to_open			
 1				opening (0:closed; 1:wide open) (initialization)
-1000				coefficient_order_0	[-]
-100				coefficient_order_1	[m.c.f.]
+0				coefficient_order_0	[-]
+10				coefficient_order_1	[m.c.f.]
 0				coefficient_order_2	[m.c.f.]
-0				coefficient_order_3	[m.c.f.]
+1000				coefficient_order_3	[m.c.f.]
 
 #10				identifier
 Radiator		name
-heat_exch_fix	class
+heat_exch_fix		class
 8				inlet_object
 11				outlet_object
 0.0005			volume [m3]
--3000000			heat [W]
+-35000			heat [W]
 500000			hydr_resist	[m.c.f / (m3/s)^2]
 -999			inlet temperarure [K] (initialization)
 
 
 #11				identifier
-Radiator_Outlet	name
-pipe			class
+Radiator_Outlet			name
+pipe				class
 10				inlet_object
 12				outlet_object
 1				length [meter]
@@ -121,7 +121,7 @@ pipe			class
 0.02			friction_coef []
 
 #12				identifier
-Mixer_Thermo	name
+Mixer_Thermo		name
 node			class
 3				number_connections
 15				connection_1
@@ -139,11 +139,11 @@ pipe			class
 
 #14
 Head_cyl2		name
-heat_exch_fix	class
+heat_exch_fix		class
 5				inlet_object
 6				outlet_object
 0.0005			volume [m3]
-1000000				heat [W]
+10000				heat [W]
 50000			hydr_resist [m.c.f / (m3/s)^2]
 -999			inlet temperarure [K] (initialization)
 

@@ -16,6 +16,7 @@ flag_start_exists = false;
 if isempty(ind_aux) % position does not exist in the vector yet
     count_pos = 1; % position counter
     while positions(count_pos) <= start_pos
+        a=start_pos-positions(count_pos);
             % position is lower or equal and counter is inside the vector
         count_pos = count_pos + 1;
         if count_pos > numel(positions) % counter is outside the vector
@@ -118,7 +119,7 @@ else % 0 or 1: calculates mean temperature with an enthalpy balance
     
     if temp_action == 1 % calculate temperature imposing exchanged heat
         
-        mass_sum = mass_sum * volume; % volume needed to calculate real mass
+        mass_sum = mass_sum * volume / 100; % volume needed to calculate real mass
         [~,~,~,Cp]=fluidsproperties(fluid_type,temp_to_insert ,weight_fraction);
         
         temp_to_insert = temp_to_insert + value / mass_sum / Cp;    

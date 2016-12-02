@@ -1,6 +1,6 @@
 function [ objects, branches_ind, branches_id, branch_cycle, ...
     mesh_branches, node_branches, n_mesh, branch_count ] = HydroNet_Components...
-    ( objects, n_obj, nodes_ind, pump_volum, pump_turbo, heat_exch_Tout, tank ) 
+    ( objects, n_obj, nodes_ind, pump_volum, pump_turbo, tank ) 
 % Obtains all information about a network and its components - meshes,
 % nodes and branches.
 
@@ -35,7 +35,7 @@ function [ objects, branches_ind, branches_id, branch_cycle, ...
 % circuit_file =  'Coolant_basic_nodes.txt';
 % %circuit_file = 'Test_nodes.txt';
 % [ fluid_type, objects, pipe, valve_fix, valve_var, thermostat, pump_volum, pump_turbo, ...
-%     heat_exch_fix, heat_exch_Tout, tank ] = HydroNet_ReadObj(circuit_file);
+%     heat_exch, tank ] = HydroNet_ReadObj(circuit_file);
 % temperature = 0;
 
 
@@ -438,11 +438,11 @@ end
 
 % Inverts branches that are in the wrong direction
 % Flow direction is determined in some objects (and their branches):
-% pumps and heat exchangers of type 'T out'
+% pumps and tanks
 
 ind_outlet_aux = [pump_volum.obj_index pump_volum.outlet; pump_turbo.obj_index pump_turbo.outlet; ...
-    heat_exch_Tout.obj_index heat_exch_Tout.outlet; tank.obj_index tank.outlet];
-    % column 1: object index of all volumetric pumps, turbopumps, tanks and heat exchangers of type 'T out'
+    tank.obj_index tank.outlet];
+    % column 1: object index of all volumetric pumps, turbopumps and tanks
     % column 2: id ot the outlets of those objects
 
 for count = 1 : size(ind_outlet_aux, 1) % counter of objects that have a direction

@@ -1,0 +1,90 @@
+Water			circuit fluid
+
+#1				identifier
+Main_Pump		name
+pump_volum		class
+6				inlet_object
+2				outlet_object
+0.001			volume [m3]
+0				pump speed [rad/d]
+1000000			max_head [meter column fluid]
+0.001			coefficient_order_0	[m3/s]
+0				coefficient_order_1	[m3 / rad]
+0				coefficient_order_2	[m3 * s / rad^2]
+0				coefficient_order_3	[m3 * s^2 / rad^3]
+0				pump head [m.c.f.] (initialization)
+0				pump power [W] (initialization)
+
+#2				identifier
+Engine_Inlet	name
+pipe			class
+1				inlet_object
+5				outlet_object
+0.5				length [meter]
+0.015			diameter [meter]
+0.02			friction_coef []
+
+#3				identifier
+Block_cyl1		name
+heat_exch_fix	class
+5				inlet_object
+4				outlet_object
+0.0005			volume [m3]
+250000				heat [W]
+50000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+#5				identifier
+Pre_Engine	name
+node			class
+3				number_connections
+2				connection_1
+3				connection_2
+7				connection_3
+
+#4				identifier
+Engine_Outlet	name
+pipe			class
+3				inlet_object
+6				outlet_object
+0.5				length [meter]
+0.015			diameter [meter]
+0.02			friction_coef []
+radiator
+#6				identifier
+Post	name
+node			class
+3				number_connections
+4				connection_1
+8				connection_2
+1				connection_3
+
+#7				identifier
+Radiator			name
+heat_exch_fix			class
+5				inlet_object
+9				outlet_object
+0.0005			volume [m3]
+-150000				heat [W]
+50000			hydr_resist [m.c.f / (m3/s)^2]
+-999			inlet temperarure [K] (initialization)
+
+#8				identifier
+Rad_Outlet				name
+pipe					class
+9				inlet_object
+6				outlet_object
+0.5				length [meter]
+0.015			diameter [meter]
+0.02			friction_coef []
+
+#9				identifier
+valve	name
+valve_var		class
+7				inlet_object
+8				outlet_object
+1				opening
+0				coefficient_order_0	[m.c.f.]
+0				coefficient_order_1	[m.c.f. / degree]
+0				coefficient_order_2	[m.c.f. * degree^(-2)]
+0				coefficient_order_3	[m.c.f. * degree^(-3)]

@@ -1,18 +1,15 @@
-function [ temperature ] = HydroNet_GetObjTemperature( obj_pos, branch_temp_pos, branch_temperature )
-    % Returns temperature at the specified position
+function [ temperature ] = HydroNet_GetObjTemperature( object_index, branch_temp_pos, branch_temperature, obj_inlet_pos, obj_outlet_pos, fluid_type)
+    % Returns temperature in the middle of the specified object
+    % Inserts a volume for the object and obtains its mean temperature
     
-    if obj_pos == branch_temp_pos(1) % first position: first temperature
-		temperature = branch_temperature(1);
-    elseif obj_pos == branch_temp_pos(end) % last position: last temperature
-		temperature = branch_temperature(end);
-    else % find closest position
-        distance = -999;
-        count = 1; 
-        while distance < 0 % the object position is before the current vector position
-            count = count + 1;
-			distance = branch_temp_pos(count) - obj_pos;
-        end
-		temperature = branch_temperature(count - 1);
-    end
+    start_pos = obj_inlet_pos{object_index};
+    end_pos = obj_outlet_pos{object_index};
     
+    temp_action = 0; % 0: average temperature; 1: calculate temperature with heat; 2: impose temperature 
+    
+    [branch_temp_pos_aux, branch_temp_aux] = HydroNet_InsertVolume(branch_temp_pos, branch_temperature, ...
+        start_pos, end_pos, temp_action, fluid_type,NaN,NaN, NaN);
+    
+    temperature = HydroNet_GetPosTemperature((start_pos + end_pos)/2, branch_temp_pos_aux, branch_temp_aux );
+
 end

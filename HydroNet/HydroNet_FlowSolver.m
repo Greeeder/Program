@@ -1,7 +1,7 @@
-function [ flows, head_vol_pump ] = HydroNet_FlowSolver( objects, pump_volum, branches_id, bound_flows, ...
+function [ flows, head_vol_pump ] = HydroNet_FlowSolver( objects, pump_volum, branches_id, flows_prev, bound_flows, ...
     nodes_id, mesh_branches, node_branches, n_mesh, n_branch, head_loss, hydr_resist1, hydr_resist2, n_tanks )
 % Solver for hydraulic networks.
-% Receives information about meshes, branches and nodes in the the network.
+% Receives information about meshes, branches and nodes in the network.
 % Receives known flows imposed as boundary conditions - a vector with the flow
 % values in the corresponding branches and NaN in the rest.
 % Receives head losses in every branch. Data must be divided in three
@@ -39,7 +39,7 @@ function [ flows, head_vol_pump ] = HydroNet_FlowSolver( objects, pump_volum, br
 
 
 % Creates result vectors
-flows = zeros(n_branch, 1); % stores flow values
+flows = NaN(n_branch, 1); % stores flow values
 solved = false(n_branch, 1); % stores solving status
 
 
@@ -65,6 +65,10 @@ for count = 1 : size(pump_volum, 1) % counter of volumetric pumps
             + pump_volum.coef1(count) * pump_volum.pump_speed(count) ...
             + pump_volum.coef2(count) * pump_volum.pump_speed(count)^2 ...
             + pump_volum.coef3(count) * pump_volum.pump_speed(count)^3;
+        if find(branches_id{branch_aux} == pump_volum.id(count)) > find(branches_id{branch_aux} == pump_volum.outlet(count))
+            % branch is in the opposite direction of the pump
+            flows(branch_aux) = - flows(branch_aux);
+        end
         solved(branch_aux) = true; % set as solved
      end
 end
@@ -87,12 +91,15 @@ solv_nodes = false(n_nodes, 1); % vector to mark nodes whose all connected branc
 while_flag = false; % flag to know if it is the first iteration of the while loop
 solv_prev1 = nan(length(solved), 1);  % flows solved in the previous step (main loop)
 
-while not(all(solved == solv_prev1)) % in the previous step, some flow was solved (NODES + MESHES)
+% (NODES + MESHES) LOOP
+while not(all(solved == solv_prev1)) % in the previous step, some flow was solved (mesh sub-loop)
 
+     % NODE SUB-LOOP
+    
     solv_prev1 = solved; % flows solved after the meshes step or at start
     solv_prev2 = nan(length(solved), 1); % flows solved in the previous step (sub-loop)
     
-    while not(all(solved == solv_prev2)) % in the previous step, some flow was solved (NODES)
+    while not(all(solved == solv_prev2)) % in the previous step, some flow was solved
 
         solv_prev2 = solved; % flows solved after the nodes sub loop
         for count = 1 : n_nodes
@@ -118,10 +125,10 @@ while not(all(solved == solv_prev1)) % in the previous step, some flow was solve
                     % branches connected to node
                     % Node can be at the end or at the begining of the branch
                     % Criterium: positive flow --> enters node
-                    if nodes_id(count) == branches_id{count1}(end) % at the end, keep sign
+                    if and(nodes_id(count) == branches_id{count1}(end), not(isnan(flows(count1)))) % at the end, keep sign
                         % flow enters the node
                         flow_sum = flow_sum + flows(count1);
-                    elseif nodes_id(count) == branches_id{count1}(1) % at the beginning, change sign
+                    elseif and(nodes_id(count) == branches_id{count1}(1), not(isnan(flows(count1)))) % at the beginning, change sign
                         % flow leaves the node
                         flow_sum = flow_sum - flows(count1); % change sign
                     end
@@ -155,16 +162,18 @@ while not(all(solved == solv_prev1)) % in the previous step, some flow was solve
     
     %%%%%%%%%%%%%% middle of loop
     
-    solv_prev2 = nan(length(solved), 1);  % flows solved in the previous step (sub-loop)
+    % MESH SUB-LOOP
     
-    while not(solved == solv_prev2) % in the previous step, some flow was solved (MESH)
+    solv_prev2 = nan(length(solved), 1);  % flows solved in the previous step ( node sub-loop)
+    
+    while not(solved == solv_prev2) % in the previous step, some flow was solved (during node sub-loop)
 
         solv_prev2 = solved; % flows solved after the mesh sub-loop
         
         for count = 1 : n_mesh % meshes
             count_uns = 0; % counter of unsolved branches
             for count1 = transpose(mesh_branches{count}) % branches that form the mesh
-                if or(not(solved(count1)), volum_pump(count1))
+                if not(solved(count1))|| volum_pump(count1)||flows(count1)==0
                     % branch unsolved or contains volumetric pump (pump head must be calculated)
                     ind_aux = count1; % save unsolved branch
                     count_uns = count_uns + 1; % counter of unsolved branches
@@ -235,7 +244,7 @@ while not(all(solved == solv_prev1)) % in the previous step, some flow was solve
                     end
                     
                     % Save result
-                    flows(ind_aux) = sol_aux * sign_aux*(-1); % add sign now
+                    flows(ind_aux) = sol_aux * (1+2*sign_aux*(-1)); % add sign now
                     solved(ind_aux) = true; % set as solved
                 end
             end
@@ -255,7 +264,7 @@ while not(all(solved == solv_prev1)) % in the previous step, some flow was solve
     while_flag = true; % first iteration finished
 end
 
-
+% display(solved);
 
 
 %% 3. SYSTEM OF EQUATIONS
@@ -278,7 +287,11 @@ unk_ind_aux = [find(volum_pump); find(not(solved))];
 
 % Auxiliary vector that contains 1 at the indices where the vector
 % 'unknowns' or 'X' refer to branches that have volumetric pumps
-volpump_ind_aux = unk_ind_aux==find(volum_pump);
+if size(pump_volum,1)==0
+    volpump_ind_aux = unk_ind_aux*0;
+else
+    volpump_ind_aux = unk_ind_aux==find(volum_pump);
+end
 % Auxiliary vector that contains 1 at the indices where the vector
 % 'unknowns' or 'X' refer to flows
 flows_ind_aux = not(volpump_ind_aux);
@@ -290,12 +303,12 @@ flows_ind_aux = not(volpump_ind_aux);
 % Number of node equations = number of unsolved nodes - 1
 % Exception: there are tanks in the network.
 
-%Set first unsolved node as solved. Unsolved nodes will be included in the
+%Set last unsolved node as solved. Unsolved nodes will be included in the
 %system of equations.
 if n_tanks == 0
     for count = 1 : n_nodes
-        if not(solv_nodes(count)) % node not solved
-            solv_nodes(count) = true; % set node as solved
+        if not(solv_nodes(n_nodes - count + 1)) % node not solved
+            solv_nodes(n_nodes - count + 1) = true; % set node as solved
             break % done; exit
         end
     end
@@ -350,7 +363,7 @@ idp_mesh = zeros(n_idp_mesh, 1);
 % Vector that marks the branches that are not covered by the current
 % selection of mesh equations. Remaining branches to be added to the system.
 remain_branch = not(solved) + volum_pump;
-
+branch_merit = solved * (- n_idp_mesh); % solved branches get a penalization
 if n_mesh > n_idp_mesh % there are more meshes than necessary -> selection
     for count = 1 : n_idp_mesh % selected mesh loop
         best_mesh = 0; % selected mesh for the system of equations
@@ -368,17 +381,29 @@ if n_mesh > n_idp_mesh % there are more meshes than necessary -> selection
             end
         end
         if best_mesh == 0 % any mesh will work
+            highest_merit = -inf;
             for count1 = 1 : n_mesh % mesh loop
+                count_merit = 1.2 * numel(mesh_branches{count1}); % the merit of having more branches is bonused by 20%
                 if not(any(count1 == idp_mesh)) % looks for a mesh not chosen yet
-                    idp_mesh(count) = count1;
-                    break; % gets just one
+                    for count2 = transpose(mesh_branches{count1}) % branches contained into mesh (vector index)
+                        count_merit = count_merit + branch_merit(count2);
+                    end
+                    if count_merit > highest_merit % the merit of this mesh is higher than the previous ones
+                        highest_merit = count_merit; % refresh highest merit
+                        best_mesh = count1; % refresh best mesh
+                    end
                 end
+            end
+            idp_mesh(count) = best_mesh;
+            for count2 = transpose(mesh_branches{count1}) % branches contained into mesh (vector index)
+                branch_merit(count2) = branch_merit(count2) - 1; % penalize branches in the chosen mesh
             end
         else
             idp_mesh(count) = best_mesh; % save best mesh for the system
             % Remove all branches contained in the selected mesh from the remaining branches
             for count2 = transpose(mesh_branches{best_mesh}) % branches contained into mesh (vector index)
                 remain_branch(count2) = false; % branch does not have to be solved
+                branch_merit(count2) = branch_merit(count2) - 1; % penalize branches in the chosen mesh
             end
         end
     end
@@ -391,8 +416,25 @@ idp_mesh_branches = mesh_branches(idp_mesh);
 
 
 % Initial values for the non-linear solver
-x0 = ones(n_unknown, 1) *.0001; % size equal to number of unknowns
+% if not(isnan(flows_prev))
+    x0 = zeros(n_unknown, 1) ;
+    for count_unkown = 1:n_unknown % same number of unknowns as branches
+        if flows_ind_aux(count_unkown) % flow in the branch must be solved
+            x0(count_unkown) = flows_prev(unk_ind_aux(count_unkown));
+            if x0(count_unkown) == 0
+                x0(count_unkown) = 0.0000001;
+            end
+        else % head of the volumetric pump must be solved
+            pump_branch_pos = find(branches_id{unk_ind_aux(count_unkown)} == pump_volum.id);
+            x0(count_unkown) = pump_volum.pump_head(branches_id{unk_ind_aux(count_unkown)}(pump_branch_pos))/10000;
+                % pump head divided by 10000 so its magnitude order is close to that of the flows
+        end
+    end
+% else
+% x0 = ones(n_unknown, 1) *.0005; % size equal to number of unknowns
+% end
     % flow 1 liter per second
+    
 % x0 = zeros(n_unknown, 1); % size equal to number of unknowns
 % x0(flows_ind_aux) = 0.001; % flow 1 liter per second
 % x0(volpump_ind_aux) = 10; % head  10 m.c.f
@@ -424,11 +466,7 @@ for count = 1 : n_idp_mesh % independent mesh loop
             if and(branches_id{count1}(end) ~= branches_id{next_branch_aux}(1), branches_id{count1}(end) ~= branches_id{next_branch_aux}(end))
                 % last element of the present branch is not in the next branch (at the ends)
                 change_sign = true; % invert sign
-                last_id = branches_id{count1}(1);   % object at the end of the branch according to the mesh direction
-
-%                 const_vec = - const_vec;
-
-                
+                last_id = branches_id{count1}(1);   % object at the end of the branch according to the mesh direction            
             end
         
         else % is not the first branch in the mesh
@@ -442,9 +480,6 @@ for count = 1 : n_idp_mesh % independent mesh loop
             
         end
         
-        
-        
-%         
 %         if or(last_id == 0, branches_id{count1}(1) == last_id)
 %             % it is the first branch in the mesh OR the branch is in the same direction as the mesh flow
 %             last_id = branches_id{count1}(end); % refresh other end of branch
@@ -453,11 +488,11 @@ for count = 1 : n_idp_mesh % independent mesh loop
 %             last_id = branches_id{count1}(end); % refresh other end of branch
 %         end
 
-
         if solved(count1) % the flow in this branch has been solved
             if flows(count1) <= 0 % flow direction is opposite to branch direction
                 change_sign = not(change_sign); % invert sign
             end
+%             x0(count1) = x0(count1) * (-2 * change_sign + 1);
 %             const_mat(last_row + count, (unk_ind_aux==count1)) = const_vec(last_row + count) + (head_loss(count1) + hydr_resist1(count1) ...
 %                 * abs(flows(count1)) + hydr_resist2(count1) * flows(count1)^2) * (-2 * change_sign + 1);
             const_vec(last_row + count) = const_vec(last_row + count) + (head_loss(count1) + hydr_resist1(count1) ...
@@ -472,9 +507,9 @@ for count = 1 : n_idp_mesh % independent mesh loop
         else % flow is unknown
             % assume flow mesh and branch flow have the same direction
           
-            const_mat(last_row + count, (unk_ind_aux==count1)) =  head_loss(count1) *  (-2 * change_sign + 1);
-            coef1_mat(last_row + count, (unk_ind_aux==count1)) =  hydr_resist1(count1) * (-2 * change_sign + 1);
-            coef2_mat(last_row + count, (unk_ind_aux==count1)) =  hydr_resist2(count1) * (-2 * change_sign + 1);
+            const_mat(last_row + count, (unk_ind_aux==count1)) = head_loss(count1) *  (-2 * change_sign + 1);
+            coef1_mat(last_row + count, (unk_ind_aux==count1)) = hydr_resist1(count1) * (-2 * change_sign + 1);
+            coef2_mat(last_row + count, (unk_ind_aux==count1)) = hydr_resist2(count1) * (-2 * change_sign + 1);
         end
     end
 end
@@ -482,19 +517,21 @@ end
 
 
 % Non-linear solver
-f = @(x) coef2_mat*(x.*abs(x)) + coef1_mat*x + const_mat*(x./(x)) + const_vec;
-% oldopts = optimoptions('fsolve');
-% opts = optimoptions(oldopts,'MaxFunEvals',1000000), 'Display','off');
-Y = fsolve(f,x0); %,opts);
+f = @(x) coef2_mat*(x.*abs(x)) + coef1_mat*x + const_mat*(x./abs(x)) + const_vec;
+opts = optimoptions('fsolve','MaxFunEvals',80000,'MaxIter',40000);%, 'Display','off');
+Y = fsolve(f,x0,opts);
 
 
 % Save flows
 flows(not(solved)) = Y(flows_ind_aux);
 
-% Save head in volumetric pumps   
-head_vol_pump(volum_pump) = Y(volpump_ind_aux) * 10000;
-    % previously pump head was divided by 10000 so its magnitude order was
-    % close to that of the flows
+% Save head in volumetric pumps 
+if size(pump_volum,1) > 0 % there are volumetric pumps
+	head_vol_pump(volum_pump) = Y(volpump_ind_aux) * 10000;
+        % previously pump head was divided by 10000 so its magnitude order was
+        % close to that of the flows
+end
+
 
 end
 

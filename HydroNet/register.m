@@ -1,22 +1,19 @@
-function   [temperature_after_pump,temperature_after_engine,temperature_after_radiator,time] ...
-=register( branch_temp_pos, branch_temperature,dt,time,flag_first_exec,temperature_after_pump,...
-temperature_after_engine,temperature_after_radiator)
-if flag_first_exec 
-temperature_after_pump(1) = HydroNet_GetObjTemperature(0, branch_temp_pos{5}, branch_temperature{5}) ;
+function   [temperature_thermostat,temperature_after_engine,temperature_after_radiator] ...
+=register( objects, obj_inlet_pos, obj_outlet_pos,branch_temp_pos, branch_temperature, ...
+temperature_thermostat, temperature_after_engine, temperature_after_radiator, count_exec)
 
-temperature_after_engine(1) = HydroNet_GetObjTemperature( 0, branch_temp_pos{3}, branch_temperature{3} );
 
-temperature_after_radiator(1) = HydroNet_GetObjTemperature( 0, branch_temp_pos{1}, branch_temperature{1} );
+%[pos, branch] = HydroNet_GetPosition(6, objects, obj_inlet_pos, obj_outlet_pos, 'end');
+[pos, branch] = HydroNet_GetPosition(1, objects, obj_inlet_pos, obj_outlet_pos, 'end');
+temperature_thermostat(count_exec) = HydroNet_GetPosTemperature(pos, branch_temp_pos{branch}, branch_temperature{branch}) ;
 
-time(1) = 0;
-else
-temperature_after_pump(end +1) = HydroNet_GetObjTemperature( 0, branch_temp_pos{5}, branch_temperature{5}) ;
+% %[pos, branch] = HydroNet_GetPosition(14, objects, obj_inlet_pos, obj_outlet_pos, 'end');
+% [pos, branch] = HydroNet_GetPosition(4, objects, obj_inlet_pos, obj_outlet_pos, 'startoo');
+% temperature_after_engine(count_exec) = HydroNet_GetObjTemperature( pos, branch_temp_pos{branch}, branch_temperature{branch} );
+% 
+% %[pos, branch] = HydroNet_GetPosition(1, objects, obj_inlet_pos, obj_outlet_pos, 'end');
+% [pos, branch] = HydroNet_GetPosition(8, objects, obj_inlet_pos, obj_outlet_pos, 'startoo');
+% temperature_after_radiator(count_exec) = HydroNet_GetObjTemperature( pos, branch_temp_pos{branch}, branch_temperature{branch} );
 
-temperature_after_engine(end +1) = HydroNet_GetObjTemperature(0, branch_temp_pos{3}, branch_temperature{3} );
-
-temperature_after_radiator(end +1) = HydroNet_GetObjTemperature( 0, branch_temp_pos{1}, branch_temperature{1} );
-
-time(end+1)= time(end)+dt;
-end
 
 end

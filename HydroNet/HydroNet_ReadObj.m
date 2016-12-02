@@ -1,5 +1,5 @@
 function [ fluid_type, objects, pipe, valve_fix, valve_var, thermostat, pump_volum, pump_turbo, ...
-    heat_exch_fix, heat_exch_Tout, tank ] = HydroNet_ReadObj( circuit_file )
+    heat_exch, tank ] = HydroNet_ReadObj( circuit_file )
 % Reads circuit from configuration file and prepares the data in arrays.
 %   Input is the name of the file that contains the information of the
 %   circuit. Outputs are an object's list with id, name, class and joints
@@ -93,9 +93,7 @@ for count = 1 : n_obj
         case 'thermostat'
         case 'pump_volum'
         case 'pump_turbo'
-        case 'heat_exch_fix'
-        case 'heat_exch_UA'
-        case 'heat_exch_Tout'
+        case 'heat_exch'
         case 'tank'
         otherwisewise
             handle = msgbox('Unrecognised class');
@@ -187,12 +185,14 @@ end
 % THERMOSTAT
 aux_pos = strcmp(obj_class, 'thermostat');
 aux_ind = find(aux_pos);
-thermostat = zeros(sum(aux_pos), 10);
+thermostat = zeros(sum(aux_pos), 11);
 for count = 1 : sum(aux_pos)
     thermostat(count, 1) = objects.id(aux_ind(count)); % identifier
+    thermostat(count, 2) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %d %*'); % id of sensor
+    thermostat(count, 3) = -999; % Reference temperature (initialization)
     % Rest of parameters (coefficients) - use a loop because there are many coefficients (8)
     str_aux = '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'; % to read line 5 (if it were a float)
-    for count1 = 2 : size(thermostat, 2) % line breaks to add
+    for count1 = 4 : size(thermostat, 2) % line breaks to add
         str_aux = strjoin({'%*[^\n]', str_aux}); % add one line break for every new coefficient
         thermostat(count, count1) = sscanf(circuit_obj{aux_ind(count)}, str_aux); % stores coefficients
     end
@@ -202,7 +202,7 @@ end
 % PUMP_VOLUM
 aux_pos = strcmp(obj_class, 'pump_volum');
 aux_ind = find(aux_pos);
-pump_volum = zeros(sum(aux_pos), 10);
+pump_volum = zeros(sum(aux_pos), 11);
 for count = 1 : sum(aux_pos)
     pump_volum(count, 1) = objects.id(aux_ind(count)); % identifier
     pump_volum(count, 2) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %d %*'); % outlet object
@@ -213,15 +213,16 @@ for count = 1 : sum(aux_pos)
     pump_volum(count, 6) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % coef. #1 of curve
     pump_volum(count, 7) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % coef. #2 of curve
     pump_volum(count, 8) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % coef. #3 of curve
-    pump_volum(count, 9) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % pump head % initialization of instantaneous variable
-    pump_volum(count, 10) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % pump power % initialization of instantaneous variable
+    pump_volum(count, 9) = -1; % pump head % initialization of instantaneous variable
+    pump_volum(count, 10) = -999; % pump power % initialization of instantaneous variable
+    pump_volum(count, 11) = -999; % inlet temperature % initialization of instantaneous variable
 end
 
 
 % PUMP_TURBO
 aux_pos = strcmp(obj_class, 'pump_turbo');
 aux_ind = find(aux_pos);
-pump_turbo = zeros(sum(aux_pos), 14);
+pump_turbo = zeros(sum(aux_pos), 16);
 for count = 1 : sum(aux_pos)
     pump_turbo(count, 1) = objects.id(aux_ind(count)); % identifier
     pump_turbo(count, 2) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %d %*'); % outlet object
@@ -229,58 +230,34 @@ for count = 1 : sum(aux_pos)
     pump_turbo(count, 3) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % pump speed
     pump_turbo(count, 4) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % max head
     % Rest of parameters (coefficients) - use a loop because there are many coefficients (9)
-    str_aux = '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'; % to read line 7
-    for count1 = 2 : size(pump_turbo, 2) % line breaks to add
+    str_aux = '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'; % to read line 7
+    for count1 = 5 : 13 % line breaks to add
         str_aux = strjoin({'%*[^\n]', str_aux}); % add one line break for every new coefficient
         pump_turbo(count, count1) = sscanf(circuit_obj{aux_ind(count)}, str_aux); % stores coefficients
     end
-    str_aux = strjoin({'%*[^\n]', str_aux}); % add one more line break
-    pump_turbo(count, size(pump_turbo, 2)) = sscanf(circuit_obj{aux_ind(count)}, str_aux); % pump power % initialization of instantaneous variable
+    pump_turbo(count, 14) = -1; % pump head % initialization of instantaneous variable
+    pump_turbo(count, 15) = -999; % pump power % initialization of instantaneous variable
+    pump_turbo(count, 16) = -999; % inlet temperature % initialization of instantaneous variable
 end
 
 
 % HEAT_EXCH_FIX
-aux_pos = strcmp(obj_class, 'heat_exch_fix');
+aux_pos = strcmp(obj_class, 'heat_exch');
 aux_ind = find(aux_pos);
-heat_exch_fix = zeros(sum(aux_pos), 4);
+heat_exch = zeros(sum(aux_pos), 6);
 for count = 1 : sum(aux_pos)
-    heat_exch_fix(count, 1) = objects.id(aux_ind(count)); % identifier
+    heat_exch(count, 1) = objects.id(aux_ind(count)); % identifier
     objects.volume(aux_ind(count)) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % volume
-    heat_exch_fix(count, 2) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % heat
-    heat_exch_fix(count, 3) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % hydr. resistance
-    heat_exch_fix(count, 4) = -999; % inlet temperature % initialization of instantaneous variable
-end
-
-
-% HEAT_EXCH_UA % will be of type heat_exch_Tout
-% aux_pos = strcmp(obj_class, 'heat_exch_UA');
-% aux_ind = find(aux_pos);
-% heat_exch_UA = zeros(sum(aux_pos), 4);
-% for count = 1 : sum(aux_pos)
-%     heat_exch_UA(count, 1) = objects.id(aux_ind(count)); % identifier
-%     objects.volume(aux_ind(count)) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % volume
-%     heat_exch_UA(count, 2) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % UA
-%     heat_exch_UA(count, 3) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % mCp_min
-%     heat_exch_UA(count, 4) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % hydr. resistance
-% end
-
-
-% HEAT_EXCH_Tout
-aux_pos = strcmp(obj_class, 'heat_exch_Tout');
-aux_ind = find(aux_pos);
-heat_exch_Tout = zeros(sum(aux_pos), 5);
-for count = 1 : sum(aux_pos)
-    heat_exch_Tout(count, 1) = objects.id(aux_ind(count)); % identifier
-    heat_exch_Tout(count, 2) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %d %*'); % outlet object
-    objects.volume(aux_ind(count)) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % volume
-    heat_exch_Tout(count, 3) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % hydr. resistance
-    heat_exch_Tout(count, 4) = -999; % outlet temperature % initialization of instantaneous variable
-    heat_exch_Tout(count, 5) = -999; % inlet temperature % initialization of instantaneous variable
+    heat_exch(count, 2) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % flag_Tout
+    heat_exch(count, 3) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % heat
+    heat_exch(count, 4) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % T_out
+    heat_exch(count, 5) = sscanf(circuit_obj{aux_ind(count)}, '%*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %*[^\n] %f %*'); % hydr. resistance
+    heat_exch(count, 6) = -999; % inlet temperature % initialization of instantaneous variable
 end
 
 
 % TANK
-% aux_pos = strcmp(obj_class, 'tank');
+aux_pos = strcmp(obj_class, 'tank');
 aux_ind = find(aux_pos);
 tank = zeros(sum(aux_pos), 3);
 for count = 1 : sum(aux_pos)
@@ -319,17 +296,19 @@ valve_var = array2table(valve_var, 'VariableNames',{'id' 'opening' 'coef0' 'coef
     valve_var.Properties.VariableDescriptions{'coef3'} = 'Head loss: coefficient that multiplies opening^3';
     
     
-thermostat = array2table(thermostat, 'VariableNames',{'id' 'T_min' 'T_max' 'Shape_factor' 'to_open' 'opening' 'h_coef0' 'h_coef1' 'h_coef2' 'h_coef3'});
-    thermostat.Properties.VariableUnits{'T_min'} = 'K';
-    thermostat.Properties.VariableUnits{'T_max'} = 'K';
-    thermostat.Properties.VariableUnits{'Shape_factor'} = ' ';
-    thermostat.Properties.VariableUnits{'to_open'} = '[0 - 1]';
+thermostat = array2table(thermostat, 'VariableNames',{'id' 'Sensor' 'Ref_temp' 'T_closed' 'T_open' ...
+    'Shape_factor' 'opening' 'h_coef0' 'h_coef1' 'h_coef2' 'h_coef3'});
+    thermostat.Properties.VariableUnits{'Ref_temp'} = 'K';
+    thermostat.Properties.VariableUnits{'T_closed'} = 'K';
+    thermostat.Properties.VariableUnits{'T_open'} = 'K';
+    thermostat.Properties.VariableUnits{'Shape_factor'} = '-';
     thermostat.Properties.VariableUnits{'opening'} = '[0 - 1]';
-    thermostat.Properties.VariableDescriptions{'T_min'} = 'Start temperaturure for the thermostat change';
-    thermostat.Properties.VariableDescriptions{'T_max'} = 'Finish temperaturure for the thermostat change';
+    thermostat.Properties.VariableDescriptions{'Sensor'} = 'Object whose mean temperature is monitored. Initial: ID. During execution: object index';
+    thermostat.Properties.VariableDescriptions{'Ref_temp'} = 'Temperature of the reference sensor for the thermostat';
+    thermostat.Properties.VariableDescriptions{'T_closed'} = 'Start temperaturure for the thermostat change';
+    thermostat.Properties.VariableDescriptions{'T_open'} = 'Finish temperaturure for the thermostat change';
     thermostat.Properties.VariableDescriptions{'Shape_factor'} = 'Shape factor, controles the slope';
-    thermostat.Properties.VariableDescriptions{'to_open'} = '0 to closed; 1 to open';
-    thermostat.Properties.VariableDescriptions{'opening'} = '0 closed; 1 wide open';
+    thermostat.Properties.VariableDescriptions{'opening'} = 'Initial opening: 0 closed, 1 wide open';
     thermostat.Properties.VariableUnits{'h_coef0'} = 'm.c.f.';
     thermostat.Properties.VariableUnits{'h_coef1'} = 'm.c.f.';
     thermostat.Properties.VariableUnits{'h_coef2'} = 'm.c.f.';
@@ -341,7 +320,8 @@ thermostat = array2table(thermostat, 'VariableNames',{'id' 'T_min' 'T_max' 'Shap
     
     
 
-pump_volum = array2table(pump_volum, 'VariableNames',{'id' 'outlet' 'pump_speed' 'head_max' 'coef0' 'coef1' 'coef2' 'coef3' ' pump_head' 'pump_power'});
+pump_volum = array2table(pump_volum, 'VariableNames',{'id' 'outlet' 'pump_speed' 'head_max' 'coef0' 'coef1' ...
+    'coef2' 'coef3' ' pump_head' 'pump_power' 'inlet_temp'});
     pump_volum.Properties.VariableUnits{'pump_speed'} = 'rad/s';
     pump_volum.Properties.VariableUnits{'head_max'} = 'm.c.f.';
     pump_volum.Properties.VariableUnits{'coef0'} = 'm^3/s';
@@ -350,6 +330,7 @@ pump_volum = array2table(pump_volum, 'VariableNames',{'id' 'outlet' 'pump_speed'
     pump_volum.Properties.VariableUnits{'coef3'} = 'm^3/rad^3*s^2';
     pump_volum.Properties.VariableUnits{'pump_head'} = 'm.c.f.';
     pump_volum.Properties.VariableUnits{'pump_power'} = 'W';
+    pump_volum.Properties.VariableUnits{'inlet_temp'} = 'K';
     pump_volum.Properties.VariableDescriptions{'outlet'} = 'Outlet object';
     pump_volum.Properties.VariableDescriptions{'pump_speed'} = 'Instantaneous input';
     pump_volum.Properties.VariableDescriptions{'head_max'} = 'Maximum head: if head loss is higher, flow is zero';
@@ -359,9 +340,12 @@ pump_volum = array2table(pump_volum, 'VariableNames',{'id' 'outlet' 'pump_speed'
     pump_volum.Properties.VariableDescriptions{'coef3'} = 'Flow: coefficient that multiplies speed^3';
     pump_volum.Properties.VariableDescriptions{'pump_head'} = 'Instantaneous result';
     pump_volum.Properties.VariableDescriptions{'pump_power'} = 'Instantaneous result';
+    pump_volum.Properties.VariableDescriptions{'inlet_temp'} = 'Temperature at the inlet of the pump. Instantaneous result';
     
     
-pump_turbo = array2table(pump_turbo, 'VariableNames',{'id' 'outlet' 'pump_speed' 'head_max' 'coef_N0' 'coef_N1' 'coef_N2' 'Q_coef_N0' 'Q_coef_N1' 'Q_coef_N2' 'Q2_coef_N0' 'Q2_coef_N1' 'Q2_coef_N2' 'pump_power'});
+pump_turbo = array2table(pump_turbo, 'VariableNames',{'id' 'outlet' 'pump_speed' 'head_max' 'coef_N0' ...
+    'coef_N1' 'coef_N2' 'Q_coef_N0' 'Q_coef_N1' 'Q_coef_N2' 'Q2_coef_N0' 'Q2_coef_N1' 'Q2_coef_N2' ' pump_head'...
+    'pump_power' 'inlet_temp'});
     pump_turbo.Properties.VariableUnits{'pump_speed'} = 'rad/s';
     pump_turbo.Properties.VariableUnits{'head_max'} = 'm.c.f.';
     pump_turbo.Properties.VariableUnits{'coef_N0'} = 'm.c.f.';
@@ -373,6 +357,9 @@ pump_turbo = array2table(pump_turbo, 'VariableNames',{'id' 'outlet' 'pump_speed'
     pump_turbo.Properties.VariableUnits{'Q2_coef_N0'} = 'm.c.f./m^6*s^2';
     pump_turbo.Properties.VariableUnits{'Q2_coef_N1'} = 'm.c.f./m^6/rad*s^3';
     pump_turbo.Properties.VariableUnits{'Q2_coef_N2'} = 'm.c.f./m^6/rad^2*s^4';
+    pump_turbo.Properties.VariableUnits{'pump_head'} = 'm.c.f.';
+    pump_turbo.Properties.VariableUnits{'pump_power'} = 'W';
+    pump_turbo.Properties.VariableUnits{'inlet_temp'} = 'K';
     pump_turbo.Properties.VariableDescriptions{'outlet'} = 'Outlet object';
     pump_turbo.Properties.VariableDescriptions{'pump_speed'} = 'Instantaneous input';
     pump_turbo.Properties.VariableDescriptions{'head_max'} = 'Maximum head: if head loss is higher, flow is zero';
@@ -385,36 +372,21 @@ pump_turbo = array2table(pump_turbo, 'VariableNames',{'id' 'outlet' 'pump_speed'
     pump_turbo.Properties.VariableDescriptions{'Q2_coef_N0'} = 'Head loss: coefficient that multiplies flow^2';
     pump_turbo.Properties.VariableDescriptions{'Q2_coef_N1'} = 'Head loss: coefficient that multiplies flow^2 and speed';
     pump_turbo.Properties.VariableDescriptions{'Q2_coef_N2'} = 'Head loss: coefficient that multiplies flow^2 and speed^2';
+    pump_turbo.Properties.VariableDescriptions{'pump_head'} = 'Instantaneous result';
+    pump_turbo.Properties.VariableDescriptions{'pump_power'} = 'Instantaneous result';
+    pump_turbo.Properties.VariableDescriptions{'inlet_temp'} = 'Temperature at the inlet of the pump. Instantaneous result';
     
     
-heat_exch_fix = array2table(heat_exch_fix, 'VariableNames',{'id' 'heat' 'hydr_resist' 'inlet_temp'});
-    heat_exch_fix.Properties.VariableUnits{'heat'} = 'W';
-    heat_exch_fix.Properties.VariableUnits{'hydr_resist'} = 'm.c.f./m^6*s^2';
-    heat_exch_fix.Properties.VariableUnits{'inlet_temp'} = 'K';
-    heat_exch_fix.Properties.VariableDescriptions{'heat'} = 'Heat power: (+) energy into circuit; (-) energy out of circuit';
-    heat_exch_fix.Properties.VariableDescriptions{'hydr_resist'} = 'Hydraulic resistance = head loss / flow^2';
-    heat_exch_fix.Properties.VariableDescriptions{'inlet_temp'} = 'Temperature at the inlet of the heat exchanger. Instantaneous result';
-    
-    
-% will be of type heat_exch_Tout
-% heat_exch_UA = array2table(heat_exch_UA, 'VariableNames',{'id' 'UA' 'mCp_min' 'hydr_resist'});
-%     heat_exch_UA.Properties.VariableUnits{'UA'} = 'W/K';
-%     heat_exch_UA.Properties.VariableUnits{'mCp_min'} = 'W/K';
-%     heat_exch_UA.Properties.VariableUnits{'hydr_resist'} = 'm.c.f./m^6*s^2';
-%     heat_exch_UA.Properties.VariableDescriptions{'UA'} = 'Constant parameter UA of exchanger: heat / temperature difference';
-%     heat_exch_UA.Properties.VariableDescriptions{'mCp_min'} = 'Minimum value from both fluids of the product of mass flow times heat capacity';
-%     heat_exch_UA.Properties.VariableDescriptions{'hydr_resist'} = 'Hydraulic resistance = head loss / flow^2';
-    
-    
-heat_exch_Tout = array2table(heat_exch_Tout, 'VariableNames',{'id' 'outlet' 'hydr_resist' 'T_out' 'inlet_temp'});
-    heat_exch_Tout.Properties.VariableUnits{'hydr_resist'} = 'm.c.f./m^6*s^2';
-    heat_exch_Tout.Properties.VariableUnits{'T_out'} = 'K';
-    heat_exch_Tout.Properties.VariableUnits{'inlet_temp'} = 'K';
-    heat_exch_Tout.Properties.VariableDescriptions{'outlet'} = 'Outlet object';
-    heat_exch_Tout.Properties.VariableDescriptions{'hydr_resist'} = 'Hydraulic resistance = head loss / flow^2';
-    heat_exch_Tout.Properties.VariableDescriptions{'T_out'} = 'Fluid temperature at the outlet. Instantaneous input'; % instantaneous variable
-    heat_exch_Tout.Properties.VariableDescriptions{'inlet_temp'} = 'Temperature at the inlet of the heat exchanger. Instantaneous result'; % instantaneous variable
-    
+heat_exch = array2table(heat_exch, 'VariableNames',{'id' 'flag_Tout' 'heat' 'T_out' 'hydr_resist' 'inlet_temp'});
+    heat_exch.Properties.VariableUnits{'heat'} = 'W';
+    heat_exch.Properties.VariableUnits{'T_out'} = 'K';
+    heat_exch.Properties.VariableUnits{'hydr_resist'} = 'm.c.f./m^6*s^2';
+    heat_exch.Properties.VariableUnits{'inlet_temp'} = 'K';
+    heat_exch.Properties.VariableDescriptions{'flag_Tout'} = 'False if the heat exchanger uses the value of heat; true if it uses the value of Tout';
+    heat_exch.Properties.VariableDescriptions{'heat'} = 'Heat power: (+) energy into circuit; (-) energy out of circuit'; % instantaneous variable
+    heat_exch.Properties.VariableDescriptions{'T_out'} = 'Fluid temperature at the outlet. Instantaneous input'; % instantaneous variable
+    heat_exch.Properties.VariableDescriptions{'hydr_resist'} = 'Hydraulic resistance = head loss / flow^2';
+    heat_exch.Properties.VariableDescriptions{'inlet_temp'} = 'Temperature at the inlet of the heat exchanger. Instantaneous result';
     
 tank = array2table(tank, 'VariableNames',{'id' 'outlet' 'head_drop'});
 
@@ -426,8 +398,6 @@ tank = array2table(tank, 'VariableNames',{'id' 'outlet' 'head_drop'});
 % display(thermostat);
 % display(pump_volum);
 % display(pump_turbo);
-% display(heat_exch_fix);
-% display(heat_exch_UA);
-% display(heat_exch_Tout);
+% display(heat_exch);
 % display(tank);
 

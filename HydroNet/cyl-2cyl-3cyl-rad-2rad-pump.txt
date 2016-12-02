@@ -1,0 +1,141 @@
+Water				circuit fluid
+
+#1				identifier
+Main_Pump			name
+pump_volum			class
+5				inlet_object
+2				outlet_object
+0.001				volume [m3]
+0				pump speed [rad/d]
+1000000				max_head [meter column fluid]
+0				coefficient_order_0	[m3/s]
+0.00001				coefficient_order_1	[m3 / rad]
+0				coefficient_order_2	[m3 * s / rad^2]
+0				coefficient_order_3	[m3 * s^2 / rad^3]
+0				pump head [m.c.f.] (initialization)
+0				pump power [W] (initialization)
+
+#2				identifier
+Pre_cyl				name
+node				class
+4				number_connections
+1				connection_1
+6				connection_2
+7				connection_3
+9				connection_4
+
+#3				identifier
+Post_cyl			name
+node				class
+4				number_connections
+4				connection_1
+6				connection_2
+8				connection_3
+11				connection_4
+
+
+#4				identifier
+Pre_rad				name
+node				class
+3				number_connections
+3				connection_1
+12				connection_2
+13				connection_3
+
+#5				identifier
+Post_rad			name
+node				class
+3				number_connections
+1				connection_1
+12				connection_2
+14				connection_3
+
+#6				identifier
+Block_1				name
+heat_exch_fix			class
+2				inlet_object
+3				outlet_object
+0.0005				volume [m3]
+10000				heat [W]
+50000				hydr_resist [m.c.f / (m3/s)^2]
+-999				inlet temperarure [K] (initialization)
+
+#7				identifier
+Block_2				name
+heat_exch_fix			class
+2				inlet_object
+8				outlet_object
+0.0005				volume [m3]
+10000				heat [W]
+50000				hydr_resist [m.c.f / (m3/s)^2]
+-999				inlet temperarure [K] (initialization)
+
+#8				identifier
+Block_3				name
+heat_exch_fix			class
+7				inlet_object
+3				outlet_object
+0.0005				volume [m3]
+10000				heat [W]
+50000				hydr_resist [m.c.f / (m3/s)^2]
+-999				inlet temperarure [K] (initialization)
+
+#9				identifier
+Block_4				name
+heat_exch_fix			class
+2				inlet_object
+10				outlet_object
+0.0005				volume [m3]
+10000				heat [W]
+50000				hydr_resist [m.c.f / (m3/s)^2]
+-999				inlet temperarure [K] (initialization)
+
+#10				identifier
+Block_5				name
+heat_exch_fix			class
+9				inlet_object
+11				outlet_object
+0.0005				volume [m3]
+10000				heat [W]
+50000				hydr_resist [m.c.f / (m3/s)^2]
+-999				inlet temperarure [K] (initialization)
+
+#11				identifier
+Block_6				name
+heat_exch_fix			class
+10				inlet_object
+3				outlet_object
+0.0005				volume [m3]
+10000				heat [W]
+50000				hydr_resist [m.c.f / (m3/s)^2]
+-999				inlet temperarure [K] (initialization)
+
+#12				identifier
+Rad_1				name
+heat_exch_fix			class
+4				inlet_object
+5				outlet_object
+0.0005				volume [m3]
+-25000				heat [W]
+50000				hydr_resist [m.c.f / (m3/s)^2]
+-999				inlet temperarure [K] (initialization)
+
+#13				identifier
+Rad_2				name
+heat_exch_fix			class
+4				inlet_object
+14				outlet_object
+0.0005				volume [m3]
+-25000				heat [W]
+50000				hydr_resist [m.c.f / (m3/s)^2]
+-999				inlet temperarure [K] (initialization)
+
+#14				identifier
+Rad_3				name
+heat_exch_fix			class
+13				inlet_object
+5				outlet_object
+0.0005				volume [m3]
+-25000				heat [W]
+50000				hydr_resist [m.c.f / (m3/s)^2]
+-999				inlet temperarure [K] (initialization)

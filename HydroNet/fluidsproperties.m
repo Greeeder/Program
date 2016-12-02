@@ -1,6 +1,6 @@
 function [ rho,mu,lamda,cp]= fluidsproperties(fluid, temperature, weight_fraction )
 %fluidsproperties returns the properties of the fluids at a temperature
-%   Calculate a fluids properties aproximation given a temperature and a
+%   Calculate the properties aproximation given a temperature and a
 %   concentration	of :
 %               Air
 % 				Water
@@ -16,7 +16,7 @@ function [ rho,mu,lamda,cp]= fluidsproperties(fluid, temperature, weight_fractio
 % 				TriethyleneGlycol_Coolant
 % 				PropyleneGlycol_Coolant
 % 				DipropyleneGlycol_Coolant
-%   Be careful when tiping, if the name is not a matxh to any of the above
+%   Be careful when typing, if the name is not a matxh to any of the above
 %   it won't work.
 
 
@@ -37,12 +37,18 @@ switch fluid
     cp=cp_Oil;
     
     case 'Water'
+        if temperature>373.15
+            temperature=373.15;
+        end
+         if temperature<273.15
+            temperature=273.15;
+        end
 
-	rho_Water=1002.17 - 0.116189*temperature - (0.358024 * 10^-2)* temperature^2 + ...
-        (0.373667 *10^-5)*temperature^3;
-	LN_mu_Water= -3.758023 + 590.9808/(temperature + 137.2645);
+	rho_Water=1002.17 - 0.116189*(temperature -273.15)- (0.358024 * 10^-2)* (temperature-273.15)^2 + ...
+        (0.373667 *10^-5)*(temperature-273.15)^3;
+	LN_mu_Water= -3.758023 + 590.9808/((temperature-273.15) + 137.2645);
     mu_Water=exp(LN_mu_Water);
-	lamda_Water=0.570990 + (0.167156 * 10^-2)*temperature -(0.609054* 10^-5)* temperature^2;
+	lamda_Water=0.570990 + (0.167156 * 10^-2)*(temperature-273.15) -(0.609054* 10^-5)* (temperature-273.15)^2;
     T_m = 325.65;
     T1 = temperature-T_m;
     A1 = 4.1814288700;
@@ -82,6 +88,8 @@ switch fluid
         cp=cp_Steam*4.1868*1000/18.015;
 
     case 'Air'
+        
+        R_Air=286.9; %J/kg*k R
     
 	rho_Air=-6.77476761509903 + -4.53248600005648E-03 * temperature + 2.8723517898272E-06 * temperature ^ 2 ...
         - 7.9439617758404E-10 * temperature ^ 3 + 1.32166671126734 * log(temperature) ...
@@ -89,9 +97,7 @@ switch fluid
 	mu_Air=0.0000014615 * (temperature ^ 1.5) / (temperature + 110.4);
 	lamda_Air= -0.042199691369186 + 1.49433610434619E-05 * temperature + 5.00268427493186E-08 * temperature ^ 2 ...
         - 2.72058945048655E-11 * temperature ^ 3 + 1.04662104631254E-02 * log(temperature) + 0.151780981767906 / temperature;
-	cp_Air=( 2522.88 - 10.4199 * sqrt(temperature) - 67227.1 / sqrt(temperature) + 917124.4 / temperature - 4174853.6 * temperature ^ (-1.5)+1088.1 * temperature ...
-        - 0.76234 * temperature ^ 2 + 0.00212456 * temperature ^ 3 - 0.00000210075 * temperature ^ 4 + 0.000000000957404 * temperature ^ 5 ...
-        - 1.67527E-13 * temperature ^ 6)*lamda_Air;
+	cp_Air=( 2522.88 - 10.4199 * sqrt(temperature) - 67227.1 / sqrt(temperature) + 917124.4 / temperature - 4174853.6 * temperature ^ (-1.5))+ R_Air;
     
     rho=rho_Air;
     mu=mu_Air;
@@ -103,7 +109,7 @@ switch fluid
     rho_EtyhleneGlycol=1127.68-0.65816*temperature-6.1765*10^-4*temperature^2;
 	LN_mu_EthyleneGlycol=-3.61359+986.519/(temperature+127.861);
     mu_EthyleneGlycol=exp(LN_mu_EthyleneGlycol);
-	lamda_EthyleneGlycol=0.24658+2.5372*10^-4*temperature+-1.3186*10^-6*temperature^2;
+	lamda_EthyleneGlycol=0.24658+2.5372*10^-4*temperature-1.3186*10^-6*temperature^2;
 	 T_m = 50;
         X_m = 49.52;
         X = 100;
@@ -172,7 +178,32 @@ switch fluid
 	LN_mu_PropyleneGlycol=-3.9701+1000.8/(temperature+104.10);
     mu_PropyleneGlycol=exp(LN_mu_PropyleneGlycol);
 	lamda_PropyleneGlycol=0.19116+1.1999*10^-4*temperature-9.2459*10^-7*temperature^2;
-	cp_PropyleneGlycol=(0.151+1.006*10^-1*temperature-7.121*10^-7*temperature^2+2.138*10-8*temperature^3)/(76.096/1000);     
+	T_m = 64.24;
+    X_m = 45.59;
+    X = weight_fraction*100;
+    T1 = temperature-T_m;
+    X1 = X-X_m;
+    A1 = 3.8091256400;
+    A2 = -0.0157459941;
+    A3 = -0.0001604888;
+    A4 = 1.678128E-06;
+    A5 = 1.903529E-08;
+    A6 = -3.416605E-10;
+    A7 = 0.0029358287;
+    A8 = 0.0001147783;
+    A9 = -2.663112E-07;
+    A10 = -2.184980E-08;
+    A11 = 1.384410E-10;
+    A12 = -2.012514E-06;
+    A13 = 7.783426E-08;
+    A14 = 4.042004E-09;
+    A15 = -9.158986E-11;
+    A16 = 7.375548E-08;
+    A17 = -4.809393E-09;
+    A18 = 5.103901E-11;
+    cp_PropyleneGlycol= A1 + A2*X1 + A3*X1^2 + A4*X1^3 + A5*X1^4 + A6*X1^5 + A7*T1 + A8*T1*X1 ...        % Adjusted from http://dowac.custhelp.com/app/answers/detail/a_id/7470/~/propylene-glycols---specific-heat-values
+        + A9*T1*X1^2 + A10*T1*X1^3 + A11*T1*X1^4 + A12*T1^2 + A13*T1^2*X1 + A14*T1^2*X1^2 ...
+        + A15*T1^2*X1^3 + A16*T1^3 + A17*T1^3*X1 + A18*T1^3*X1^2;     
     
     rho=rho_PropyleneGlycol;
     mu=mu_PropyleneGlycol;
@@ -223,10 +254,11 @@ switch fluid
 
     case 'EthyleneGlycol_Coolant'
          
-        rho_Water=1002.17 - 0.116189*temperature - (0.358024 * 10^-2)* temperature^2 + (0.373667 *10^-5)*temperature^3;
-        LN_mu_Water= -3.758023 + 590.9808/(temperature + 137.2645);
-        lamda_Water=0.570990 + (0.167156 * 10^-2)*temperature -(0.609054* 10^-5)* temperature^2;
-        
+        rho_Water=1002.17 - 0.116189*(temperature -273.15)- (0.358024 * 10^-2)* (temperature-273.15)^2 + ...
+        (0.373667 *10^-5)*(temperature-273.15)^3;
+        LN_mu_Water= -3.758023 + 590.9808/((temperature-273.15) + 137.2645);
+        lamda_Water=0.570990 + (0.167156 * 10^-2)*(temperature-273.15) -(0.609054* 10^-5)* (temperature-273.15)^2;
+    
         rho_EthyleneGlycol=1127.68-0.65816*temperature-6.1765*10^-4*temperature^2;
         LN_mu_EthyleneGlycol=-3.61359+986.519/(temperature+127.861);
         lamda_EthyleneGlycol=0.24658+2.5372*10^-4*temperature+-1.3186*10^-6*temperature^2;
@@ -272,10 +304,11 @@ switch fluid
     
      case 'DiethyleneGlycol_Coolant'
          
-        rho_Water=1002.17 - 0.116189*temperature - (0.358024 * 10^-2)* temperature^2 +(0.373667 *10^-5)*temperature^3;
-        LN_mu_Water= -3.758023 + 590.9808/(temperature + 137.2645);
-        lamda_Water=0.570990 + (0.167156 * 10^-2)*temperature -(0.609054* 10^-5)* temperature^2;
-       
+        rho_Water=1002.17 - 0.116189*(temperature -273.15)- (0.358024 * 10^-2)* (temperature-273.15)^2 + ...
+        (0.373667 *10^-5)*(temperature-273.15)^3;
+        LN_mu_Water= -3.758023 + 590.9808/((temperature-273.15) + 137.2645);
+        lamda_Water=0.570990 + (0.167156 * 10^-2)*(temperature-273.15) -(0.609054* 10^-5)* (temperature-273.15)^2;
+    
         rho_DiethyleneGlycol=1132.35-0.67950*temperature-4.7565*10^-4*temperature^2;
         LM_mu_DiethyleneGlycol=-3.25001+901.095/(temperature+110.695);
         lamda_DiethyleneGlycol=0.19365+1.9938*10^-4*temperature-1.0584*10^-6*temperature^2;
@@ -296,10 +329,11 @@ switch fluid
     
      case 'TriethyleneGlycol_Coolant'
          
-        rho_Water=1002.17 - 0.116189*temperature - (0.358024 * 10^-2)* temperature^2 + (0.373667 *10^-5)*temperature^3;
-        LN_mu_Water= -3.758023 + 590.9808/(temperature + 137.2645);
-        lamda_Water=0.570990 + (0.167156 * 10^-2)*temperature -(0.609054* 10^-5)* temperature^2;
-       
+        rho_Water=1002.17 - 0.116189*(temperature -273.15)- (0.358024 * 10^-2)* (temperature-273.15)^2 + ...
+        (0.373667 *10^-5)*(temperature-273.15)^3;
+        LN_mu_Water= -3.758023 + 590.9808/((temperature-273.15) + 137.2645);
+        lamda_Water=0.570990 + (0.167156 * 10^-2)*(temperature-273.15) -(0.609054* 10^-5)* (temperature-273.15)^2;
+    
         rho_TriethyleneGlycol=1139.48-0.71040*temperature-4.3663*10^-4*temperature^2;
         LM_mu_TriethyleneGlycol=-3.11771+914.766/(temperature+110.068);
         lamda_TriethyleneGlycol=0.18890+1.1485*10^-4*temperature-8.4807*10^-7*temperature^2;
@@ -320,9 +354,9 @@ switch fluid
 
      case 'PropyleneGlycol_Coolant'
          
-        LN_mu_Water= -3.758023 + 590.9808/(temperature + 137.2645);
-        lamda_Water=0.570990 + (0.167156 * 10^-2)*temperature -(0.609054* 10^-5)* temperature^2;
-        
+        LN_mu_Water= -3.758023 + 590.9808/((temperature-273.15) + 137.2645);
+        lamda_Water=0.570990 + (0.167156 * 10^-2)*(temperature-273.15) -(0.609054* 10^-5)* (temperature-273.15)^2;
+    
         LN_mu_PropyleneGlycol=-3.9701+1000.8/(temperature+104.10);
         lamda_PropyleneGlycol=0.19116+1.1999*10^-4*temperature-9.2459*10^-7*temperature^2;
         
@@ -369,9 +403,9 @@ switch fluid
 
      case 'DipropyleneGlycol_Coolant'
          
-        LN_mu_Water= -3.758023 + 590.9808/(temperature + 137.2645);
-        lamda_Water=0.570990 + (0.167156 * 10^-2)*temperature -(0.609054* 10^-5)* temperature^2;
-        
+        LN_mu_Water= -3.758023 + 590.9808/((temperature-273.15) + 137.2645);
+        lamda_Water=0.570990 + (0.167156 * 10^-2)*(temperature-273.15) -(0.609054* 10^-5)* (temperature-273.15)^2;
+    
         LN_mu_DipropyleneGlycol=-3.6944+878.20/(temperature+84.119);
         lamda_DipropyleneGlycol=0.15428+7.0784*10^-5*temperature-6.1800*10^-7*temperature^2;
         

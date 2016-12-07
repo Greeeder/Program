@@ -842,18 +842,6 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			pump_volum.at(pump_volum_count-1).coef3 = std::stod(_aux);
 
-			circuit_text.ignore(1000, '\n');
-
-			std::getline(circuit_text, _aux, '\t');
-
-			pump_volum.at(pump_volum_count-1).pump_head = std::stod(_aux);
-
-			circuit_text.ignore(1000, '\n');
-
-			std::getline(circuit_text, _aux, '\t');
-
-			pump_volum.at(pump_volum_count-1).pump_power = std::stod(_aux);
-
 
 		}
 		else if (objects.at(n_obj - 1).Class == "pump_turbo") {
@@ -949,16 +937,7 @@ void HydroNet_model::HydroNet_ReadObj() {
 			pump_turbo.at(pump_turbo_count - 1).Q2_coef_N2 = std::stod(_aux);
 
 
-			std::getline(circuit_text, _aux, '\t');
-
-			pump_turbo.at(pump_turbo_count - 1).pump_head = std::stod(_aux);
-
-			circuit_text.ignore(1000, '\n');
-
-			std::getline(circuit_text, _aux, '\t');
-
-			pump_turbo.at(pump_turbo_count - 1).pump_power = std::stod(_aux);
-
+			
 
 		}
 		else if (objects.at(n_obj - 1).Class == "pipe") {
@@ -1045,7 +1024,7 @@ void HydroNet_model::HydroNet_ReadObj() {
 
 			std::getline(circuit_text, _aux, '\t');
 
-			heat_exch.at(heat_exch_count - 1).type = (_aux);
+			heat_exch.at(heat_exch_count - 1).type = (bool)(std::stoi(_aux));
 
 			circuit_text.ignore(1000, '\n');
 
@@ -1168,12 +1147,6 @@ void HydroNet_model::HydroNet_ReadObj() {
 			std::getline(circuit_text, _aux, '\t');
 
 			thermostat.at(thermostat_count - 1).Shape_factor = std::stod(_aux);
-
-			circuit_text.ignore(1000, '\n');
-
-			std::getline(circuit_text, _aux, '\t');
-
-			thermostat.at(thermostat_count - 1).to_open = std::stoi(_aux);
 
 			circuit_text.ignore(1000, '\n');
 
@@ -1355,7 +1328,7 @@ void HydroNet_model::HydroNet_Create() {
 
 	//// NODES
 	// List of all nodes
-	for (int count = 0; count<n_obj; count++)
+	for (int count = 0; count < n_obj; count++)
 		if (objects.at(count).Class == "node") {
 			nodes_ind.resize(n_nodes + 1);
 			nodes_id.resize(n_nodes + 1);
@@ -1364,7 +1337,7 @@ void HydroNet_model::HydroNet_Create() {
 			n_nodes++;
 		}
 
-	
+
 	//// TANKS
 	// List of all tanks
 
@@ -1382,7 +1355,7 @@ void HydroNet_model::HydroNet_Create() {
 
 	n_tanks = tanks_ind.size();
 
-	
+
 	//// CIRCUIT COMPONENTS
 	// Obtains nodes, branches and meshes in the circuit.
 	// Determines branches connected to nodes and branches that are part of a mesh.
@@ -1423,7 +1396,7 @@ void HydroNet_model::HydroNet_Create() {
 			for (int count_obj = 1; count_obj < branches_ind.at(count_branch).size(); count_obj++) { // loop of objects in the branch
 				inlet_aux.at(count_obj) = inlet_aux.at(count_obj - 1) + objects.at(branches_ind.at(count_branch).at(count_obj - 1)).volume / branch_volume.at(count_branch) * 100;
 				// \// of the previous object inlet + volume previous object / branch volume * 100
-				for (int count1 = 1; count1 <objects.at(count_obj).adjacent.size(); count1++)
+				for (int count1 = 1; count1 < objects.at(count_obj).adjacent.size(); count1++)
 					obj_inlet_pos.at(branches_ind.at(count_branch).at(count_obj)).push_back(objects.at(count_obj).adjacent.at(count1));
 				obj_inlet_pos.at(branches_ind.at(count_branch).at(count_obj)).push_back(inlet_aux.at(count_obj));
 			}
@@ -1439,8 +1412,11 @@ void HydroNet_model::HydroNet_Create() {
 		if (objects.at(count).volume == 0)
 			obj_outlet_pos.at(count) = obj_inlet_pos.at(count);
 		else // volume > 0
-			for (int count1 = 0; count1 <obj_inlet_pos.at(count).size(); count1++)
+			for (int count1 = 0; count1 < obj_inlet_pos.at(count).size(); count1++) {
 				obj_outlet_pos.at(count).push_back(obj_inlet_pos.at(count).at(count1) + objects.at(count).volume / branch_volume.at(objects.at(count).branch) * 100);
+				if (obj_outlet_pos.at(count).at(count1) > 100)
+					obj_outlet_pos.at(count).at(count1) = 100;
+			}
 	}
 
 
@@ -1471,9 +1447,9 @@ void HydroNet_model::HydroNet_Create() {
 			if (branches.at(count_branch).objects.at(count_obj).Class == "heat_exch")								// Asigns the heat exchanger identificator when the object is a Heat Echanger 
 				branch_htx.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID);
 			if (branches.at(count_branch).objects.at(count_obj).Class == "valve_var")								// Asigns the valve identificator when the variable valve
-				branch_valve_var.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID); 
+				branch_valve_var.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID);
 			if (branches.at(count_branch).objects.at(count_obj).Class == "valve_fix")								// Asigns the valve identificator when the fix vañve 
-				branch_valve_fix.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID); 
+				branch_valve_fix.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID);
 			if (branches.at(count_branch).objects.at(count_obj).Class == "pipe")								// Asigns the pipe identificator when the object is a pipe 
 				branch_pipe.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID);
 			//if (branches.at(count_branch).objects.at(count_obj).Class == "tank")								// Asigns the heat exchanger identificator when the object is a Heat Echanger type Tout
@@ -1484,7 +1460,15 @@ void HydroNet_model::HydroNet_Create() {
 				branch_pump_turbo.at(count_branch).push_back(branches.at(count_branch).objects.at(count_obj).ID);
 		}
 	}
+		//// INDEXES OF REFERENCE SENSORS FOR THERMOSTATS
 
+		for (int count_thrm = 0; count_thrm < thermostat.size(); count_thrm++)
+			for (int count = 0; count < objects.size(); count++)
+				if (thermostat.at(count_thrm).Sensor == objects.at(count).ID) {
+					thermostat.at(count_thrm).Sensor = objects.at(count).ID;
+					break;
+				}
+	
 }
 
 void HydroNet_model::HydroNet_Components() {
@@ -1988,7 +1972,7 @@ void HydroNet_model::HydroNet_Components() {
 			ind_outlet_aux.push_back({ pump_turbo.at(i).ID,pump_turbo.at(i).outlet_object });
 		}
 		else if (heat_exch.size()!=0 &&pump_volum.size()  + pump_turbo.size() < aux <heat_exch.size() ) {
-			if (heat_exch.at(i).type == "T_out") {
+			if (!heat_exch.at(i).type) {  // True if type outlet temperature
 				i = aux - (pump_volum.size() - 1 + pump_turbo.size() - 1);
 				ind_outlet_aux.push_back({ heat_exch.at(i).ID,heat_exch.at(i).outlet_object });
 			}
@@ -3327,7 +3311,7 @@ void HydroNet_model::HydroNet_Temperature() {
 
 					start_pos = obj_inlet_pos.at(ind_aux).at(0); // object's inlet position
 					end_pos = obj_outlet_pos.at(ind_aux).at(0); // object's outlet position
-					if (heat_exch.at(branch_htx.at(count_branch).at(count_obj_htx)).type == "fix") {
+					if (heat_exch.at(branch_htx.at(count_branch).at(count_obj_htx)).type) {   // True if type fix heat
 						temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
 						value = heat_exch.at(branch_htx.at(count_branch).at(count_obj_htx)).heat; // heat to add
 					}
@@ -3513,7 +3497,7 @@ void HydroNet_model::HydroNet_Temperature() {
 						}
 
 					// index of the heat exchanger in the table objects
-					if (heat_exch.at(ind_aux).type == "fix") {
+					if (heat_exch.at(ind_aux).type) { // True if type fix heat
 						temp_action = 1; // 0: average temperature; 1: calculate temperature with heat; 2: impose temperature
 						value = heat_exch.at(ind_aux).heat;
 

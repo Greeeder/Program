@@ -155,7 +155,7 @@ private:
 		std::string name;									//!< Heat Exchanger name
 		int inlet_object;									//!< Heat Exchanger's inlet object identifier
 		int outlet_object;									//!< Heat Exchanger's outlet object identifier
-		std::string type;									//!< Heat Echanger's type
+		bool type;									//!< Heat Echanger's type
 		double heat;										//!< Heat Energy Exchanged [J]
 		double T_out;										//!< Outlet temperaure [K]
 		double T_in;										//!< Intlet temperaure [K]
